@@ -941,7 +941,7 @@ async function analyzeVideo(it, force) {
     const res = await fetch(API_URL + '?action=analyze', {
       method: 'POST',
       headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: DUMMY_TEXT })
+      body: JSON.stringify(it.r2Key ? { key: it.r2Key } : { text: DUMMY_TEXT })
     });
     let j = {}; try { j = await res.json(); } catch (e) {}
     if (!res.ok || !j.success || !j.data) throw new Error((j.error || 'HTTP ' + res.status) + (j.details ? ' — ' + j.details : ''));

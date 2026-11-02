@@ -174,6 +174,18 @@ ul{list-style:none}
 .cards{flex-wrap:nowrap}
 .cards .card{width:auto;flex:1 1 0;max-width:300px;min-width:0}
 html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%}
+.aibtn{background:#7c3aed;color:#fff;padding:5px 12px;font-size:.85rem;white-space:nowrap}
+.aibox{width:min(720px,100%);max-height:90vh;overflow-y:auto}
+.aisec{margin-bottom:22px}
+.aisec h4{font-size:1.1rem;font-weight:800;margin-bottom:10px;color:var(--primary-blue)}
+.aisum{background:#f7fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;line-height:2;white-space:pre-wrap}
+.qcard{border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:12px;background:#fff}
+.qcard h5{font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.8}
+.qopt{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;cursor:pointer}
+.qopt input{width:auto;margin:0}
+.qopt.ok{background:#dcfce7;border-color:#16a34a;color:#166534;font-weight:700}
+.qopt.bad{background:#fee2e2;border-color:#dc2626;color:#991b1b;font-weight:700}
+.qres{text-align:center;font-size:1.25rem;font-weight:800;margin:14px 0;color:var(--primary-blue)}
 </style>
 <script>
 /* منع التكبير بالكامل */
@@ -335,6 +347,18 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
   </div>
 </div>
 
+<div class="mov" id="aiModal">
+  <div class="mbox aibox" role="dialog" aria-modal="true" aria-labelledby="aiTitle">
+    <h3 id="aiTitle">تلخيص وكويز</h3>
+    <div class="aisec"><h4>الملخص</h4><div class="aisum" id="aiSummary"></div></div>
+    <div class="aisec"><h4>الكويز</h4><div id="aiQuiz"></div>
+      <div class="qres" id="aiScore" style="display:none"></div>
+      <div class="mact"><button class="abtn abtn-b" id="aiSubmit">إرسال الإجابات</button><button class="abtn abtn-g" id="aiRetry" style="display:none">إعادة المحاولة</button></div>
+    </div>
+    <div class="mact"><button class="abtn abtn-l" id="aiRe">إعادة التحليل</button><button class="abtn abtn-l" id="aiClose">إغلاق</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -424,7 +448,7 @@ onSnapshot(query(collection(db, 'structure'), orderBy('createdAt')), snap => {
 
 const toast = m => window.showToast && window.showToast(m);
 function syncScroll() {
-  const any = ['browser', 'admin', 'nameModal', 'authModal', 'upModal'].some(i => $(i).classList.contains('open'));
+  const any = ['browser', 'admin', 'nameModal', 'authModal', 'upModal', 'aiModal'].some(i => $(i).classList.contains('open'));
   document.body.style.overflow = any ? 'hidden' : '';
 }
 
@@ -765,6 +789,11 @@ function renderContent(m, tab) {
     d.onclick = () => delLec(it);
     act.append(e, d);
     if (isV) {
+      const ai = el('button', 'abtn aibtn', it.aiData ? 'عرض الملخص والكويز' : 'تلخيص وكويز AI'); ai.type = 'button';
+      ai.onclick = () => analyzeVideo(it);
+      act.prepend(ai);
+    }
+    if (isV) {
       top.append(act); c.append(top);
       const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.src = it.url;
       v.style.cssText = 'width:100%;max-height:360px;background:#000;border-radius:8px;margin-top:10px;display:block';
@@ -860,8 +889,78 @@ $('upSave').onclick = async () => {
 $('upCancel').onclick = closeUpload;
 $('upModal').addEventListener('click', e => { if (e.target === $('upModal')) closeUpload(); });
 
+/* ---------- تحليل المحاضرة بالذكاء الاصطناعي ---------- */
+const DUMMY_TEXT = 'علم التشفير هو العلم الذي يُعنى بحماية المعلومات وتأمين الاتصالات من الاطلاع عليها أو تعديلها من قبل أطراف غير مصرّح لها. ينقسم التشفير إلى نوعين رئيسيين: التشفير المتماثل الذي يستخدم مفتاحاً واحداً للتشفير وفك التشفير، ومن أشهر خوارزمياته AES، والتشفير غير المتماثل الذي يستخدم زوجاً من المفاتيح أحدهما عام والآخر خاص، ومن أشهر خوارزمياته RSA. تُستخدم دوال التجزئة مثل SHA-256 لتوليد بصمة ثابتة الطول للبيانات بحيث يستحيل عملياً استرجاع البيانات الأصلية منها، وتُستخدم للتحقق من سلامة الملفات وتخزين كلمات المرور. أما التوقيع الرقمي فيعتمد على المفتاح الخاص للتوقيع وعلى المفتاح العام للتحقق، ويضمن صحة المصدر وعدم إنكار المرسل لرسالته. وتقوم بروتوكولات مثل TLS بدمج هذه التقنيات لتأمين التصفح على الإنترنت، حيث يتم تبادل مفتاح الجلسة بالتشفير غير المتماثل ثم تُشفَّر البيانات بالتشفير المتماثل لسرعته. ومن أهم مبادئ أمن المعلومات السرية والسلامة والتوافر، ويُعد اختيار طول مفتاح مناسب وإدارته بشكل آمن من أهم عوامل نجاح أي نظام تشفير.';
+let aiCur = null, aiBusy = false;
+function showAI(it, data) {
+  aiCur = it;
+  $('aiTitle').textContent = 'تلخيص وكويز — ' + (it.title || '');
+  $('aiSummary').textContent = data.summary || '';
+  renderQuiz(data.quiz || []);
+  $('aiModal').classList.add('open'); syncScroll();
+}
+function renderQuiz(quiz) {
+  const box = $('aiQuiz'); box.textContent = '';
+  $('aiScore').style.display = 'none';
+  $('aiSubmit').style.display = quiz.length ? '' : 'none';
+  $('aiRetry').style.display = 'none';
+  if (!quiz.length) { box.append(el('p', 'bempty', 'لا توجد أسئلة.')); return; }
+  quiz.forEach((q, i) => {
+    const c = el('div', 'qcard'); c.append(el('h5', null, (i + 1) + '. ' + q.question));
+    (q.options || []).forEach((o, j) => {
+      const lab = el('label', 'qopt');
+      const r = document.createElement('input'); r.type = 'radio'; r.name = 'aiq' + i; r.value = String(j);
+      lab.append(r, el('span', null, o)); c.append(lab);
+    });
+    box.append(c);
+  });
+}
+function gradeQuiz() {
+  const quiz = (aiCur && aiCur._data && aiCur._data.quiz) || [];
+  let score = 0;
+  quiz.forEach((q, i) => {
+    const cards = $('aiQuiz').querySelectorAll('.qcard')[i]; if (!cards) return;
+    const labs = cards.querySelectorAll('.qopt');
+    const picked = cards.querySelector('input:checked');
+    const pi = picked ? parseInt(picked.value, 10) : -1;
+    if (pi === q.correctIndex) score++;
+    labs.forEach((lab, j) => {
+      lab.querySelector('input').disabled = true;
+      if (j === q.correctIndex) lab.classList.add('ok');
+      else if (j === pi) lab.classList.add('bad');
+    });
+  });
+  const sc = $('aiScore'); sc.textContent = 'حصلت على ' + score + '/' + quiz.length; sc.style.display = '';
+  $('aiSubmit').style.display = 'none'; $('aiRetry').style.display = '';
+}
+async function analyzeVideo(it, force) {
+  if (aiBusy) return;
+  if (it.aiData && !force) { aiCur = { ...it, _data: it.aiData }; showAI(aiCur, it.aiData); return; }
+  aiBusy = true; toast('جاري التحليل...');
+  try {
+    const res = await fetch(API_URL + '?action=analyze', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: DUMMY_TEXT })
+    });
+    let j = {}; try { j = await res.json(); } catch (e) {}
+    if (!res.ok || !j.success || !j.data) throw new Error(j.error || j.details || ('HTTP ' + res.status));
+    const data = { summary: String(j.data.summary || ''), quiz: Array.isArray(j.data.quiz) ? j.data.quiz : [] };
+    await updateDoc(doc(db, 'lectures', it.id), { aiData: data });
+    aiCur = { ...it, aiData: data, _data: data }; showAI(aiCur, data);
+  } catch (e) { console.error(e); toast('فشل التحليل: ' + e.message); }
+  aiBusy = false;
+}
+function closeAI() { $('aiModal').classList.remove('open'); syncScroll(); }
+$('aiSubmit').onclick = gradeQuiz;
+$('aiRetry').onclick = () => renderQuiz(aiCur._data.quiz || []);
+$('aiRe').onclick = () => { if (!aiCur) return; const it = aiCur; closeAI(); analyzeVideo(it, true); };
+$('aiClose').onclick = closeAI;
+$('aiModal').addEventListener('click', e => { if (e.target === $('aiModal')) closeAI(); });
+
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  if ($('aiModal').classList.contains('open')) { closeAI(); return; }
   if ($('upModal').classList.contains('open')) { closeUpload(); return; }
   if ($('nameModal').classList.contains('open')) closeName();
   else if ($('authModal').classList.contains('open')) closeAuth();

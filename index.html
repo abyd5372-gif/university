@@ -944,11 +944,11 @@ async function analyzeVideo(it, force) {
       body: JSON.stringify({ text: DUMMY_TEXT })
     });
     let j = {}; try { j = await res.json(); } catch (e) {}
-    if (!res.ok || !j.success || !j.data) throw new Error(j.error || j.details || ('HTTP ' + res.status));
+    if (!res.ok || !j.success || !j.data) throw new Error((j.error || 'HTTP ' + res.status) + (j.details ? ' — ' + j.details : ''));
     const data = { summary: String(j.data.summary || ''), quiz: Array.isArray(j.data.quiz) ? j.data.quiz : [] };
     await updateDoc(doc(db, 'lectures', it.id), { aiData: data });
     aiCur = { ...it, aiData: data, _data: data }; showAI(aiCur, data);
-  } catch (e) { console.error(e); toast('فشل التحليل: ' + e.message); }
+  } catch (e) { console.error(e); alert('فشل التحليل:\n' + e.message); }
   aiBusy = false;
 }
 function closeAI() { $('aiModal').classList.remove('open'); syncScroll(); }

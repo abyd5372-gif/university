@@ -307,13 +307,17 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 <div class="mov" id="authModal">
   <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <h3 id="authTitle">التسجيل</h3>
-    <label class="lbl" for="authName">الاسم</label>
-    <input class="fld" id="authName" autocomplete="name" maxlength="60">
+    <div id="authNameWrap">
+      <label class="lbl" for="authName">الاسم</label>
+      <input class="fld" id="authName" autocomplete="name" maxlength="60">
+    </div>
     <label class="lbl" for="authRole">نوع الحساب</label>
     <select class="fld" id="authRole"><option value="student">طالب</option><option value="admin">مدير</option></select>
     <div id="authCodeWrap" style="display:none">
-      <label class="lbl" for="authCode">رمز المدير</label>
-      <input class="fld" type="password" id="authCode" autocomplete="off">
+      <label class="lbl" for="authEmail">البريد الإلكتروني</label>
+      <input class="fld" type="email" id="authEmail" autocomplete="username" dir="ltr">
+      <label class="lbl" for="authCode">كلمة المرور</label>
+      <input class="fld" type="password" id="authCode" autocomplete="current-password" dir="ltr">
     </div>
     <p class="merr" id="authErr"></p>
     <div class="mact"><button class="abtn abtn-b" id="authSave">تسجيل</button><button class="abtn abtn-l" id="authCancel">إلغاء</button></div>
@@ -373,22 +377,23 @@ document.querySelectorAll('.clickable-card').forEach(function(c){
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, getDoc, setDoc, deleteDoc, updateDoc, writeBatch, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDcbiBSe19VlvzmPvnxHDR_OUTAWljBgqQ",
-  authDomain: "education-e5942.firebaseapp.com",
-  databaseURL: "https://education-e5942-default-rtdb.firebaseio.com",
-  projectId: "education-e5942",
-  storageBucket: "education-e5942.firebasestorage.app",
-  messagingSenderId: "1089395232270",
-  appId: "1:1089395232270:web:94d3c9e1d3e0949e43f65f",
-  measurementId: "G-CT1EWQX9VF"
+  apiKey: "AIzaSyCtsRMlKA2YIOhMX_RD5hCXm-XAlNWBrjM",
+  authDomain: "university-ce843.firebaseapp.com",
+  databaseURL: "https://university-ce843-default-rtdb.firebaseio.com",
+  projectId: "university-ce843",
+  storageBucket: "university-ce843.firebasestorage.app",
+  messagingSenderId: "577328985105",
+  appId: "1:577328985105:web:01fbbf1f60e83c74eaedb0",
+  measurementId: "G-2S2VREX6XP"
 };
-const db = getFirestore(initializeApp(firebaseConfig));
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+const auth = getAuth(fbApp);
 
-/* رمز تسجيل المدير — غيّره قبل النشر */
-const ADMIN_CODE = 'admin2026';
 
 const $ = id => document.getElementById(id);
 const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
@@ -486,41 +491,88 @@ $('bClose').onclick = closeBrowser;
 $('browser').addEventListener('click', e => { if (e.target === $('browser')) closeBrowser(); });
 
 /* ---------- التسجيل ---------- */
-let user = null;
-try { user = JSON.parse(localStorage.getItem('uni_user') || 'null'); } catch (e) {}
-const isAdmin = () => !!user && user.role === 'admin';
+let user = null, authUser = null;
+try { user = JSON.parse(localStorage.getItem('uni_user') || 'null'); if (user && user.role === 'admin') user = null; } catch (e) {}
+const isAdmin = () => !!authUser;
+/* المدير = حساب مسجّل في Authentication ويوجد له مستند في مجموعة users (معرّفه = UID) فيه role = "admin" */
+async function checkAdmin(u) {
+  try { const d = await getDoc(doc(db, 'users', u.uid)); return d.exists() && d.data().role === 'admin'; }
+  catch (e) { console.error(e); return false; }
+}
 function updateAuthUI() {
-  document.querySelectorAll('.auth-link').forEach(a => { a.textContent = user ? user.name : 'التسجيل'; });
+  const label = authUser ? (authUser.displayName || authUser.email) : (user ? user.name : 'التسجيل');
+  document.querySelectorAll('.auth-link').forEach(a => { a.textContent = label; });
   $('adminBtn').style.display = isAdmin() ? 'inline-flex' : 'none';
 }
+onAuthStateChanged(auth, async u => {
+  let ok = false;
+  if (u) { ok = await checkAdmin(u); if (!ok) { try { await signOut(auth); } catch (e) {} } }
+  authUser = ok ? u : null;
+  if (!authUser) closeAdmin();
+  updateAuthUI();
+});
 function closeAuth() { $('authModal').classList.remove('open'); syncScroll(); }
-window.openAuth = () => {
-  if (user) {
-    if (confirm('أنت مسجّل باسم «' + user.name + '». هل تريد تسجيل الخروج؟')) {
+window.openAuth = async () => {
+  if (user || authUser) {
+    if (confirm('أنت مسجّل باسم «' + (authUser ? (authUser.displayName || authUser.email) : user.name) + '». هل تريد تسجيل الخروج؟')) {
       user = null;
       try { localStorage.removeItem('uni_user'); } catch (e) {}
+      if (authUser) { try { await signOut(auth); } catch (e) { console.error(e); } }
       closeAdmin(); updateAuthUI(); toast('تم تسجيل الخروج');
     }
     return;
   }
-  $('authName').value = ''; $('authRole').value = 'student'; $('authCode').value = '';
-  $('authCodeWrap').style.display = 'none'; $('authErr').textContent = '';
+  $('authName').value = ''; $('authRole').value = 'student'; $('authEmail').value = ''; $('authCode').value = '';
+  $('authNameWrap').style.display = 'block'; $('authCodeWrap').style.display = 'none'; $('authErr').textContent = '';
   $('authModal').classList.add('open'); syncScroll();
   setTimeout(() => $('authName').focus(), 50);
 };
-$('authRole').onchange = () => { $('authCodeWrap').style.display = $('authRole').value === 'admin' ? 'block' : 'none'; $('authErr').textContent = ''; };
-function submitAuth() {
-  const name = $('authName').value.trim(), role = $('authRole').value;
+$('authRole').onchange = () => {
+  const adm = $('authRole').value === 'admin';
+  $('authCodeWrap').style.display = adm ? 'block' : 'none';
+  $('authNameWrap').style.display = adm ? 'none' : 'block';
+  $('authErr').textContent = '';
+};
+let authBusy = false;
+async function submitAuth() {
+  if (authBusy) return;
+  const role = $('authRole').value;
+  if (role === 'admin') {
+    const email = $('authEmail').value.trim(), pass = $('authCode').value;
+    if (!email || !pass) { $('authErr').textContent = 'اكتب البريد وكلمة المرور'; return; }
+    authBusy = true; $('authSave').disabled = true;
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+      if (!(await checkAdmin(cred.user))) {
+        try { await signOut(auth); } catch (e2) {}
+        $('authErr').textContent = 'هذا الحساب ليس مديراً (تحقق من مجموعة users في Firebase)';
+      } else {
+        authUser = cred.user;
+        user = null; try { localStorage.removeItem('uni_user'); } catch (e2) {}
+        closeAuth(); updateAuthUI(); toast('أهلاً بك');
+      }
+    } catch (e) {
+      console.error(e);
+      const c = e && e.code || '';
+      $('authErr').textContent =
+        c === 'auth/operation-not-allowed' ? 'فعّل تسجيل الدخول بالبريد وكلمة المرور من لوحة Firebase' :
+        c === 'auth/too-many-requests' ? 'محاولات كثيرة، حاول لاحقاً' :
+        c === 'auth/network-request-failed' ? 'تحقق من الاتصال بالإنترنت' :
+        'البريد أو كلمة المرور غير صحيحة';
+    }
+    authBusy = false; $('authSave').disabled = false;
+    return;
+  }
+  const name = $('authName').value.trim();
   if (!name) { $('authErr').textContent = 'الرجاء كتابة الاسم'; return; }
-  if (role === 'admin' && $('authCode').value !== ADMIN_CODE) { $('authErr').textContent = 'رمز المدير غير صحيح'; return; }
-  user = { name, role };
+  user = { name, role: 'student' };
   try { localStorage.setItem('uni_user', JSON.stringify(user)); } catch (e) {}
   closeAuth(); updateAuthUI(); toast('أهلاً ' + name);
 }
 $('authSave').onclick = submitAuth;
 $('authCancel').onclick = closeAuth;
 $('authModal').addEventListener('click', e => { if (e.target === $('authModal')) closeAuth(); });
-['authName', 'authCode'].forEach(i => $(i).addEventListener('keydown', e => { if (e.key === 'Enter') submitAuth(); }));
+['authName', 'authEmail', 'authCode'].forEach(i => $(i).addEventListener('keydown', e => { if (e.key === 'Enter') submitAuth(); }));
 
 /* ---------- صفحة التحكم ---------- */
 let aSel = null, aTab = 'lectures'; const aOpen = new Set();

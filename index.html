@@ -175,7 +175,6 @@ ul{list-style:none}
 .cards .card{width:auto;flex:1 1 0;max-width:300px;min-width:0}
 html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%}
 </style>
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1259.0.min.js"></script>
 <script>
 /* منع التكبير بالكامل */
 ['gesturestart','gesturechange','gestureend'].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault()},{passive:false})});
@@ -285,7 +284,7 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 </div>
 
 <div class="aov" id="admin" role="dialog" aria-modal="true" aria-labelledby="aHead">
-  <div class="ahead"><span id="aHead">⚙ التحكم والإعدادات</span><div style="display:flex;gap:10px;align-items:center"><button class="abtn abtn-l" id="aR2" style="padding:6px 14px;font-size:.85rem">⚙ إعدادات R2</button><button class="bclose" id="aClose" aria-label="إغلاق">×</button></div></div>
+  <div class="ahead"><span id="aHead">⚙ التحكم والإعدادات</span><div style="display:flex;gap:10px;align-items:center"><button class="bclose" id="aClose" aria-label="إغلاق">×</button></div></div>
   <div class="abody">
     <aside class="aside">
       <div class="aside-h"><span>الجامعات</span><button class="abtn abtn-g" id="aAddUni" style="padding:4px 12px;font-size:.85rem">+ جامعة</button></div>
@@ -321,19 +320,6 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
     </div>
     <p class="merr" id="authErr"></p>
     <div class="mact"><button class="abtn abtn-b" id="authSave">تسجيل</button><button class="abtn abtn-l" id="authCancel">إلغاء</button></div>
-  </div>
-</div>
-
-<div class="mov" id="r2Modal">
-  <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="r2Title">
-    <h3 id="r2Title">⚙ إعدادات Cloudflare R2</h3>
-    <input class="fld" id="r2Account" placeholder="Account ID" autocomplete="off">
-    <input class="fld" id="r2Access" placeholder="Access Key ID" autocomplete="off">
-    <input class="fld" type="password" id="r2Secret" placeholder="Secret Access Key" autocomplete="off">
-    <input class="fld" id="r2Bucket" placeholder="Bucket Name" autocomplete="off">
-    <input class="fld" id="r2Domain" placeholder="Public Domain (https://...)" autocomplete="off">
-    <p class="merr" id="r2Err"></p>
-    <div class="mact"><button class="abtn abtn-b" id="r2Save">حفظ</button><button class="abtn abtn-l" id="r2Cancel">إغلاق</button></div>
   </div>
 </div>
 
@@ -438,7 +424,7 @@ onSnapshot(query(collection(db, 'structure'), orderBy('createdAt')), snap => {
 
 const toast = m => window.showToast && window.showToast(m);
 function syncScroll() {
-  const any = ['browser', 'admin', 'nameModal', 'authModal', 'r2Modal', 'upModal'].some(i => $(i).classList.contains('open'));
+  const any = ['browser', 'admin', 'nameModal', 'authModal', 'upModal'].some(i => $(i).classList.contains('open'));
   document.body.style.overflow = any ? 'hidden' : '';
 }
 
@@ -495,10 +481,14 @@ let user = null, authUser = null;
 try { user = JSON.parse(localStorage.getItem('uni_user') || 'null'); if (user && user.role === 'admin') user = null; } catch (e) {}
 const isAdmin = () => !!authUser;
 /* المدير = حساب مسجّل في Authentication ويوجد له مستند في مجموعة users (معرّفه = UID) فيه role = "admin" */
-async function checkAdmin(u) {
-  try { const d = await getDoc(doc(db, 'users', u.uid)); return d.exists() && d.data().role === 'admin'; }
-  catch (e) { console.error(e); return false; }
+async function adminState(u) {
+  try {
+    const d = await getDoc(doc(db, 'users', u.uid));
+    if (!d.exists()) return 'nodoc';
+    return String(d.data().role || '').trim().toLowerCase() === 'admin' ? 'ok' : 'badrole';
+  } catch (e) { console.error(e); return e && e.code === 'permission-denied' ? 'denied' : 'error'; }
 }
+const checkAdmin = async u => (await adminState(u)) === 'ok';
 function updateAuthUI() {
   const label = authUser ? (authUser.displayName || authUser.email) : (user ? user.name : 'التسجيل');
   document.querySelectorAll('.auth-link').forEach(a => { a.textContent = label; });
@@ -543,9 +533,14 @@ async function submitAuth() {
     authBusy = true; $('authSave').disabled = true;
     try {
       const cred = await signInWithEmailAndPassword(auth, email, pass);
-      if (!(await checkAdmin(cred.user))) {
+      const st = await adminState(cred.user);
+      if (st !== 'ok') {
         try { await signOut(auth); } catch (e2) {}
-        $('authErr').textContent = 'هذا الحساب ليس مديراً (تحقق من مجموعة users في Firebase)';
+        $('authErr').textContent =
+          st === 'nodoc' ? 'لا يوجد مستند لهذا الحساب في users. يجب أن يكون معرّف المستند (Document ID) هو: ' + cred.user.uid :
+          st === 'badrole' ? 'المستند موجود لكن الحقل role ليس admin' :
+          st === 'denied' ? 'قواعد Firestore تمنع قراءة مجموعة users، عدّل القواعد' :
+          'تعذّر التحقق من الصلاحية، تحقق من الاتصال';
       } else {
         authUser = cred.user;
         user = null; try { localStorage.removeItem('uni_user'); } catch (e2) {}
@@ -576,7 +571,7 @@ $('authModal').addEventListener('click', e => { if (e.target === $('authModal'))
 
 /* ---------- صفحة التحكم ---------- */
 let aSel = null, aTab = 'lectures'; const aOpen = new Set();
-window.openAdmin = () => { if (!isAdmin()) return; $('admin').classList.add('open'); syncScroll(); renderAdmin(); loadR2(); };
+window.openAdmin = () => { if (!isAdmin()) return; $('admin').classList.add('open'); syncScroll(); renderAdmin(); };
 function closeAdmin() { $('admin').classList.remove('open'); syncScroll(); }
 $('aClose').onclick = closeAdmin;
 $('aAddUni').onclick = () => openName('add', 'uni', null);
@@ -733,7 +728,7 @@ async function delNode(n) {
 }
 
 /* ---------- محتوى المادة: محاضرات وملفات ---------- */
-let lects = [], watchedId = null, unsubLects = null, r2Config = null;
+let lects = [], watchedId = null, unsubLects = null;
 function watchCourse(id) {
   if (id === watchedId) return;
   if (unsubLects) { unsubLects(); unsubLects = null; }
@@ -744,17 +739,12 @@ function watchCourse(id) {
     renderAdmin();
   }, err => { console.error(err); });
 }
-async function loadR2() {
-  try { const d = await getDoc(doc(db, 'settings', 'r2')); r2Config = d.exists() ? d.data() : null; } catch (e) { console.error(e); }
-}
-function getS3() {
-  const acc = (r2Config.accountId || '').replace('https://', '').replace('http://', '').split('.')[0];
-  return new AWS.S3({
-    endpoint: 'https://' + acc + '.r2.cloudflarestorage.com',
-    accessKeyId: r2Config.accessKey, secretAccessKey: r2Config.secretKey,
-    signatureVersion: 'v4', s3ForcePathStyle: true, region: 'auto', sslEnabled: true
-  });
-}
+/* رابط الـ Worker الذي يستقبل الملفات ويكتبها في R2 */
+const API_URL = "https://comprehensive-university-platform.abyd5372.workers.dev/";
+const R2_PUBLIC_URL = "https://pub-50aba6ec86af4979b1c3e494c77151d6.r2.dev";
+const SIMPLE_MAX = 90 * 1024 * 1024;   /* أكبر من هذا يُرفع مجزّأً */
+const CHUNK = 50 * 1024 * 1024;        /* حجم الجزء */
+async function idToken() { if (!auth.currentUser) throw new Error('انتهت الجلسة، سجّل الدخول من جديد'); return auth.currentUser.getIdToken(); }
 function renderContent(m, tab) {
   const isV = tab === 'lectures', type = isV ? 'video' : 'pdf';
   const btn = el('button', 'abtn ' + (isV ? 'abtn-b' : 'abtn-g'), isV ? '+ رفع فيديو' : '+ رفع ملف');
@@ -792,38 +782,15 @@ async function delLec(it) {
   if (!confirm('حذف «' + it.title + '» نهائياً؟')) return;
   try {
     await deleteDoc(doc(db, 'lectures', it.id));
-    if (it.r2Key && r2Config) { try { await getS3().deleteObject({ Bucket: r2Config.bucketName, Key: it.r2Key }).promise(); } catch (e) { console.warn(e); } }
+    if (it.r2Key) { try { await fetch(API_URL, { method: 'DELETE', headers: { Authorization: 'Bearer ' + await idToken(), 'File-Name': it.r2Key } }); } catch (e) { console.warn(e); } }
     toast('تم الحذف');
   } catch (e) { console.error(e); toast('تعذّر الحذف'); }
 }
-
-/* إعدادات R2 */
-function closeR2() { $('r2Modal').classList.remove('open'); syncScroll(); }
-$('aR2').onclick = async () => {
-  await loadR2();
-  const c = r2Config || {};
-  $('r2Account').value = c.accountId || ''; $('r2Access').value = c.accessKey || ''; $('r2Secret').value = c.secretKey || '';
-  $('r2Bucket').value = c.bucketName || ''; $('r2Domain').value = c.domain || ''; $('r2Err').textContent = '';
-  $('r2Modal').classList.add('open'); syncScroll();
-};
-$('r2Save').onclick = async () => {
-  const conf = {
-    accountId: $('r2Account').value.trim(), accessKey: $('r2Access').value.trim(), secretKey: $('r2Secret').value.trim(),
-    bucketName: $('r2Bucket').value.trim(), domain: $('r2Domain').value.trim().replace(/\/+$/, '')
-  };
-  if (!conf.accountId || !conf.accessKey || !conf.secretKey || !conf.bucketName || !conf.domain) { $('r2Err').textContent = 'جميع الحقول مطلوبة'; return; }
-  try { await setDoc(doc(db, 'settings', 'r2'), conf); r2Config = conf; closeR2(); toast('تم حفظ الإعدادات'); }
-  catch (e) { console.error(e); $('r2Err').textContent = 'تعذّر الحفظ'; }
-};
-$('r2Cancel').onclick = closeR2;
-$('r2Modal').addEventListener('click', e => { if (e.target === $('r2Modal')) closeR2(); });
 
 /* نافذة الرفع */
 let up = null, uploading = false;
 async function openUpload(type) {
   if (!aSel) return;
-  if (!r2Config) await loadR2();
-  if (!r2Config) { toast('اضبط إعدادات R2 أولاً'); $('aR2').click(); return; }
   up = { type, courseId: aSel };
   $('upTitle').textContent = type === 'video' ? 'رفع فيديو جديد' : 'رفع ملف PDF';
   $('upName').value = ''; $('upFile').value = ''; $('upErr').textContent = '';
@@ -833,30 +800,62 @@ async function openUpload(type) {
   setTimeout(() => $('upName').focus(), 50);
 }
 function closeUpload() { if (uploading) return; $('upModal').classList.remove('open'); up = null; syncScroll(); }
-$('upSave').onclick = () => {
+function xhrSend(url, headers, body, onProg) {
+  return new Promise((resolve, reject) => {
+    const x = new XMLHttpRequest();
+    x.open('POST', url);
+    Object.keys(headers).forEach(k => x.setRequestHeader(k, headers[k]));
+    if (onProg) x.upload.onprogress = ev => { if (ev.lengthComputable) onProg(ev.loaded); };
+    x.onload = () => {
+      let j = {}; try { j = JSON.parse(x.responseText); } catch (e) {}
+      if (x.status >= 200 && x.status < 300) resolve(j); else reject(new Error(j.error || j.details || ('HTTP ' + x.status)));
+    };
+    x.onerror = () => reject(new Error('فشل الاتصال بالخادم'));
+    x.send(body);
+  });
+}
+async function uploadToR2(file, onPct) {
+  const safe = file.name.replace(/[^\w.\-]+/g, '_'), type = file.type || 'application/octet-stream';
+  if (file.size <= SIMPLE_MAX) {
+    return xhrSend(API_URL, { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': type }, file, l => onPct(l / file.size * 100));
+  }
+  const c = await xhrSend(API_URL + '?action=create', { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': type }, null);
+  const q = '&key=' + encodeURIComponent(c.key) + '&uploadId=' + encodeURIComponent(c.uploadId);
+  const parts = []; let done = 0;
+  try {
+    for (let n = 1, off = 0; off < file.size; n++, off += CHUNK) {
+      const blob = file.slice(off, Math.min(off + CHUNK, file.size));
+      let tries = 0, p;
+      for (;;) {
+        try {
+          p = await xhrSend(API_URL + '?action=part&n=' + n + q, { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/octet-stream' }, blob, l => onPct((done + l) / file.size * 100));
+          break;
+        } catch (e) { if (++tries >= 3) throw e; }
+      }
+      parts.push({ partNumber: p.partNumber, etag: p.etag }); done += blob.size;
+    }
+    return await xhrSend(API_URL + '?action=complete' + q, { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, JSON.stringify({ parts }));
+  } catch (e) {
+    try { await xhrSend(API_URL + '?action=abort' + q, { Authorization: 'Bearer ' + await idToken() }, null); } catch (e2) {}
+    throw e;
+  }
+}
+$('upSave').onclick = async () => {
   if (!up || uploading) return;
   const title = $('upName').value.trim(), file = $('upFile').files[0];
   if (!title || !file) { $('upErr').textContent = 'اكتب العنوان واختر الملف'; return; }
   $('upErr').textContent = '';
-  const key = Date.now() + '_' + file.name.replace(/[^\w.\-]+/g, '_');
   const cur = up;
+  const fail = msg => { uploading = false; $('upSave').disabled = false; $('upProg').style.display = 'none'; $('upErr').textContent = msg; };
   uploading = true; $('upSave').disabled = true; $('upProg').style.display = 'block'; $('upBar').value = 0;
-  let s3;
-  try { s3 = getS3(); } catch (e) { uploading = false; $('upSave').disabled = false; $('upErr').textContent = 'إعدادات R2 غير صحيحة'; return; }
-  s3.upload({ Bucket: r2Config.bucketName, Key: key, Body: file, ContentType: file.type })
-    .on('httpUploadProgress', ev => { if (ev.total) $('upBar').value = ev.loaded / ev.total * 100; })
-    .send(async err => {
-      if (err) {
-        console.error(err); uploading = false; $('upSave').disabled = false; $('upProg').style.display = 'none';
-        $('upErr').textContent = 'فشل الرفع: ' + err.message; return;
-      }
-      try {
-        await addDoc(collection(db, 'lectures'), { courseId: cur.courseId, type: cur.type, title, url: r2Config.domain + '/' + key, r2Key: key, date: Date.now() });
-        uploading = false; closeUpload(); toast('تم الرفع بنجاح');
-      } catch (e2) {
-        console.error(e2); uploading = false; $('upSave').disabled = false; $('upErr').textContent = 'تم رفع الملف لكن تعذّر حفظ بياناته';
-      }
-    });
+  let res;
+  try { res = await uploadToR2(file, pct => { $('upBar').value = pct; }); }
+  catch (e) { console.error(e); fail('فشل الرفع: ' + e.message); return; }
+  if (!res || !res.key) { fail('رد غير متوقع من الخادم'); return; }
+  try {
+    await addDoc(collection(db, 'lectures'), { courseId: cur.courseId, type: cur.type, title, url: res.url || (R2_PUBLIC_URL + '/' + res.key), r2Key: res.key, date: Date.now() });
+    uploading = false; closeUpload(); toast('تم الرفع بنجاح');
+  } catch (e2) { console.error(e2); fail('تم رفع الملف لكن تعذّر حفظ بياناته'); }
 };
 $('upCancel').onclick = closeUpload;
 $('upModal').addEventListener('click', e => { if (e.target === $('upModal')) closeUpload(); });
@@ -864,7 +863,6 @@ $('upModal').addEventListener('click', e => { if (e.target === $('upModal')) clo
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   if ($('upModal').classList.contains('open')) { closeUpload(); return; }
-  if ($('r2Modal').classList.contains('open')) { closeR2(); return; }
   if ($('nameModal').classList.contains('open')) closeName();
   else if ($('authModal').classList.contains('open')) closeAuth();
   else if ($('admin').classList.contains('open')) closeAdmin();

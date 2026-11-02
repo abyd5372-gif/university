@@ -186,6 +186,10 @@ html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%}
 .qopt.ok{background:#dcfce7;border-color:#16a34a;color:#166534;font-weight:700}
 .qopt.bad{background:#fee2e2;border-color:#dc2626;color:#991b1b;font-weight:700}
 .qres{text-align:center;font-size:1.25rem;font-weight:800;margin:14px 0;color:var(--primary-blue)}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:sp .8s linear infinite;margin-left:6px;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.aibtn:disabled{opacity:.85;cursor:default}
+.aierr{color:#b91c1c;font-size:.85rem;margin-top:8px}
 </style>
 <script>
 /* منع التكبير بالكامل */
@@ -359,6 +363,17 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
   </div>
 </div>
 
+<div class="mov" id="aiInput">
+  <div class="mbox aibox" role="dialog" aria-modal="true" aria-labelledby="aiInTitle">
+    <h3 id="aiInTitle">تحليل المحاضرة</h3>
+    <label class="lbl" for="aiText">الصق نص المحاضرة (أو ملخصها) هنا</label>
+    <textarea class="fld" id="aiText" rows="9" maxlength="60000" placeholder="نص المحاضرة…" style="resize:vertical"></textarea>
+    <p class="merr" id="aiInErr"></p>
+    <div class="mact"><button class="abtn abtn-b" id="aiRunText">تحليل النص</button><button class="abtn abtn-l" id="aiInCancel">إلغاء</button></div>
+    <div class="mact" style="margin-top:8px"><button class="abtn abtn-l" id="aiRunVideo" style="background:#ede9fe;color:#5b21b6">تحليل الفيديو مباشرة (تجريبي — للفيديوهات القصيرة)</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -448,7 +463,7 @@ onSnapshot(query(collection(db, 'structure'), orderBy('createdAt')), snap => {
 
 const toast = m => window.showToast && window.showToast(m);
 function syncScroll() {
-  const any = ['browser', 'admin', 'nameModal', 'authModal', 'upModal', 'aiModal'].some(i => $(i).classList.contains('open'));
+  const any = ['browser', 'admin', 'nameModal', 'authModal', 'upModal', 'aiModal', 'aiInput'].some(i => $(i).classList.contains('open'));
   document.body.style.overflow = any ? 'hidden' : '';
 }
 
@@ -753,6 +768,7 @@ async function delNode(n) {
 
 /* ---------- محتوى المادة: محاضرات وملفات ---------- */
 let lects = [], watchedId = null, unsubLects = null;
+const aiPrev = {};
 function watchCourse(id) {
   if (id === watchedId) return;
   if (unsubLects) { unsubLects(); unsubLects = null; }
@@ -760,6 +776,10 @@ function watchCourse(id) {
   if (!id) return;
   unsubLects = onSnapshot(query(collection(db, 'lectures'), where('courseId', '==', id)), snap => {
     lects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    lects.forEach(x => {
+      if (aiPrev[x.id] === 'processing' && x.aiStatus === 'done' && !aiBusy) toast('اكتمل تحليل «' + (x.title || '') + '»');
+      aiPrev[x.id] = x.aiStatus;
+    });
     renderAdmin();
   }, err => { console.error(err); });
 }
@@ -789,15 +809,19 @@ function renderContent(m, tab) {
     d.onclick = () => delLec(it);
     act.append(e, d);
     if (isV) {
-      const ai = el('button', 'abtn aibtn', it.aiData ? 'عرض الملخص والكويز' : 'تلخيص وكويز AI'); ai.type = 'button';
-      ai.onclick = () => analyzeVideo(it);
+      const proc = it.aiStatus === 'processing' && (Date.now() - (it.aiStartedAt || 0)) < 5 * 60 * 1000;
+      const ai = el('button', 'abtn aibtn'); ai.type = 'button';
+      if (proc) { ai.disabled = true; ai.append(el('span', 'spin'), document.createTextNode('جاري التحليل…')); }
+      else { ai.textContent = it.aiData ? 'عرض الملخص والكويز' : 'تلخيص وكويز AI'; ai.onclick = () => analyzeVideo(it); }
       act.prepend(ai);
+      if (!proc && it.aiStatus === 'error' && it.aiError) c.dataset.aierr = it.aiError;
     }
     if (isV) {
       top.append(act); c.append(top);
       const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.src = it.url;
       v.style.cssText = 'width:100%;max-height:360px;background:#000;border-radius:8px;margin-top:10px;display:block';
       c.append(v);
+      if (c.dataset.aierr) c.append(el('p', 'aierr', '⚠ فشل آخر تحليل: ' + c.dataset.aierr));
     } else {
       const a = el('a', 'abtn abtn-b', 'تحميل'); a.href = it.url; a.target = '_blank'; a.rel = 'noopener'; a.style.textDecoration = 'none';
       const side = el('div'); side.style.cssText = 'display:flex;align-items:center;gap:8px;flex:none'; side.append(a, act);
@@ -890,7 +914,6 @@ $('upCancel').onclick = closeUpload;
 $('upModal').addEventListener('click', e => { if (e.target === $('upModal')) closeUpload(); });
 
 /* ---------- تحليل المحاضرة بالذكاء الاصطناعي ---------- */
-const DUMMY_TEXT = 'علم التشفير هو العلم الذي يُعنى بحماية المعلومات وتأمين الاتصالات من الاطلاع عليها أو تعديلها من قبل أطراف غير مصرّح لها. ينقسم التشفير إلى نوعين رئيسيين: التشفير المتماثل الذي يستخدم مفتاحاً واحداً للتشفير وفك التشفير، ومن أشهر خوارزمياته AES، والتشفير غير المتماثل الذي يستخدم زوجاً من المفاتيح أحدهما عام والآخر خاص، ومن أشهر خوارزمياته RSA. تُستخدم دوال التجزئة مثل SHA-256 لتوليد بصمة ثابتة الطول للبيانات بحيث يستحيل عملياً استرجاع البيانات الأصلية منها، وتُستخدم للتحقق من سلامة الملفات وتخزين كلمات المرور. أما التوقيع الرقمي فيعتمد على المفتاح الخاص للتوقيع وعلى المفتاح العام للتحقق، ويضمن صحة المصدر وعدم إنكار المرسل لرسالته. وتقوم بروتوكولات مثل TLS بدمج هذه التقنيات لتأمين التصفح على الإنترنت، حيث يتم تبادل مفتاح الجلسة بالتشفير غير المتماثل ثم تُشفَّر البيانات بالتشفير المتماثل لسرعته. ومن أهم مبادئ أمن المعلومات السرية والسلامة والتوافر، ويُعد اختيار طول مفتاح مناسب وإدارته بشكل آمن من أهم عوامل نجاح أي نظام تشفير.';
 let aiCur = null, aiBusy = false;
 function showAI(it, data) {
   aiCur = it;
@@ -933,24 +956,50 @@ function gradeQuiz() {
   const sc = $('aiScore'); sc.textContent = 'حصلت على ' + score + '/' + quiz.length; sc.style.display = '';
   $('aiSubmit').style.display = 'none'; $('aiRetry').style.display = '';
 }
-async function analyzeVideo(it, force) {
+function analyzeVideo(it, force) {
   if (aiBusy) return;
   if (it.aiData && !force) { aiCur = { ...it, _data: it.aiData }; showAI(aiCur, it.aiData); return; }
-  aiBusy = true; toast('جاري التحليل...');
+  aiInItem = it; $('aiText').value = ''; $('aiInErr').textContent = '';
+  $('aiRunVideo').style.display = it.r2Key ? '' : 'none';
+  $('aiInput').classList.add('open'); syncScroll();
+  setTimeout(() => $('aiText').focus(), 50);
+}
+async function runAnalysis(it, payload) {
+  if (aiBusy) return;
+  aiBusy = true;
+  try { await updateDoc(doc(db, 'lectures', it.id), { aiStatus: 'processing', aiStartedAt: Date.now(), aiError: '' }); } catch (e) { console.warn(e); }
+  toast('بدأ التحليل — يمكنك التنقل أو إغلاق الصفحة وسيُحفظ تلقائياً');
   try {
     const res = await fetch(API_URL + '?action=analyze', {
       method: 'POST',
       headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' },
-      body: JSON.stringify(it.r2Key ? { key: it.r2Key } : { text: DUMMY_TEXT })
+      body: JSON.stringify({ ...payload, lectureId: it.id })
     });
     let j = {}; try { j = await res.json(); } catch (e) {}
     if (!res.ok || !j.success || !j.data) throw new Error((j.error || 'HTTP ' + res.status) + (j.details ? ' — ' + j.details : ''));
     const data = { summary: String(j.data.summary || ''), quiz: Array.isArray(j.data.quiz) ? j.data.quiz : [] };
-    await updateDoc(doc(db, 'lectures', it.id), { aiData: data });
-    aiCur = { ...it, aiData: data, _data: data }; showAI(aiCur, data);
-  } catch (e) { console.error(e); alert('فشل التحليل:\n' + e.message); }
+    try { await updateDoc(doc(db, 'lectures', it.id), { aiData: data, aiStatus: 'done', aiError: '' }); } catch (e) { console.warn(e); }
+    aiCur = { ...it, aiData: data, _data: data };
+    if ($('admin').classList.contains('open') && aSel === it.courseId && aTab === 'lectures') showAI(aiCur, data);
+    else toast('اكتمل تحليل «' + (it.title || '') + '»');
+  } catch (e) {
+    console.error(e);
+    const msg = e.message === 'Failed to fetch' ? 'انقطع الاتصال بالخادم. إن كنت قد أغلقت الصفحة فقد يكون التحليل ما زال يعمل، وإلا جرّب لصق نص المحاضرة بدل الفيديو.' : e.message;
+    try { await updateDoc(doc(db, 'lectures', it.id), { aiStatus: 'error', aiError: msg.slice(0, 300) }); } catch (e2) {}
+    alert('فشل التحليل:\n' + msg);
+  }
   aiBusy = false;
 }
+let aiInItem = null;
+function closeAIInput() { $('aiInput').classList.remove('open'); syncScroll(); }
+$('aiRunText').onclick = () => {
+  const t = $('aiText').value.trim();
+  if (t.length < 50) { $('aiInErr').textContent = 'الصق نصاً أطول (50 حرفاً على الأقل)'; return; }
+  const it = aiInItem; closeAIInput(); runAnalysis(it, { text: t });
+};
+$('aiRunVideo').onclick = () => { const it = aiInItem; closeAIInput(); runAnalysis(it, { key: it.r2Key }); };
+$('aiInCancel').onclick = closeAIInput;
+$('aiInput').addEventListener('click', e => { if (e.target === $('aiInput')) closeAIInput(); });
 function closeAI() { $('aiModal').classList.remove('open'); syncScroll(); }
 $('aiSubmit').onclick = gradeQuiz;
 $('aiRetry').onclick = () => renderQuiz(aiCur._data.quiz || []);
@@ -960,6 +1009,7 @@ $('aiModal').addEventListener('click', e => { if (e.target === $('aiModal')) clo
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
+  if ($('aiInput').classList.contains('open')) { closeAIInput(); return; }
   if ($('aiModal').classList.contains('open')) { closeAI(); return; }
   if ($('upModal').classList.contains('open')) { closeUpload(); return; }
   if ($('nameModal').classList.contains('open')) closeName();

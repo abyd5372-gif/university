@@ -190,6 +190,81 @@ html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%}
 @keyframes sp{to{transform:rotate(360deg)}}
 .aibtn:disabled{opacity:.85;cursor:default}
 .aierr{color:#b91c1c;font-size:.85rem;margin-top:8px}
+/* ===== صفحات داخلية بدل النافذة ===== */
+.hero{transition:height .25s}
+.hero.compact{height:150px}
+.hero.compact::before{background:linear-gradient(to left,rgba(255,255,255,.96) 0%,rgba(255,255,255,.72) 60%,rgba(255,255,255,.3) 100%)}
+.hc{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.hc h1{font-size:1.8rem;font-weight:800}.hc p{color:#333;font-weight:500}
+.hbtn{background:#fff;border:1px solid #cfd8e0;border-radius:30px;padding:8px 20px;font-family:inherit;font-weight:700;cursor:pointer;color:var(--primary-blue)}
+.pageview{flex:1;background:#f7fafc;padding:26px 0 50px}
+.pgcr{border:1px solid #eaeaea;border-radius:12px;margin-bottom:20px;background:#fff}
+.lcard{display:flex;align-items:center;gap:14px;width:100%;text-align:right;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;font-family:inherit;color:inherit;cursor:pointer;transition:.2s}
+.lcard:hover{border-color:var(--primary-blue);box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.lcard .t-ic svg{width:34px;height:34px;color:var(--footer-green)}
+.lcard b{display:block;font-size:1.1rem}.lcard small{color:var(--muted)}
+.vtitle{font-size:1.5rem;font-weight:800;margin-bottom:14px}
+.vplayer{width:100%;max-height:520px;background:#000;border-radius:12px;display:block;margin-bottom:18px}
+.vpanel{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;min-height:140px}
+.sumbox{line-height:2.1}
+.sh{font-size:1.2rem;font-weight:800;color:var(--primary-blue);margin:18px 0 6px}
+.sp2{margin:0 0 6px}.sp{height:.7em}
+.sul{list-style:disc;padding-right:24px;margin-bottom:6px}
+.att{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;background:#f8fafc}
+.chip{display:inline-block;font-size:.8rem;font-weight:700;border-radius:20px;padding:2px 10px;background:#e2e8f0;color:#334155}
+.chip.ok{background:#dcfce7;color:#166534}.chip.pr{background:#fef3c7;color:#92400e}.chip.er{background:#fee2e2;color:#991b1b}
+.taskbar{position:fixed;right:12px;bottom:12px;width:min(380px,92vw);max-height:50vh;overflow:auto;background:#fff;border:1px solid #cbd5e1;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:55;padding:10px 12px;font-size:.9rem}
+.taskbar h5{font-weight:800;margin-bottom:6px}
+.trow{border-top:1px solid #eee;padding:8px 0}.trow progress{width:100%;height:8px}
+.trow .tb{display:flex;gap:6px;margin-top:6px}.trow .abtn{padding:3px 12px;font-size:.85rem}
+
+/* ===== تكبير ===== */
+.pageview .bgrid{grid-template-columns:repeat(3,1fr);gap:20px}
+.pageview .bitem{padding:34px 16px;min-height:200px}
+.pageview .bitem svg{width:64px;height:64px;margin-bottom:14px}
+.pageview .bitem h4{font-size:1.5rem;margin-bottom:8px}
+.pageview .bitem span{font-size:1.1rem}
+.pageview .btitle{font-size:1.6rem}
+.pageview .crumb{font-size:1.1rem}
+.lcard{padding:26px 28px;gap:20px;min-height:100px}
+.lcard .t-ic svg{width:52px;height:52px}
+.lcard b{font-size:1.45rem;margin-bottom:4px}.lcard small{font-size:1.1rem}
+.vtitle{font-size:1.9rem}
+.ctab{font-size:1.25rem;padding:14px 22px}
+.vpanel{padding:28px}
+.sumbox{font-size:1.35rem;line-height:2.2}
+.sh{font-size:1.75rem;margin:30px 0 10px;padding-bottom:6px;border-bottom:2px solid #e2e8f0}
+.sh2{font-size:1.45rem;font-weight:800;color:#0f3d5e;margin:22px 0 6px}
+.sp2{margin:0 0 10px}.sp2.ind{padding-right:14px}
+.qcard{padding:20px;margin-bottom:18px}
+.qcard h5{font-size:1.45rem;line-height:2}
+.qopt{font-size:1.3rem;padding:14px 16px;gap:12px;margin-bottom:10px}
+.qopt input{width:22px;height:22px}
+.qres{font-size:1.6rem}
+.vpanel .abtn,.vpanel .mact .abtn{font-size:1.2rem;padding:12px 22px}
+.att{font-size:1.15rem}
+.m-card{font-size:1.15rem}
+/* ===== واجهات الانضمام والإدارة والتفاعل ===== */
+.aview{flex:1;overflow-y:auto;padding:28px}
+.emo{font-size:3.4rem;line-height:1;margin-bottom:12px;display:block}
+.badge{display:inline-block;background:#dc2626;color:#fff;border-radius:20px;padding:3px 14px;font-size:1.05rem;margin-top:8px}
+.jform .lbl{font-size:1.3rem;font-weight:700;margin:16px 0 6px;display:block}
+.jform .fld{font-size:1.35rem;padding:14px 16px;width:100%}
+.jform .btitle{font-size:1.9rem;margin-bottom:16px}
+.jbox{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:22px 24px;margin-bottom:20px}
+.jform .bitem{padding:36px 18px}.jform .bitem h4{font-size:1.6rem}.jform .bitem span{font-size:1.15rem}
+.aview .att{font-size:1.25rem;display:block;padding:20px;background:#fff;margin-bottom:14px;border-radius:12px}
+.aview .abtn{font-size:1.2rem;padding:11px 24px}
+.aview .sh{font-size:1.8rem}
+.rx{display:flex;gap:12px;margin:-6px 0 18px}
+.rxb{font-family:inherit;font-size:1.4rem;border:1px solid #cbd5e1;background:#fff;border-radius:30px;padding:9px 26px;cursor:pointer}
+.rxb.on{background:#dbeafe;border-color:#2563eb}
+.stars{color:#f59e0b;letter-spacing:2px}
+.rate{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;margin-bottom:22px;font-size:1.3rem}
+.rate .st{font-size:2.6rem;cursor:pointer;color:#cbd5e1;background:none;border:0;padding:0 3px}.rate .st.on{color:#f59e0b}
+.cmlist{max-height:420px;overflow-y:auto;margin-bottom:14px}
+.cm{border-bottom:1px solid #eee;padding:12px 0;font-size:1.3rem}.cm small{color:#64748b;display:block;font-size:1rem}
+.cmbox .fld{font-size:1.3rem}
 </style>
 <script>
 /* منع التكبير بالكامل */
@@ -208,7 +283,7 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
       <span>المنصة الجامعية الشاملة</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">الرئيسية</a></li>
+      <li><a href="#" onclick="goHome();return false">الرئيسية</a></li>
       <li><a onclick="openSection('universities')">تصفح الجامعات</a></li>
       <li><a onclick="openSection('join')">انضم إلينا</a></li>
       <li><a class="auth-link" onclick="openAuth()">التسجيل</a></li>
@@ -222,13 +297,13 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 <div class="overlay" id="overlay" onclick="toggleMenu(false)"></div>
 <nav class="side" id="side" aria-label="القائمة الجانبية">
   <h4>المنصة الجامعية الشاملة</h4>
-  <a onclick="toggleMenu(false)">الرئيسية</a>
+  <a onclick="goHome()">الرئيسية</a>
   <a onclick="openSection('universities')">تصفح الجامعات</a>
   <a onclick="openSection('join')">انضم إلينا</a>
   <a class="auth-link" style="max-width:none" onclick="toggleMenu(false);openAuth()">التسجيل</a>
 </nav>
 
-<section class="hero">
+<section class="hero" id="heroSec">
 <svg class="hero-scene" viewBox="0 0 1600 420" preserveAspectRatio="xMinYMax slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
 <defs>
 <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9f0f5"/><stop offset="1" stop-color="#c6d4de"/></linearGradient>
@@ -256,14 +331,19 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 <ellipse cx="610" cy="392" rx="150" ry="9" fill="#000" opacity=".22" filter="url(#fBlur3)"/><path d="M484 386C524 372 570 370 610 380C650 370 696 372 736 386V394C696 380 650 378 610 388C570 378 524 380 484 394Z" fill="#e3d6ba"/><path d="M484 372C524 354 570 352 610 362V382C570 372 524 374 484 388Z" fill="#fbf6ea" stroke="#d9ccb0" stroke-width="1.2"/><path d="M736 372C696 354 650 352 610 362V382C650 372 696 374 736 388Z" fill="#fbf6ea" stroke="#d9ccb0" stroke-width="1.2"/><path d="M498 382.0C532 366.0 572 366.0 600 372.0" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M620 372.0C648 366.0 688 366.0 722 382.0" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M498 387.2C532 371.2 572 371.2 600 377.2" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M620 377.2C648 371.2 688 371.2 722 387.2" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M498 392.4C532 376.4 572 376.4 600 382.4" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M620 382.4C648 376.4 688 376.4 722 392.4" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M498 397.6C532 381.6 572 381.6 600 387.6" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M620 387.6C648 381.6 688 381.6 722 397.6" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M498 402.8C532 386.8 572 386.8 600 392.8" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M620 392.8C648 386.8 688 386.8 722 402.8" stroke="#b9ac91" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M610 362V383" stroke="#c9bb9a" stroke-width="1.6"/>
 </svg>
   <div class="container">
-    <div class="hero-content">
+    <div class="hero-content" id="heroHome">
       <h1 class="hero-title">رحلتك الجامعية <span>تبدأ من هنا</span></h1>
       <p class="hero-subtitle">مواد دراسية وجامعات ومجتمع طلابي في منصة واحدة تجمع لك كل ما تحتاجه.</p>
       <a class="btn btn-primary" href="#programs">ابدأ الآن</a>
     </div>
+    <div class="hc" id="heroCompact" style="display:none">
+      <div><h1>تصفح الجامعات</h1><p>اختر الجامعة ثم الكلية والتخصص والمادة للوصول إلى المحاضرات.</p></div>
+      <button type="button" class="hbtn" id="heroBack">الرجوع للرئيسية</button>
+    </div>
   </div>
 </section>
 
+<div id="homeView">
 <section class="programs" id="programs">
   <div class="container">
     <h2 class="section-title">برامجنا التعليمية</h2>
@@ -287,32 +367,29 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
     <div class="admin-wrap"><button type="button" class="admin-btn" id="adminBtn" style="display:none" onclick="openAdmin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>التحكم والإعدادات</button></div>
   </div>
 </section>
+</div>
+<section class="pageview" id="pageView" style="display:none"></section>
 
 <footer class="footer"><div class="container">© المنصة الجامعية الشاملة — جميع الحقوق محفوظة</div></footer>
 
 
-<div class="bov" id="browser" role="dialog" aria-modal="true" aria-labelledby="bHead">
-  <div class="bbox">
-    <div class="bhead"><span id="bHead">تصفح الجامعات</span><button class="bclose" id="bClose" aria-label="إغلاق">×</button></div>
-    <div class="bcrumbs" id="bCrumbs"></div>
-    <div class="bbody" id="bBody"></div>
-  </div>
-</div>
-
 <div class="aov" id="admin" role="dialog" aria-modal="true" aria-labelledby="aHead">
-  <div class="ahead"><span id="aHead">⚙ التحكم والإعدادات</span><div style="display:flex;gap:10px;align-items:center"><button class="bclose" id="aClose" aria-label="إغلاق">×</button></div></div>
-  <div class="abody">
+  <div class="ahead"><span id="aHead">⚙ التحكم والإعدادات</span><div style="display:flex;gap:10px;align-items:center"><button class="abtn abtn-l" id="aBack" style="display:none">→ رجوع</button><button class="bclose" id="aClose" aria-label="إغلاق">×</button></div></div>
+  <div class="aview" id="aHome"></div>
+  <div class="abody" id="aStruct" style="display:none">
     <aside class="aside">
       <div class="aside-h"><span>الجامعات</span><button class="abtn abtn-g" id="aAddUni" style="padding:4px 12px;font-size:.85rem">+ جامعة</button></div>
       <div id="aTree"></div>
     </aside>
     <main class="amain" id="aMain"></main>
   </div>
+  <div class="aview" id="aReviewBox" style="display:none"></div>
 </div>
 
 <div class="mov" id="nameModal">
   <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="nTitle">
     <h3 id="nTitle">إضافة</h3>
+    <label class="lbl" id="nLbl" for="nInput">الاسم</label>
     <input class="fld" id="nInput" autocomplete="off" maxlength="120">
     <p class="merr" id="nErr"></p>
     <div class="mact"><button class="abtn abtn-g" id="nSave">حفظ</button><button class="abtn abtn-l" id="nCancel">إلغاء</button></div>
@@ -322,19 +399,14 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 <div class="mov" id="authModal">
   <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <h3 id="authTitle">التسجيل</h3>
-    <div id="authNameWrap">
-      <label class="lbl" for="authName">الاسم</label>
-      <input class="fld" id="authName" autocomplete="name" maxlength="60">
-    </div>
-    <label class="lbl" for="authRole">نوع الحساب</label>
-    <select class="fld" id="authRole"><option value="student">طالب</option><option value="admin">مدير</option></select>
-    <div id="authCodeWrap" style="display:none">
+    <div id="authCodeWrap">
       <label class="lbl" for="authEmail">البريد الإلكتروني</label>
       <input class="fld" type="email" id="authEmail" autocomplete="username" dir="ltr">
       <label class="lbl" for="authCode">كلمة المرور</label>
       <input class="fld" type="password" id="authCode" autocomplete="current-password" dir="ltr">
     </div>
     <p class="merr" id="authErr"></p>
+    <button class="abtn abtn-l" id="authGoogle" type="button" style="width:100%;margin:6px 0 12px;font-size:1.05rem">🔵 الدخول بحساب Google (للطلاب)</button>
     <div class="mact"><button class="abtn abtn-b" id="authSave">تسجيل</button><button class="abtn abtn-l" id="authCancel">إلغاء</button></div>
   </div>
 </div>
@@ -342,37 +414,18 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 <div class="mov" id="upModal">
   <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="upTitle">
     <h3 id="upTitle">رفع</h3>
-    <input class="fld" id="upName" placeholder="العنوان (مثلاً: المحاضرة 1)" autocomplete="off" maxlength="120">
+    <input class="fld" id="upName" autocomplete="off" maxlength="120">
+    <div id="upLinkWrap" style="display:none"><label class="lbl" for="upLink">ربط الملف بمحاضرة</label><select class="fld" id="upLink"></select></div>
     <label class="lbl" for="upFile">اختر الملف</label>
     <input class="fld" type="file" id="upFile">
-    <div id="upProg" style="display:none;margin-bottom:12px"><progress id="upBar" value="0" max="100" style="width:100%"></progress></div>
+    <p id="upNote" style="font-size:.85rem;color:#64748b;margin-bottom:10px"></p>
     <p class="merr" id="upErr"></p>
     <div class="mact"><button class="abtn abtn-g" id="upSave">بدء الرفع</button><button class="abtn abtn-l" id="upCancel">إلغاء</button></div>
   </div>
 </div>
 
-<div class="mov" id="aiModal">
-  <div class="mbox aibox" role="dialog" aria-modal="true" aria-labelledby="aiTitle">
-    <h3 id="aiTitle">تلخيص وكويز</h3>
-    <div class="aisec"><h4>الملخص</h4><div class="aisum" id="aiSummary"></div></div>
-    <div class="aisec"><h4>الكويز</h4><div id="aiQuiz"></div>
-      <div class="qres" id="aiScore" style="display:none"></div>
-      <div class="mact"><button class="abtn abtn-b" id="aiSubmit">إرسال الإجابات</button><button class="abtn abtn-g" id="aiRetry" style="display:none">إعادة المحاولة</button></div>
-    </div>
-    <div class="mact"><button class="abtn abtn-l" id="aiRe">إعادة التحليل</button><button class="abtn abtn-l" id="aiClose">إغلاق</button></div>
-  </div>
-</div>
-
-<div class="mov" id="aiInput">
-  <div class="mbox aibox" role="dialog" aria-modal="true" aria-labelledby="aiInTitle">
-    <h3 id="aiInTitle">تحليل المحاضرة</h3>
-    <label class="lbl" for="aiText">الصق نص المحاضرة (أو ملخصها) هنا</label>
-    <textarea class="fld" id="aiText" rows="9" maxlength="60000" placeholder="نص المحاضرة…" style="resize:vertical"></textarea>
-    <p class="merr" id="aiInErr"></p>
-    <div class="mact"><button class="abtn abtn-b" id="aiRunText">تحليل النص</button><button class="abtn abtn-l" id="aiInCancel">إلغاء</button></div>
-    <div class="mact" style="margin-top:8px"><button class="abtn abtn-l" id="aiRunVideo" style="background:#ede9fe;color:#5b21b6">تحليل الفيديو مباشرة (تجريبي — للفيديوهات القصيرة)</button></div>
-  </div>
-</div>
+<div class="mov" id="mailModal"><div class="mbox"><h3>✉ اختر بريدك الإلكتروني</h3><p style="font-size:1.05rem;color:#64748b;margin-bottom:10px">يُطلب مرة واحدة فقط ويُحفظ على جهازك، ولن تحتاج لتسجيل دخول.</p><input class="fld" type="email" id="mailInput" dir="ltr" placeholder="name@example.com"><p class="merr" id="mailErr"></p><div class="mact"><button class="abtn abtn-b" id="mailSave">حفظ ومتابعة</button><button class="abtn abtn-l" id="mailCancel">إلغاء</button></div></div></div>
+<div class="taskbar" id="taskBar" style="display:none"></div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -387,23 +440,21 @@ function toggleMenu(open){
   document.getElementById('side').classList.toggle('open',open);
   document.getElementById('overlay').classList.toggle('open',open);
 }
-/* نقطة الدخول لنوافذ التفاصيل — تُبنى في المرحلة التالية */
 function openSection(key){
   toggleMenu(false);
-  if(key==='universities'||key==='subjects'){
-    if(window.openBrowser)window.openBrowser();else showToast('جاري التحميل…');
-    return;
-  }
+  if(key==='universities'||key==='subjects'){ if(window.navBrowse)window.navBrowse();else showToast('جاري التحميل…'); return; }
+  if(key==='join'){ if(window.navJoin)window.navJoin();else showToast('جاري التحميل…'); return; }
   showToast(SECTIONS[key]+' — قريباً');
 }
+function goHome(){ toggleMenu(false); if(window.navHome)window.navHome();else window.scrollTo({top:0,behavior:'smooth'}); }
 document.querySelectorAll('.clickable-card').forEach(function(c){
   c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();c.click();}});
 });
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, getDoc, setDoc, deleteDoc, updateDoc, writeBatch, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, getDoc, setDoc, deleteDoc, updateDoc, writeBatch, query, where, orderBy, onSnapshot , getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCtsRMlKA2YIOhMX_RD5hCXm-XAlNWBrjM",
@@ -427,7 +478,9 @@ const ICON = {
   uni: svg('<path d="M24 5 4 15v3h40v-3L24 5Z"/><path d="M9 22v14M19 22v14M29 22v14M39 22v14"/><path d="M5 40h38M3 44h42"/>'),
   col: svg('<path d="M8 42V10l16-5 16 5v32"/><path d="M4 42h40"/><path d="M16 16h4M28 16h4M16 24h4M28 24h4M16 32h4M28 32h4"/>'),
   maj: svg('<path d="M24 8 2 19l22 11 22-11L24 8Z"/><path d="M11 25v8c0 3 6 7 13 7s13-4 13-7v-8"/><path d="M44 20v12"/>'),
-  cou: svg('<path d="M24 12c-4-3-10-4-18-4v28c8 0 14 1 18 4 4-3 10-4 18-4V8c-8 0-14 1-18 4Z"/><path d="M24 12v28"/>')
+  cou: svg('<path d="M24 12c-4-3-10-4-18-4v28c8 0 14 1 18 4 4-3 10-4 18-4V8c-8 0-14 1-18 4Z"/><path d="M24 12v28"/>'),
+  exp: svg('<circle cx="24" cy="24" r="18"/><path d="M20 16l13 8-13 8V16Z"/>'),
+  pdf: svg('<path d="M12 4h17l9 9v31H12V4Z"/><path d="M29 4v9h9"/><path d="M18 26h14M18 33h14"/>')
 };
 const ICO_EDIT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="M13.5 6.5l4 4"/></svg>';
 const ICO_DEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>';
@@ -436,188 +489,441 @@ const L = {
   uni: { one: 'جامعة', many: 'الجامعات', child: 'col' },
   col: { one: 'كلية', many: 'الكليات', child: 'maj' },
   maj: { one: 'تخصص', many: 'التخصصات', child: 'cou' },
-  cou: { one: 'مادة', many: 'المواد', child: null },
+  cou: { one: 'مادة', many: 'المواد', child: 'exp' },
+  exp: { one: 'شرح', many: 'الشروحات', child: null },
   lec: { one: 'العنوان', many: '', child: null }
 };
+const ORD = ['الأولى','الثانية','الثالثة','الرابعة','الخامسة','السادسة','السابعة','الثامنة','التاسعة','العاشرة','الحادية عشرة','الثانية عشرة','الثالثة عشرة','الرابعة عشرة','الخامسة عشرة','السادسة عشرة','السابعة عشرة','الثامنة عشرة','التاسعة عشرة','العشرون'];
+const vids = list => list.filter(x => x.type === 'video').sort((a, b) => (a.date || 0) - (b.date || 0));
+const ordOf = (it, list) => { const i = vids(list).findIndex(x => x.id === it.id); return i < 0 ? 'الجديدة' : (ORD[i] || 'رقم ' + (i + 1)); };
+const lecLabel = (it, list) => 'المحاضرة ' + ordOf(it, list) + ': ' + (it.title || '');
+const dn = n => n.type === 'exp' && !n.legacy ? (n.ownerKey ? 'الشارح: ' : 'شرح: ') + n.name : n.name;
+const msg = t => el('p', 'bempty', t);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* ---------- البيانات ---------- */
 let nodes = [], ready = false, loadErr = false;
-const byId = id => nodes.find(n => n.id === id);
-const kids = (pid, type) => nodes.filter(n => n.type === type && (n.parentId || null) === pid);
-const allKids = pid => nodes.filter(n => n.parentId === pid);
-function desc(id) {
-  const r = [], st = [id];
-  while (st.length) { const x = st.pop(); allKids(x).forEach(n => { r.push(n.id); st.push(n.id); }); }
-  return r;
-}
-function pathOf(id) {
-  const p = []; let n = byId(id);
-  while (n) { p.unshift(n); n = n.parentId ? byId(n.parentId) : null; }
-  return p;
-}
+const LEG = 'legacy:';   /* محاضرات قديمة مرتبطة بالمادة مباشرة (قبل الشروحات) */
+const realId = id => String(id).startsWith(LEG) ? String(id).slice(LEG.length) : id;
+const byId = id => {
+  if (typeof id === 'string' && id.startsWith(LEG)) { const c = nodes.find(n => n.id === id.slice(LEG.length)); return c ? { id, type: 'exp', name: 'محاضرات المادة', parentId: c.id, legacy: true } : undefined; }
+  return nodes.find(n => n.id === id);
+};
+const vis = n => !n.status || n.status === 'approved' || isAdmin() || (isStaff() && !!n.ownerKey && n.ownerKey === myKey());
+const kids = (pid, type) => nodes.filter(n => n.type === type && (n.parentId || null) === pid && vis(n));
+const allKids = pid => nodes.filter(n => n.parentId === pid && vis(n));
+function desc(id) { const r = [], st = [id]; while (st.length) { const x = st.pop(); allKids(x).forEach(n => { r.push(n.id); st.push(n.id); }); } return r; }
+function pathOf(id) { const p = []; let n = byId(id); while (n) { p.unshift(n); n = n.parentId ? byId(n.parentId) : null; } return p; }
 onSnapshot(query(collection(db, 'structure'), orderBy('createdAt')), snap => {
   nodes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  ready = true; loadErr = false;
-  renderBrowser(); renderAdmin();
-}, err => { console.error(err); loadErr = true; renderBrowser(); renderAdmin(); });
+  ready = true; loadErr = false; render(); renderAdmin();
+}, err => { console.error(err); loadErr = true; render(); renderAdmin(); });
+
+function makeWatcher(onData) {
+  let id = null, unsub = null, data = [], loaded = false;
+  return {
+    get id() { return id; }, get data() { return data; }, get loaded() { return loaded; },
+    set(nid) {
+      if (nid === id) return;
+      if (unsub) { unsub(); unsub = null; }
+      id = nid; data = []; loaded = false;
+      if (!id) return;
+      unsub = onSnapshot(query(collection(db, 'lectures'), where('courseId', '==', id)),
+        snap => { data = snap.docs.map(d => ({ id: d.id, ...d.data() })); loaded = true; onData(); },
+        err => { console.error(err); loaded = true; onData(); });
+    }
+  };
+}
+const pubW = makeWatcher(() => { if (route.v !== 'home') renderPage(); });
+const admW = makeWatcher(() => renderAdmin());
 
 const toast = m => window.showToast && window.showToast(m);
 function syncScroll() {
-  const any = ['browser', 'admin', 'nameModal', 'authModal', 'upModal', 'aiModal', 'aiInput'].some(i => $(i).classList.contains('open'));
+  const any = ['admin', 'nameModal', 'authModal', 'upModal', 'mailModal'].some(i => $(i).classList.contains('open'));
   document.body.style.overflow = any ? 'hidden' : '';
 }
 
-/* ---------- نافذة تصفح الجامعات ---------- */
-let bPath = [];
-window.openBrowser = () => { bPath = []; $('browser').classList.add('open'); syncScroll(); renderBrowser(); };
-const closeBrowser = () => { $('browser').classList.remove('open'); syncScroll(); };
-function renderBrowser() {
-  if (!$('browser').classList.contains('open')) return;
-  for (let i = 0; i < bPath.length; i++) if (!byId(bPath[i])) { bPath = bPath.slice(0, i); break; }
-  const cur = bPath.length ? byId(bPath[bPath.length - 1]) : null;
-  const cr = $('bCrumbs'); cr.textContent = '';
-  if (bPath.length) {
-    const back = el('button', 'crumb crumb-back', '→ رجوع');
-    back.onclick = () => { bPath.pop(); renderBrowser(); };
-    cr.append(back);
-  }
-  const root = el('button', 'crumb' + (bPath.length ? '' : ' cur'), 'الجامعات');
-  root.onclick = () => { bPath = []; renderBrowser(); };
-  cr.append(root);
-  bPath.forEach((id, i) => {
-    cr.append(el('span', 'crumb-sep', '‹'));
-    const b = el('button', 'crumb' + (i === bPath.length - 1 ? ' cur' : ''), byId(id).name);
-    b.onclick = () => { bPath = bPath.slice(0, i + 1); renderBrowser(); };
-    cr.append(b);
+/* ---------- التنقل (صفحات داخل الموقع بدل النافذة العائمة) ---------- */
+let route = { v: 'home', path: [] };
+try { history.replaceState(route, ''); } catch (e) {}
+function go(r, push = true) { route = r; if (push) { try { history.pushState(r, ''); } catch (e) {} } render(); window.scrollTo(0, 0); }
+window.addEventListener('popstate', e => { route = e.state || { v: 'home', path: [] }; render(); });
+window.navJoin = () => { J.step = 'home'; J.built = null; go({ v: 'join', path: [] }); };
+window.navBrowse = () => go({ v: 'browse', path: [] });
+window.navHome = () => { if (route.v === 'home') window.scrollTo({ top: 0, behavior: 'smooth' }); else go({ v: 'home', path: [] }); };
+function goBack() {
+  const p = route.path || [];
+  if (route.v === 'join' && J.step !== 'home') { J.step = J.prev[J.step] || 'home'; renderPage(); return; }
+  if (route.v === 'video') go({ v: 'browse', path: p });
+  else if (p.length) go({ v: 'browse', path: p.slice(0, -1) });
+  else go({ v: 'home', path: [] });
+}
+$('heroBack').onclick = goBack;
+function pubTarget() {
+  const last = (route.path || [])[(route.path || []).length - 1], n = last && byId(last);
+  if (!n) return null;
+  return n.type === 'cou' ? n.id : n.type === 'exp' ? realId(n.id) : null;
+}
+function render() {
+  const home = route.v === 'home';
+  $('homeView').style.display = home ? '' : 'none';
+  $('pageView').style.display = home ? 'none' : '';
+  $('heroSec').classList.toggle('compact', !home);
+  $('heroHome').style.display = home ? '' : 'none';
+  $('heroCompact').style.display = home ? 'none' : '';
+  $('heroBack').textContent = !home && (route.v === 'browse' && !(route.path || []).length) || (route.v === 'join' && J.step === 'home') ? 'الرجوع للرئيسية' : '→ رجوع';
+  $('heroCompact').querySelector('h1').textContent = route.v === 'join' ? 'انضم إلينا' : 'تصفح الجامعات';
+  $('heroCompact').querySelector('p').textContent = route.v === 'join' ? 'قدّم طلبك للانضمام كشارح أو كفريق، وستراجعه الإدارة.' : 'اختر الجامعة ثم الكلية والتخصص والمادة للوصول إلى المحاضرات.';
+  pubW.set(home || !ready ? null : pubTarget()); watchSocial();
+  if (!home) renderPage();
+}
+function crumbBar(p, last) {
+  const cr = el('div', 'bcrumbs pgcr');
+  const root = el('button', 'crumb' + (p.length || last ? '' : ' cur'), 'الجامعات'); root.onclick = () => go({ v: 'browse', path: [] }); cr.append(root);
+  p.forEach((id, i) => {
+    const n = byId(id); cr.append(el('span', 'crumb-sep', '‹'));
+    const b = el('button', 'crumb' + (i === p.length - 1 && !last ? ' cur' : ''), n ? dn(n) : ''); b.onclick = () => go({ v: 'browse', path: p.slice(0, i + 1) }); cr.append(b);
   });
-  const body = $('bBody'); body.textContent = '';
-  if (loadErr) { body.append(el('p', 'bempty', 'تعذّر تحميل البيانات. تحقق من الاتصال ثم أعد المحاولة.')); return; }
-  if (!ready) { body.append(el('p', 'bempty', 'جاري التحميل…')); return; }
+  if (last) { cr.append(el('span', 'crumb-sep', '‹')); cr.append(el('span', 'crumb cur', last)); }
+  return cr;
+}
+let vShell = null;
+function renderPage() {
+  const pv = $('pageView');
+  if (route.v === 'join') { if (J.built === J.step && pv.firstChild) return; vShell = null; pv.textContent = ''; const c = el('div', 'container'); pv.append(c); J.built = J.step; renderJoin(c); return; }
+  if (!ready || loadErr) { vShell = null; pv.textContent = ''; const c = el('div', 'container'); c.append(msg(loadErr ? 'تعذّر تحميل البيانات. تحقق من الاتصال ثم أعد المحاولة.' : 'جاري التحميل…')); pv.append(c); return; }
+  let p = route.path || [];
+  for (let i = 0; i < p.length; i++) if (!byId(p[i])) { p = p.slice(0, i); route = { v: 'browse', path: p }; break; }
+  if (route.v === 'video') { renderVideo(); return; }
+  vShell = null; pv.textContent = '';
+  const c = el('div', 'container'); pv.append(c);
+  const cur = p.length ? byId(p[p.length - 1]) : null;
+  c.append(crumbBar(p));
+  if (cur && cur.type === 'exp') { expPage(c, cur, p); return; }
   const type = cur ? L[cur.type].child : 'uni';
-  body.append(el('h3', 'btitle', cur ? L[type].many + ' — ' + cur.name : 'اختر الجامعة'));
-  const items = kids(cur ? cur.id : null, type);
-  if (!items.length) { body.append(el('p', 'bempty', 'لا توجد ' + L[type].many + ' مضافة بعد.')); return; }
+  c.append(el('h3', 'btitle', cur ? L[type].many + ' — ' + dn(cur) : 'اختر الجامعة'));
+  const items = kids(cur ? cur.id : null, type).map(n => ({ n, id: n.id }));
+  if (cur && cur.type === 'cou' && pubW.id === cur.id && pubW.data.some(x => x.type === 'video' || x.type === 'pdf')) items.push({ n: byId(LEG + cur.id), id: LEG + cur.id });
+  if (!items.length) { c.append(msg('لا توجد ' + L[type].many + ' مضافة بعد.')); return; }
   const grid = el('div', 'bgrid');
-  items.forEach(n => {
-    const b = el('button', 'bitem'); b.type = 'button';
-    b.innerHTML = ICON[n.type];
-    b.append(el('h4', null, n.name));
+  items.forEach(({ n, id }) => {
+    const b = el('button', 'bitem'); b.type = 'button'; b.innerHTML = ICON[n.type];
+    b.append(el('h4', null, dn(n)));
     const ch = L[n.type].child;
-    b.append(el('span', null, ch ? L[ch].many + ': ' + allKids(n.id).length : 'مادة دراسية'));
-    b.onclick = () => {
-      if (!ch) { toast(n.name + ' — محتوى المادة قريباً'); return; }
-      bPath.push(n.id); renderBrowser();
-    };
+    b.append(el('span', null, ch ? L[ch].many + ': ' + allKids(n.id).length : 'اضغط لعرض المحاضرات'));
+    if (n.type === 'exp' && !n.legacy) b.append(rateLine(n.id));
+    b.onclick = () => go({ v: 'browse', path: [...p, id] });
     grid.append(b);
   });
-  body.append(grid);
+  c.append(grid);
 }
-$('bClose').onclick = closeBrowser;
-$('browser').addEventListener('click', e => { if (e.target === $('browser')) closeBrowser(); });
+function expPage(c, exp, p) {
+  c.append(el('h3', 'btitle', dn(exp)));
+  if (!exp.legacy) c.append(rateBox(exp));
+  if (!pubW.loaded) { c.append(msg('جاري التحميل…')); return; }
+  const list = pubW.data, vs = vids(list);
+  if (!vs.length) c.append(msg('لا توجد محاضرات بعد.'));
+  else {
+    const box = el('div', 'mlist');
+    vs.forEach(it => {
+      const b = el('button', 'lcard'); b.type = 'button';
+      const ic = el('span', 't-ic'); ic.innerHTML = ICON.exp;
+      const tx = el('div'); tx.append(el('b', null, lecLabel(it, list)));
+      const nf = list.filter(x => x.type === 'pdf' && x.lectureId === it.id).length;
+      tx.append(el('small', null, [it.aiData ? 'ملخص وامتحان قصير' : '', nf ? 'ملفات: ' + nf : ''].filter(Boolean).join(' • ') || 'اضغط للمشاهدة'));
+      b.append(ic, tx); b.onclick = () => go({ v: 'video', path: p, lec: it.id, tab: 'summary' });
+      box.append(b);
+    });
+    c.append(box);
+  }
+  const gen = list.filter(x => x.type === 'pdf' && !x.lectureId);
+  if (gen.length) {
+    c.append(el('h3', 'btitle', 'ملفات الشرح')); c.lastChild.style.marginTop = '24px';
+    const box = el('div', 'mlist'); gen.forEach(f => box.append(fileRow(f, list))); c.append(box);
+  }
+}
+function fileRow(f, list) {
+  const c = el('div', 'm-card'), info = el('div', 'm-info'), ic = el('span', 't-ic'); ic.innerHTML = ICON.pdf;
+  info.append(ic, el('b', null, f.title || '')); info.style.cursor = 'default'; c.append(info);
+  const a = el('a', 'abtn abtn-b', 'فتح / تحميل'); a.href = f.url; a.target = '_blank'; a.rel = 'noopener'; a.style.textDecoration = 'none';
+  const box = el('div', 'm-btns'); box.append(a);
+  if (canEditLec(curExp())) { const d = el('button', 'ibtn d'); d.type = 'button'; d.innerHTML = ICO_DEL; d.onclick = () => delLec(f, list); box.append(d); }
+  c.append(box); return c;
+}
+
+/* ---------- صفحة الفيديو ---------- */
+const VT = [['files', '📎 الملفات'], ['summary', '📝 ملخص المحاضرة'], ['quiz', '✍ امتحان قصير'], ['chat', '💬 الدردشة']];
+function aiState(it) {
+  if (it.aiData) return 'done';
+  const tk = tasks.get(it.id);
+  if (tk && tk.stage === 'analyze' && !tk.paused) return 'processing';
+  if (it.aiStatus === 'processing' && Date.now() - (it.aiStartedAt || 0) < 15 * 60 * 1000) return 'processing';
+  return it.aiStatus === 'error' || it.aiStatus === 'processing' ? 'error' : 'none';
+}
+function renderVideo() {
+  const pv = $('pageView'), p = route.path, exp = byId(p[p.length - 1]);
+  if (!exp || exp.type !== 'exp') { route = { v: 'browse', path: p.slice(0, -1) }; renderPage(); return; }
+  const lec = pubW.data.find(x => x.id === route.lec);
+  if (!lec) { vShell = null; pv.textContent = ''; const c = el('div', 'container'); c.append(crumbBar(p), msg(pubW.loaded ? 'المحاضرة غير موجودة.' : 'جاري التحميل…')); pv.append(c); return; }
+  if (!vShell || vShell.lec !== lec.id) {
+    pv.textContent = ''; const c = el('div', 'container');
+    const title = el('h2', 'vtitle'), vid = document.createElement('video');
+    vid.controls = true; vid.preload = 'metadata'; vid.playsInline = true; vid.className = 'vplayer'; vid.src = lec.url;
+    const tabs = el('div', 'ctabs'), panel = el('div', 'vpanel');
+    VT.forEach(([k, t]) => { const b = el('button', 'ctab', t); b.type = 'button'; b.dataset.k = k; b.onclick = () => { route.tab = k; try { history.replaceState(route, ''); } catch (e) {} updateVideoUI(true); }; tabs.append(b); });
+    const cb = crumbBar(p, 'المحاضرة ' + ordOf(lec, pubW.data));
+    const rx = el('div', 'rx'), up = el('button', 'rxb'), down = el('button', 'rxb'); up.type = down.type = 'button'; up.onclick = () => react(1); down.onclick = () => react(-1); rx.append(up, down);
+    c.append(cb, title, vid, rx, tabs, panel); pv.append(c);
+    vShell = { lec: lec.id, title, vid, tabs, panel, url: lec.url, sig: '', up, down }; updateReact();
+  }
+  if (vShell.url !== lec.url) { vShell.vid.src = lec.url; vShell.url = lec.url; }
+  vShell.title.textContent = lecLabel(lec, pubW.data);
+  updateVideoUI(false);
+}
+function updateVideoUI(force) {
+  const lec = pubW.data.find(x => x.id === route.lec); if (!lec || !vShell) return;
+  const tab = route.tab || 'summary';
+  vShell.tabs.querySelectorAll('.ctab').forEach(b => b.classList.toggle('active', b.dataset.k === tab));
+  const files = pubW.data.filter(x => x.type === 'pdf' && x.lectureId === lec.id).map(f => f.id + f.title + f.url);
+  const sig = JSON.stringify([tab, role, getMail(), files, lec.aiStatus, lec.aiError, lec.aiData || null, tasks.size]);
+  if (!force && sig === vShell.sig) return;
+  vShell.sig = sig;
+  const pn = vShell.panel; pn.textContent = '';
+  watchSocial();
+  if (tab === 'files') panelFiles(pn, lec); else if (tab === 'summary') panelSummary(pn, lec); else if (tab === 'chat') panelChat(pn, lec); else panelQuiz(pn, lec);
+}
+function panelFiles(pn, lec) {
+  if (canUpload(curExp())) { const b = el('button', 'abtn abtn-g', '+ رفع ملف لهذه المحاضرة'); b.type = 'button'; b.style.marginBottom = '12px'; b.onclick = () => openUpload('pdf', pubW.id, lec.id, pubW.data); pn.append(b); }
+  const fl = pubW.data.filter(x => x.type === 'pdf' && x.lectureId === lec.id);
+  if (!fl.length) { pn.append(msg('لا توجد ملفات لهذه المحاضرة.')); return; }
+  const box = el('div', 'mlist'); fl.forEach(f => box.append(fileRow(f, pubW.data))); pn.append(box);
+}
+function inline(parent, text) {
+  text.split(/(\*\*[^*]+\*\*)/).forEach(s => {
+    if (!s) return;
+    if (/^\*\*[^*]+\*\*$/.test(s)) parent.append(el('strong', null, s.slice(2, -2)));
+    else parent.append(document.createTextNode(s.replace(/\*\*/g, '')));
+  });
+}
+function normSummary(s) {
+  s = String(s || '').replace(/\r\n?/g, '\n');
+  if ((s.match(/\n/g) || []).length < 6) {
+    s = s.replace(/([.!؟?:])\s+(\d{1,2})[.)]\s+/g, '$1\n$2. ');
+    s = s.replace(/(^|(?<!\d)[.!؟?]\s+)([^.!؟?:\n]{3,45}):\s+/g, (m, pre, h) => {
+      const w = h.trim().split(/\s+/);
+      return w.length > 5 || /^(قال|يقول|وقال|فقال|قالوا|وقالوا)$/.test(w[w.length - 1]) ? m : pre.trim() + '\n\n#' + h.trim() + '\n';
+    });
+  }
+  return s;
+}
+function renderSummary(box, text) {
+  let ul = null, blank = false;
+  normSummary(text).split('\n').forEach(raw => {
+    const t = raw.trim(); let m;
+    if (!t) { ul = null; if (!blank && box.lastChild) box.append(el('div', 'sp')); blank = true; return; }
+    blank = false;
+    if ((m = t.match(/^#{1,6}\s*(.+)$/)) || (m = t.match(/^\*\*([^*]+)\*\*\s*:?$/)) || (/^[^.،؛!؟?]{2,70}:$/.test(t) && (m = [t, t.slice(0, -1)]))) {
+      ul = null; const h = el('h4', 'sh'); inline(h, m[1].trim()); box.append(h); return;
+    }
+    if ((m = t.match(/^(\d{1,2})[.)]\s+(.+)$/))) {
+      ul = null; const rest = m[2], ci = rest.indexOf(':');
+      const h = el('h5', 'sh2'); 
+      if (ci > 0 && ci < 80) { inline(h, m[1] + '. ' + rest.slice(0, ci)); box.append(h); const q = el('p', 'sp2 ind'); inline(q, rest.slice(ci + 1).trim()); box.append(q); }
+      else { inline(h, m[1] + '. ' + rest); box.append(h); }
+      return;
+    }
+    if ((m = t.match(/^[-*•●▪◦]\s+(.+)$/))) {
+      if (!ul) { ul = el('ul', 'sul'); box.append(ul); }
+      const li = el('li'); inline(li, m[1]); ul.append(li); return;
+    }
+    ul = null; const q = el('p', 'sp2'); inline(q, t); box.append(q);
+  });
+}
+function panelSummary(pn, lec) {
+  const st = aiState(lec);
+  if (st === 'done') { const b = el('div', 'sumbox'); renderSummary(b, lec.aiData.summary); pn.append(b); }
+  else if (st === 'processing') { const m = msg('جاري تجهيز الملخص والامتحان القصير… سيظهر هنا تلقائياً عند الانتهاء.'); pn.append(m); }
+  else pn.append(msg(st === 'error' ? 'تعذّر تجهيز الملخص لهذه المحاضرة.' + (isAdmin() && lec.aiError ? ' (' + lec.aiError + ')' : '') : 'لم يُجهَّز الملخص لهذه المحاضرة بعد.'));
+  if (canUpload(curExp()) && lec.r2Key && st !== 'processing') {
+    const b = el('button', 'abtn abtn-b', st === 'done' ? 'إعادة التحليل' : 'بدء التحليل'); b.type = 'button'; b.style.marginTop = '14px';
+    b.onclick = () => { if (st !== 'done' || confirm('سيُستبدل الملخص والامتحان الحاليان. متابعة؟')) startAnalysis(lec, true); };
+    pn.append(b);
+  }
+}
+
+/* ---------- الامتحان القصير: محاولات غير محدودة + سجل محلي ---------- */
+const qs = {};
+const qkey = id => 'uni_quiz_' + id;
+function getAtt(id) { try { const a = JSON.parse(localStorage.getItem(qkey(id)) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+function saveAtt(id, a) { try { localStorage.setItem(qkey(id), JSON.stringify(a.slice(0, 20))); } catch (e) {} }
+function drawQuiz(box, quiz, ans, locked) {
+  quiz.forEach((q, i) => {
+    const c = el('div', 'qcard'); c.append(el('h5', null, (i + 1) + '. ' + q.question));
+    (q.options || []).forEach((o, j) => {
+      const lab = el('label', 'qopt'), r = document.createElement('input'); r.type = 'radio'; r.name = 'q' + i; r.checked = ans[i] === j; r.disabled = locked;
+      r.onchange = () => { ans[i] = j; };
+      if (locked) { if (j === q.correctIndex) lab.classList.add('ok'); else if (ans[i] === j) lab.classList.add('bad'); }
+      lab.append(r, el('span', null, o)); c.append(lab);
+    });
+    box.append(c);
+  });
+}
+function panelQuiz(pn, lec) {
+  const quiz = lec.aiData && Array.isArray(lec.aiData.quiz) ? lec.aiData.quiz : [];
+  if (!quiz.length) { pn.append(msg(aiState(lec) === 'processing' ? 'جاري تجهيز الامتحان القصير…' : 'لا يوجد امتحان قصير لهذه المحاضرة بعد.')); return; }
+  const S = qs[lec.id] || (qs[lec.id] = { ans: [], sub: false, rev: null }), atts = getAtt(lec.id);
+  const redraw = () => updateVideoUI(true);
+  if (S.rev !== null && atts[S.rev]) {
+    const a = atts[S.rev];
+    pn.append(el('div', 'qres', 'مراجعة محاولة ' + new Date(a.t).toLocaleString('ar') + ' — ' + a.s + '/' + a.n));
+    drawQuiz(pn, a.q, a.a.map(x => x < 0 ? null : x), true);
+    const b = el('button', 'abtn abtn-l', 'رجوع'); b.onclick = () => { S.rev = null; redraw(); }; pn.append(b); return;
+  }
+  drawQuiz(pn, quiz, S.ans, S.sub);
+  const act = el('div', 'mact');
+  if (!S.sub) {
+    const b = el('button', 'abtn abtn-b', 'إرسال الإجابات');
+    b.onclick = () => {
+      let s = 0; quiz.forEach((q, i) => { if (S.ans[i] === q.correctIndex) s++; });
+      const list = getAtt(lec.id);
+      list.unshift({ t: Date.now(), s, n: quiz.length, a: quiz.map((_, i) => S.ans[i] == null ? -1 : S.ans[i]), q: quiz.map(q => ({ question: q.question, options: q.options, correctIndex: q.correctIndex })) });
+      saveAtt(lec.id, list); S.sub = true; redraw(); vShell.tabs.scrollIntoView({ behavior: 'smooth' });
+    };
+    act.append(b);
+  } else {
+    pn.append(Object.assign(el('div', 'qres', 'نتيجتك: ' + quiz.filter((q, i) => S.ans[i] === q.correctIndex).length + '/' + quiz.length)));
+    const b = el('button', 'abtn abtn-g', 'محاولة جديدة'); b.onclick = () => { S.ans = []; S.sub = false; redraw(); }; act.append(b);
+  }
+  pn.append(act);
+  if (atts.length) {
+    const h = el('h4', 'sh', 'محاولاتك السابقة (محفوظة على هذا الجهاز) — أفضل نتيجة: ' + Math.max(...atts.map(a => a.s)) + '/' + atts[0].n); pn.append(h);
+    atts.forEach((a, i) => {
+      const r = el('div', 'att'); r.append(el('span', null, new Date(a.t).toLocaleString('ar') + ' — ' + a.s + '/' + a.n));
+      const b = el('button', 'abtn abtn-l', 'مراجعة'); b.onclick = () => { S.rev = i; redraw(); }; r.append(b); pn.append(r);
+    });
+    const c = el('button', 'abtn abtn-l', 'مسح السجل'); c.style.marginTop = '8px';
+    c.onclick = () => { if (confirm('مسح كل المحاولات السابقة؟')) { saveAtt(lec.id, []); redraw(); } }; pn.append(c);
+  }
+}
 
 /* ---------- التسجيل ---------- */
 let user = null, authUser = null;
 try { user = JSON.parse(localStorage.getItem('uni_user') || 'null'); if (user && user.role === 'admin') user = null; } catch (e) {}
-const isAdmin = () => !!authUser;
-/* المدير = حساب مسجّل في Authentication ويوجد له مستند في مجموعة users (معرّفه = UID) فيه role = "admin" */
+let role = null, me = null, lastMe = null, joining = false, gUser = null;
+const isStaff = () => !!authUser, isAdmin = () => !!authUser && role === 'admin', myKey = () => me && authUser ? (me.teamId || authUser.uid) : null;
+const curExp = () => byId((route.path || [])[(route.path || []).length - 1]);
+const canUpload = en => isAdmin() || (role === 'contrib' && !!en && !!en.ownerKey && en.ownerKey === myKey());
+const canEditLec = en => isAdmin() || (canUpload(en) && en.status === 'pending');
+const canEdit = n => isAdmin() || (role === 'contrib' && !!n.ownerKey && n.ownerKey === myKey() && n.status === 'pending');
+function canAdd(parent, type) {
+  if (isAdmin()) return true;
+  if (role !== 'contrib' || !parent || !me || !me.scope) return false;
+  if (!pathOf(parent.id).some(p => p.id === me.scope.id)) return false;
+  if (type === 'exp') return true;
+  const o = ['uni', 'col', 'maj', 'cou']; return o.indexOf(type) >= o.indexOf(me.scope.type === 'college' ? 'maj' : 'col');
+}
 async function adminState(u) {
   try {
     const d = await getDoc(doc(db, 'users', u.uid));
-    if (!d.exists()) return 'nodoc';
-    return String(d.data().role || '').trim().toLowerCase() === 'admin' ? 'ok' : 'badrole';
+    if (d.exists()) {
+      const r = String(d.data().role || '').trim().toLowerCase();
+      if (r === 'admin' || (r === 'contrib' && d.data().scope && d.data().scope.id)) { lastMe = d.data(); return 'ok'; }
+      return 'badrole';
+    }
+    const ap = await getDoc(doc(db, 'applications', u.uid));
+    if (ap.exists()) return ap.data().status === 'rejected' ? 'rejected' : 'pending';
+    return 'nodoc';
   } catch (e) { console.error(e); return e && e.code === 'permission-denied' ? 'denied' : 'error'; }
 }
 const checkAdmin = async u => (await adminState(u)) === 'ok';
 function updateAuthUI() {
-  const label = authUser ? (authUser.displayName || authUser.email) : (user ? user.name : 'التسجيل');
+  const label = authUser ? ((me && me.name) || authUser.email) : gUser ? (gUser.displayName || gUser.email) : 'التسجيل';
   document.querySelectorAll('.auth-link').forEach(a => { a.textContent = label; });
-  $('adminBtn').style.display = isAdmin() ? 'inline-flex' : 'none';
+  $('adminBtn').style.display = isStaff() ? 'inline-flex' : 'none';
+  updateBar();
+  if (route.v === 'video' && vShell) updateVideoUI(false); else if (route.v !== 'home') renderPage();
 }
+let resumed = false;
 onAuthStateChanged(auth, async u => {
+  if (joining) return;
+  if (u && u.providerData.some(p => p.providerId === 'google.com')) { gUser = u; authUser = null; role = null; me = null; watchApps(false); closeAdmin(); updateAuthUI(); return; }
+  gUser = null;
   let ok = false;
   if (u) { ok = await checkAdmin(u); if (!ok) { try { await signOut(auth); } catch (e) {} } }
-  authUser = ok ? u : null;
+  authUser = ok ? u : null; role = ok ? lastMe.role : null; me = ok ? lastMe : null;
   if (!authUser) closeAdmin();
+  watchApps(isAdmin());
   updateAuthUI();
+  if (authUser) { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {} await loadTasks(); pump(); }
 });
 function closeAuth() { $('authModal').classList.remove('open'); syncScroll(); }
 window.openAuth = async () => {
-  if (user || authUser) {
-    if (confirm('أنت مسجّل باسم «' + (authUser ? (authUser.displayName || authUser.email) : user.name) + '». هل تريد تسجيل الخروج؟')) {
-      user = null;
-      try { localStorage.removeItem('uni_user'); } catch (e) {}
-      if (authUser) { try { await signOut(auth); } catch (e) { console.error(e); } }
+  if (gUser && !authUser) { if (confirm('أنت مسجّل بحساب Google (' + gUser.email + '). تسجيل الخروج؟')) { try { await signOut(auth); } catch (e) {} gUser = null; updateAuthUI(); if (vShell) { vShell.sig = ''; updateVideoUI(false); } toast('تم تسجيل الخروج'); } return; }
+  if (authUser) {
+    if (confirm('أنت مسجّل باسم «' + ((me && me.name) || authUser.email) + '». هل تريد تسجيل الخروج؟')) {
+      try { await signOut(auth); } catch (e) { console.error(e); }
       closeAdmin(); updateAuthUI(); toast('تم تسجيل الخروج');
     }
     return;
   }
-  $('authName').value = ''; $('authRole').value = 'student'; $('authEmail').value = ''; $('authCode').value = '';
-  $('authNameWrap').style.display = 'block'; $('authCodeWrap').style.display = 'none'; $('authErr').textContent = '';
-  $('authModal').classList.add('open'); syncScroll();
-  setTimeout(() => $('authName').focus(), 50);
-};
-$('authRole').onchange = () => {
-  const adm = $('authRole').value === 'admin';
-  $('authCodeWrap').style.display = adm ? 'block' : 'none';
-  $('authNameWrap').style.display = adm ? 'none' : 'block';
-  $('authErr').textContent = '';
+  $('authEmail').value = ''; $('authCode').value = ''; $('authErr').textContent = '';
+  $('authModal').classList.add('open'); syncScroll(); setTimeout(() => $('authEmail').focus(), 50);
 };
 let authBusy = false;
 async function submitAuth() {
   if (authBusy) return;
-  const role = $('authRole').value;
-  if (role === 'admin') {
-    const email = $('authEmail').value.trim(), pass = $('authCode').value;
-    if (!email || !pass) { $('authErr').textContent = 'اكتب البريد وكلمة المرور'; return; }
-    authBusy = true; $('authSave').disabled = true;
-    try {
-      const cred = await signInWithEmailAndPassword(auth, email, pass);
-      const st = await adminState(cred.user);
-      if (st !== 'ok') {
-        try { await signOut(auth); } catch (e2) {}
-        $('authErr').textContent =
-          st === 'nodoc' ? 'لا يوجد مستند لهذا الحساب في users. يجب أن يكون معرّف المستند (Document ID) هو: ' + cred.user.uid :
-          st === 'badrole' ? 'المستند موجود لكن الحقل role ليس admin' :
-          st === 'denied' ? 'قواعد Firestore تمنع قراءة مجموعة users، عدّل القواعد' :
-          'تعذّر التحقق من الصلاحية، تحقق من الاتصال';
-      } else {
-        authUser = cred.user;
-        user = null; try { localStorage.removeItem('uni_user'); } catch (e2) {}
-        closeAuth(); updateAuthUI(); toast('أهلاً بك');
-      }
-    } catch (e) {
-      console.error(e);
-      const c = e && e.code || '';
+  const email = $('authEmail').value.trim(), pass = $('authCode').value;
+  if (!email || !pass) { $('authErr').textContent = 'اكتب البريد وكلمة المرور'; return; }
+  authBusy = true; $('authSave').disabled = true;
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
+    const st = await adminState(cred.user);
+    if (st !== 'ok') {
+      try { await signOut(auth); } catch (e2) {}
       $('authErr').textContent =
-        c === 'auth/operation-not-allowed' ? 'فعّل تسجيل الدخول بالبريد وكلمة المرور من لوحة Firebase' :
-        c === 'auth/too-many-requests' ? 'محاولات كثيرة، حاول لاحقاً' :
-        c === 'auth/network-request-failed' ? 'تحقق من الاتصال بالإنترنت' :
-        'البريد أو كلمة المرور غير صحيحة';
+        st === 'pending' ? 'طلب انضمامك ما زال قيد مراجعة الإدارة' : st === 'rejected' ? 'تم رفض طلب انضمامك' :
+        st === 'nodoc' ? 'لا يوجد لهذا الحساب صلاحية. قدّم طلباً من «انضم إلينا»' :
+        st === 'badrole' ? 'هذا الحساب لا يملك صلاحية' :
+        st === 'denied' ? 'قواعد Firestore تمنع قراءة بيانات الحساب، عدّل القواعد' : 'تعذّر التحقق من الصلاحية، تحقق من الاتصال';
+    } else {
+      authUser = cred.user; role = lastMe.role; me = lastMe; watchApps(isAdmin());
+      closeAuth(); updateAuthUI(); toast('أهلاً بك');
     }
-    authBusy = false; $('authSave').disabled = false;
-    return;
+  } catch (e) {
+    console.error(e);
+    const c = e && e.code || '';
+    $('authErr').textContent = c === 'auth/operation-not-allowed' ? 'فعّل تسجيل الدخول بالبريد وكلمة المرور من لوحة Firebase' : c === 'auth/too-many-requests' ? 'محاولات كثيرة، حاول لاحقاً' : c === 'auth/network-request-failed' ? 'تحقق من الاتصال بالإنترنت' : 'البريد أو كلمة المرور غير صحيحة';
   }
-  const name = $('authName').value.trim();
-  if (!name) { $('authErr').textContent = 'الرجاء كتابة الاسم'; return; }
-  user = { name, role: 'student' };
-  try { localStorage.setItem('uni_user', JSON.stringify(user)); } catch (e) {}
-  closeAuth(); updateAuthUI(); toast('أهلاً ' + name);
+  authBusy = false; $('authSave').disabled = false;
 }
 $('authSave').onclick = submitAuth;
+$('authGoogle').onclick = async () => { try { await googleLogin(); closeAuth(); updateAuthUI(); toast('أهلاً ' + (gUser.displayName || gUser.email)); } catch (e) { const c = e && e.code || ''; if (c !== 'auth/popup-closed-by-user' && c !== 'auth/cancelled-popup-request') { console.error(e); $('authErr').textContent = 'تعذّر الدخول بحساب Google. تأكد من تفعيله في Firebase ومن أن النطاق مصرّح به.'; } } };
 $('authCancel').onclick = closeAuth;
 $('authModal').addEventListener('click', e => { if (e.target === $('authModal')) closeAuth(); });
-['authName', 'authEmail', 'authCode'].forEach(i => $(i).addEventListener('keydown', e => { if (e.key === 'Enter') submitAuth(); }));
+['authEmail', 'authCode'].forEach(i => $(i).addEventListener('keydown', e => { if (e.key === 'Enter') submitAuth(); }));
 
 /* ---------- صفحة التحكم ---------- */
-let aSel = null, aTab = 'lectures'; const aOpen = new Set();
-window.openAdmin = () => { if (!isAdmin()) return; $('admin').classList.add('open'); syncScroll(); renderAdmin(); };
+let aView = 'home', aSel = null, aTab = 'lectures'; const aOpen = new Set();
+window.openAdmin = () => { if (!isStaff()) return; aView = isAdmin() ? 'home' : 'struct'; $('admin').classList.add('open'); syncScroll(); renderAdmin(); };
 function closeAdmin() { $('admin').classList.remove('open'); syncScroll(); }
 $('aClose').onclick = closeAdmin;
-$('aAddUni').onclick = () => openName('add', 'uni', null);
+$('aBack').onclick = () => { aView = 'home'; renderAdmin(); };
+function drawAdminHome() {
+  const h = $('aHome'); h.textContent = ''; h.className = 'aview jform';
+  h.append(el('h3', 'btitle', 'اختر القسم الذي تريد العمل عليه'));
+  const g = el('div', 'bgrid'); g.style.gridTemplateColumns = 'repeat(2,1fr)';
+  [['📚', 'إدارة الأقسام', 'الجامعات والكليات والتخصصات والمواد والشروحات والمحاضرات', 'struct'], ['📝', 'مراجعة الطلبات', 'طلبات الانضمام والمحتوى المنتظر للموافقة', 'review']].forEach(([e, t, d, v]) => {
+    const b = el('button', 'bitem'); b.type = 'button'; b.append(el('span', 'emo', e), el('h4', null, t), el('span', null, d));
+    if (v === 'review' && revCount()) b.append(el('span', 'badge', revCount() + ' بانتظار المراجعة'));
+    b.onclick = () => { aView = v; renderAdmin(); }; g.append(b);
+  });
+  h.append(g);
+}
 
+$('aAddUni').onclick = () => openName('add', 'uni', null);
 function selectNode(id) {
   const n = byId(id); if (!n) return;
-  pathOf(id).forEach(p => { if (p.id !== id || p.type !== 'cou') aOpen.add(p.id); });
+  pathOf(id).forEach(p => { if (p.id !== id || L[p.type].child) aOpen.add(p.id); });
   aSel = id; renderAdmin();
 }
 function actions(n, cls) {
@@ -634,44 +940,48 @@ function addRow(type, pid) {
   return r;
 }
 function treeNode(n) {
-  const hasKids = n.type !== 'cou';
+  const hasKids = !!L[n.type].child;
   const row = el('div', 't-item' + (aSel === n.id ? ' sel' : ''));
   const lab = el('span', 't-lab');
   if (hasKids) { const c = el('span', 'chev' + (aOpen.has(n.id) ? '' : ' closed')); c.innerHTML = ICO_CHEV; lab.append(c); }
   const ic = el('span', 't-ic'); ic.innerHTML = ICON[n.type];
-  lab.append(ic, el('span', 't-name', n.name));
-  row.append(lab, actions(n, 't-actions'));
+  lab.append(ic, el('span', 't-name', dn(n)));
+  row.append(lab); if (canEdit(n)) row.append(actions(n, 't-actions'));
   row.onclick = () => { if (hasKids) { if (aOpen.has(n.id)) aOpen.delete(n.id); else aOpen.add(n.id); } aSel = n.id; renderAdmin(); };
   const out = [row];
   if (hasKids && aOpen.has(n.id)) {
-    const g = el('div', 't-group');
-    const ch = L[n.type].child;
+    const g = el('div', 't-group'), ch = L[n.type].child;
     kids(n.id, ch).forEach(k => treeNode(k).forEach(x => g.append(x)));
-    g.append(addRow(ch, n.id));
-    out.push(g);
+    if (canAdd(n, ch)) g.append(addRow(ch, n.id)); out.push(g);
   }
   return out;
 }
 function mcard(n) {
-  const c = el('div', 'm-card');
-  const info = el('div', 'm-info');
-  const ic = el('span', 't-ic'); ic.innerHTML = ICON[n.type];
-  const tx = el('div'); tx.append(el('b', null, n.name));
+  const c = el('div', 'm-card'), info = el('div', 'm-info'), ic = el('span', 't-ic'); ic.innerHTML = ICON[n.type];
+  const tx = el('div'); tx.append(el('b', null, dn(n)));
   const ch = L[n.type].child;
-  tx.append(el('small', null, ch ? L[ch].many + ': ' + allKids(n.id).length : 'مادة دراسية'));
+  tx.append(el('small', null, ch ? L[ch].many + ': ' + allKids(n.id).length : 'شرح دراسي'));
   info.append(ic, tx); info.onclick = () => selectNode(n.id);
   c.append(info); return c;
 }
+function admTarget() { const n = aSel && byId(aSel); return !n ? null : n.type === 'cou' ? n.id : n.type === 'exp' ? realId(n.id) : null; }
 function renderAdmin() {
   if (!$('admin').classList.contains('open')) return;
+  const AT = { home: '⚙ التحكم والإعدادات', struct: '📚 إدارة الأقسام', review: '📝 مراجعة الطلبات' };
+  if (!isAdmin() && aView !== 'struct') aView = 'struct';
+  $('aHome').style.display = aView === 'home' ? '' : 'none'; $('aStruct').style.display = aView === 'struct' ? 'flex' : 'none'; $('aReviewBox').style.display = aView === 'review' ? '' : 'none';
+  $('aBack').style.display = aView !== 'home' && isAdmin() ? '' : 'none'; $('aHead').textContent = AT[aView];
+  if (aView === 'home') { admW.set(null); drawAdminHome(); return; }
+  if (aView === 'review') { admW.set(null); renderReview(); return; }
   if (aSel && !byId(aSel)) aSel = null;
-  watchCourse(aSel && byId(aSel).type === 'cou' ? aSel : null);
-  const t = $('aTree'); t.textContent = '';
-  if (loadErr) t.append(el('p', 'bempty', 'تعذّر تحميل البيانات'));
-  else if (!ready) t.append(el('p', 'bempty', 'جاري التحميل…'));
-  else if (!nodes.some(n => n.type === 'uni')) t.append(el('p', 'bempty', 'لا توجد جامعات بعد'));
-  kids(null, 'uni').forEach(u => treeNode(u).forEach(x => t.append(x)));
+  admW.set(admTarget());
 
+  const t = $('aTree'); t.textContent = '';
+  if (loadErr) t.append(msg('تعذّر تحميل البيانات'));
+  else if (!ready) t.append(msg('جاري التحميل…'));
+  else if (!nodes.some(n => n.type === 'uni')) t.append(msg('لا توجد جامعات بعد'));
+  (isAdmin() ? kids(null, 'uni') : [me && me.scope && byId(me.scope.id)].filter(Boolean)).forEach(u => treeNode(u).forEach(x => t.append(x)));
+  $('aAddUni').style.display = isAdmin() ? '' : 'none'; 
   const m = $('aMain'); m.textContent = '';
   const n = aSel ? byId(aSel) : null;
   const cr = el('div', 'bcrumbs'); cr.style.cssText = 'padding:0 0 12px;background:none;border:0';
@@ -679,35 +989,30 @@ function renderAdmin() {
   cr.append(r);
   if (n) pathOf(n.id).forEach((p, i, a) => {
     cr.append(el('span', 'crumb-sep', '‹'));
-    const b = el('button', 'crumb' + (i === a.length - 1 ? ' cur' : ''), p.name); b.onclick = () => selectNode(p.id); cr.append(b);
+    const b = el('button', 'crumb' + (i === a.length - 1 ? ' cur' : ''), dn(p)); b.onclick = () => selectNode(p.id); cr.append(b);
   });
   m.append(cr);
-  if (!n) {
+  if (!n && isAdmin()) {
     const st = el('div', 'stats');
-    ['uni', 'col', 'maj', 'cou'].forEach(k => { const s = el('div', 'stat'); s.append(el('b', null, String(nodes.filter(x => x.type === k).length)), el('span', null, L[k].many)); st.append(s); });
+    ['uni', 'col', 'maj', 'cou', 'exp'].forEach(k => { const s = el('div', 'stat'); s.append(el('b', null, String(nodes.filter(x => x.type === k).length)), el('span', null, L[k].many)); st.append(s); });
     m.append(st);
   }
   const type = n ? L[n.type].child : 'uni';
   const head = el('div', 'mhead');
-  head.append(el('h3', null, n ? L[n.type].one + ': ' + n.name : 'الجامعات'));
+  head.append(el('h3', null, n ? (n.type === 'exp' ? dn(n) : L[n.type].one + ': ' + n.name) : 'الجامعات'));
+  if (type && canAdd(n, type)) { const g = el('div', 'grp'), ab = el('button', 'abtn abtn-g', '+ إضافة ' + L[type].one); ab.type = 'button'; ab.onclick = () => openName('add', type, n ? n.id : null); g.append(ab); head.append(g); }
   m.append(head);
   if (!type) {
-    const TABS = [['lectures', 'المحاضرات'], ['files', 'الملفات'], ['summaries', 'الملخصات'], ['quizzes', 'امتحانات قصيرة']];
-    const bar = el('div', 'ctabs'); bar.setAttribute('role', 'tablist');
-    TABS.forEach(([k, t]) => {
-      const b = el('button', 'ctab' + (aTab === k ? ' active' : ''), t); b.type = 'button'; b.setAttribute('role', 'tab');
-      b.onclick = () => { aTab = k; renderAdmin(); };
-      bar.append(b);
+    const bar = el('div', 'ctabs');
+    [['lectures', 'المحاضرات'], ['files', 'الملفات']].forEach(([k, tt]) => {
+      const b = el('button', 'ctab' + (aTab === k ? ' active' : ''), tt); b.type = 'button'; b.onclick = () => { aTab = k; renderAdmin(); }; bar.append(b);
     });
-    m.append(bar);
-    if (aTab === 'lectures' || aTab === 'files') { renderContent(m, aTab); return; }
-    const nm_ = TABS.find(x => x[0] === aTab)[1];
-    m.append(el('p', 'bempty', 'لا يوجد محتوى في «' + nm_ + '» بعد.'));
-    return;
+    m.append(bar); renderContent(m, aTab === 'files' ? 'files' : 'lectures'); return;
   }
-  const list = kids(n ? n.id : null, type);
-  if (!list.length) { m.append(el('p', 'bempty', 'لا توجد ' + L[type].many + ' بعد — أضف أول ' + L[type].one + '.')); return; }
-  const ml = el('div', 'mlist'); list.forEach(x => ml.append(mcard(x))); m.append(ml);
+  const ml = el('div', 'mlist');
+  (n ? kids(n.id, type) : isAdmin() ? kids(null, 'uni') : [me && me.scope && byId(me.scope.id)].filter(Boolean)).forEach(x => ml.append(mcard(x)));
+  if (isAdmin() && n && n.type === 'cou' && admW.id === n.id && admW.data.some(x => x.type === 'video' || x.type === 'pdf')) ml.append(mcard(byId(LEG + n.id)));
+  if (!ml.children.length) m.append(msg('لا توجد ' + L[type].many + ' بعد — أضف أول ' + L[type].one + '.')); else m.append(ml);
 }
 
 /* ---------- نافذة الاسم (إضافة/تعديل) ---------- */
@@ -715,8 +1020,9 @@ let nm = null, busy = false;
 function openName(mode, type, pid, node) {
   nm = { mode, type, pid, node };
   $('nTitle').textContent = (mode === 'add' ? 'إضافة ' : 'تعديل ') + L[type].one;
-  $('nInput').placeholder = type === 'lec' ? 'العنوان' : 'اسم ' + L[type].one;
-  $('nInput').value = node ? node.name : '';
+  $('nLbl').textContent = type === 'exp' ? 'اسم الشرح (يظهر بعد كلمة «شرح:» تلقائياً)' : type === 'lec' ? 'العنوان (يظهر بعد «المحاضرة ...:» تلقائياً للفيديو)' : 'الاسم';
+  $('nInput').placeholder = type === 'exp' ? 'مثال: د. أحمد' : type === 'lec' ? 'العنوان' : 'اسم ' + L[type].one;
+  $('nInput').value = node ? node.name : (type === 'exp' && role === 'contrib' && me ? me.name || '' : '');
   $('nErr').textContent = '';
   $('nameModal').classList.add('open'); syncScroll();
   setTimeout(() => { $('nInput').focus(); $('nInput').select(); }, 50);
@@ -731,294 +1037,533 @@ async function saveName() {
   busy = true; $('nSave').disabled = true;
   try {
     if (nm.mode === 'add') {
-      await addDoc(collection(db, 'structure'), { type: nm.type, name, parentId: nm.pid, createdAt: Date.now() });
+      const nd = { type: nm.type, name, parentId: nm.pid, createdAt: Date.now() };
+      if (role === 'contrib') Object.assign(nd, { ownerKey: myKey(), ownerName: me.name || '', status: 'pending' });
+      await addDoc(collection(db, 'structure'), nd);
       if (nm.pid) pathOf(nm.pid).forEach(p => aOpen.add(p.id));
-    } else if (nm.type === 'lec') {
-      await updateDoc(doc(db, 'lectures', nm.node.id), { title: name });
-    } else {
-      await updateDoc(doc(db, 'structure', nm.node.id), { name });
-    }
+    } else if (nm.type === 'lec') await updateDoc(doc(db, 'lectures', nm.node.id), { title: name });
+    else await updateDoc(doc(db, 'structure', nm.node.id), { name });
     closeName();
-  } catch (e) {
-    console.error(e); $('nErr').textContent = 'تعذّر الحفظ، تحقق من الاتصال أو من صلاحيات قاعدة البيانات';
-  }
+  } catch (e) { console.error(e); $('nErr').textContent = 'تعذّر الحفظ، تحقق من الاتصال أو من صلاحيات قاعدة البيانات'; }
   busy = false; $('nSave').disabled = false;
 }
 $('nSave').onclick = saveName;
 $('nCancel').onclick = closeName;
 $('nInput').addEventListener('keydown', e => { if (e.key === 'Enter') saveName(); });
 $('nameModal').addEventListener('click', e => { if (e.target === $('nameModal')) closeName(); });
-
 async function delNode(n) {
-  if (!isAdmin()) return;
-  const ids = [n.id, ...desc(n.id)];
-  const more = ids.length - 1;
-  const msg = 'حذف ' + L[n.type].one + ' «' + n.name + '»' + (more ? ' مع كل ما بداخلها (' + more + ' عنصر)' : '') + ' نهائياً؟';
-  if (!confirm(msg)) return;
+  if (!canEdit(n)) return;
+  const ids = [n.id, ...desc(n.id)], more = ids.length - 1;
+  if (!confirm('حذف ' + L[n.type].one + ' «' + n.name + '»' + (more ? ' مع كل ما بداخلها (' + more + ' عنصر)' : '') + ' نهائياً؟')) return;
   try {
-    for (let i = 0; i < ids.length; i += 400) {
-      const b = writeBatch(db);
-      ids.slice(i, i + 400).forEach(id => b.delete(doc(db, 'structure', id)));
-      await b.commit();
-    }
+    await purgeLectures(ids);
+    for (let i = 0; i < ids.length; i += 400) { const b = writeBatch(db); ids.slice(i, i + 400).forEach(id => b.delete(doc(db, 'structure', id))); await b.commit(); }
     if (aSel && ids.includes(aSel)) aSel = n.parentId || null;
     toast('تم الحذف');
   } catch (e) { console.error(e); toast('تعذّر الحذف'); }
 }
 
-/* ---------- محتوى المادة: محاضرات وملفات ---------- */
-let lects = [], watchedId = null, unsubLects = null;
-const aiPrev = {};
-function watchCourse(id) {
-  if (id === watchedId) return;
-  if (unsubLects) { unsubLects(); unsubLects = null; }
-  watchedId = id; lects = [];
-  if (!id) return;
-  unsubLects = onSnapshot(query(collection(db, 'lectures'), where('courseId', '==', id)), snap => {
-    lects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    lects.forEach(x => {
-      if (aiPrev[x.id] === 'processing' && x.aiStatus === 'done' && !aiBusy) toast('اكتمل تحليل «' + (x.title || '') + '»');
-      aiPrev[x.id] = x.aiStatus;
-    });
-    renderAdmin();
-  }, err => { console.error(err); });
-}
-/* رابط الـ Worker الذي يستقبل الملفات ويكتبها في R2 */
-const API_URL = "https://comprehensive-university-platform.abyd5372.workers.dev/";
-const R2_PUBLIC_URL = "https://pub-50aba6ec86af4979b1c3e494c77151d6.r2.dev";
-const SIMPLE_MAX = 90 * 1024 * 1024;   /* أكبر من هذا يُرفع مجزّأً */
-const CHUNK = 50 * 1024 * 1024;        /* حجم الجزء */
-async function idToken() { if (!auth.currentUser) throw new Error('انتهت الجلسة، سجّل الدخول من جديد'); return auth.currentUser.getIdToken(); }
+/* ---------- محتوى الشرح في لوحة التحكم ---------- */
 function renderContent(m, tab) {
-  const isV = tab === 'lectures', type = isV ? 'video' : 'pdf';
+  const isV = tab === 'lectures', cid = realId(aSel), list = admW.data, en = byId(aSel), up_ = canUpload(en), ed_ = canEditLec(en);
   const btn = el('button', 'abtn ' + (isV ? 'abtn-b' : 'abtn-g'), isV ? '+ رفع فيديو' : '+ رفع ملف');
-  btn.type = 'button'; btn.style.marginBottom = '14px'; btn.onclick = () => openUpload(type);
-  m.append(btn);
-  const items = lects.filter(x => x.type === type).sort((a, b) => (b.date || 0) - (a.date || 0));
-  if (!items.length) { m.append(el('p', 'bempty', isV ? 'لا توجد محاضرات بعد.' : 'لا توجد ملفات بعد.')); return; }
-  const list = el('div', 'mlist');
+  btn.type = 'button'; btn.style.marginBottom = '14px'; btn.onclick = () => openUpload(isV ? 'video' : 'pdf', cid, '', list);
+  if (up_) m.append(btn); else m.append(msg('هذا الشرح ليس شرحك، يمكنك الاطلاع فقط.'));
+  const items = isV ? vids(list) : list.filter(x => x.type === 'pdf').sort((a, b) => (a.date || 0) - (b.date || 0));
+  if (!items.length) { m.append(msg(isV ? 'لا توجد محاضرات بعد.' : 'لا توجد ملفات بعد.')); return; }
+  const ml = el('div', 'mlist');
   items.forEach(it => {
-    const c = el('div', 'm-card'); c.style.cssText = isV ? 'display:block' : '';
-    const top = el('div'); top.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px';
-    const ttl = el('b', null, it.title || ''); ttl.style.cssText = 'min-width:0;overflow-wrap:anywhere';
-    top.append(ttl);
-    const act = el('div', 'm-btns');
-    const e = el('button', 'ibtn e'); e.type = 'button'; e.title = 'تعديل'; e.innerHTML = ICO_EDIT;
-    e.onclick = () => openName('edit', 'lec', null, { id: it.id, name: it.title, type: 'lec' });
-    const d = el('button', 'ibtn d'); d.type = 'button'; d.title = 'حذف'; d.innerHTML = ICO_DEL;
-    d.onclick = () => delLec(it);
-    act.append(e, d);
+    const c = el('div', 'm-card'), info = el('div', 'm-info'), tx = el('div');
+    tx.append(el('b', null, isV ? lecLabel(it, list) : (it.title || '')));
     if (isV) {
-      const proc = it.aiStatus === 'processing' && (Date.now() - (it.aiStartedAt || 0)) < 5 * 60 * 1000;
-      const ai = el('button', 'abtn aibtn'); ai.type = 'button';
-      if (proc) { ai.disabled = true; ai.append(el('span', 'spin'), document.createTextNode('جاري التحليل…')); }
-      else { ai.textContent = it.aiData ? 'عرض الملخص والكويز' : 'تلخيص وكويز AI'; ai.onclick = () => analyzeVideo(it); }
-      act.prepend(ai);
-      if (!proc && it.aiStatus === 'error' && it.aiError) c.dataset.aierr = it.aiError;
-    }
-    if (isV) {
-      top.append(act); c.append(top);
-      const v = document.createElement('video'); v.controls = true; v.preload = 'metadata'; v.src = it.url;
-      v.style.cssText = 'width:100%;max-height:360px;background:#000;border-radius:8px;margin-top:10px;display:block';
-      c.append(v);
-      if (c.dataset.aierr) c.append(el('p', 'aierr', '⚠ فشل آخر تحليل: ' + c.dataset.aierr));
+      const st = aiState(it), ch = el('span', 'chip ' + (st === 'done' ? 'ok' : st === 'processing' ? 'pr' : st === 'error' ? 'er' : ''), st === 'done' ? '✓ الملخص والامتحان جاهزان' : st === 'processing' ? 'جاري التلخيص…' : st === 'error' ? 'فشل التحليل' : 'بدون تحليل');
+      tx.append(ch);
+      info.onclick = () => { const p = pathOf(aSel).map(x => x.id); closeAdmin(); go({ v: 'video', path: p, lec: it.id, tab: 'summary' }); };
     } else {
-      const a = el('a', 'abtn abtn-b', 'تحميل'); a.href = it.url; a.target = '_blank'; a.rel = 'noopener'; a.style.textDecoration = 'none';
-      const side = el('div'); side.style.cssText = 'display:flex;align-items:center;gap:8px;flex:none'; side.append(a, act);
-      top.append(side); c.append(top);
+      const lk = it.lectureId && list.find(x => x.id === it.lectureId);
+      tx.append(el('small', null, lk ? 'مرتبط بـ ' + lecLabel(lk, list) : 'ملف عام للشرح')); info.style.cursor = 'default';
     }
-    list.append(c);
+    info.append(tx); c.append(info);
+    const act = el('div', 'm-btns');
+    if (isV) { const o = el('button', 'abtn abtn-l', 'فتح'); o.type = 'button'; o.style.padding = '4px 12px'; o.onclick = info.onclick; act.append(o); }
+    else { const a = el('a', 'abtn abtn-b', 'تحميل'); a.href = it.url; a.target = '_blank'; a.rel = 'noopener'; a.style.cssText = 'text-decoration:none;padding:4px 12px'; act.append(a); }
+    const e = el('button', 'ibtn e'); e.type = 'button'; e.title = 'تعديل'; e.innerHTML = ICO_EDIT; e.onclick = () => openName('edit', 'lec', null, { id: it.id, name: it.title, type: 'lec' });
+    const d = el('button', 'ibtn d'); d.type = 'button'; d.title = 'حذف'; d.innerHTML = ICO_DEL; d.onclick = () => delLec(it, list);
+    if (ed_) act.append(e, d); c.append(act); ml.append(c);
   });
-  m.append(list);
+  m.append(ml);
 }
-async function delLec(it) {
-  if (!confirm('حذف «' + it.title + '» نهائياً؟')) return;
+async function delLec(it, list) {
+  const linked = it.type === 'video' ? list.filter(x => x.type === 'pdf' && x.lectureId === it.id) : [];
+  if (!confirm('حذف «' + it.title + '»' + (linked.length ? ' مع ملفاته (' + linked.length + ')' : '') + ' نهائياً؟')) return;
   try {
-    await deleteDoc(doc(db, 'lectures', it.id));
-    if (it.r2Key) { try { await fetch(API_URL, { method: 'DELETE', headers: { Authorization: 'Bearer ' + await idToken(), 'File-Name': it.r2Key } }); } catch (e) { console.warn(e); } }
+    for (const x of [it, ...linked]) {
+      await deleteDoc(doc(db, 'lectures', x.id));
+      if (tasks.has(x.id)) await removeTask(x.id);
+      try { localStorage.removeItem(qkey(x.id)); } catch (e) {}
+      if (x.r2Key) { try { await fetch(API_URL, { method: 'DELETE', headers: { Authorization: 'Bearer ' + await idToken(), 'File-Name': x.r2Key } }); } catch (e) { console.warn(e); } }
+    }
     toast('تم الحذف');
   } catch (e) { console.error(e); toast('تعذّر الحذف'); }
 }
 
-/* نافذة الرفع */
-let up = null, uploading = false;
-async function openUpload(type) {
-  if (!aSel) return;
-  up = { type, courseId: aSel };
-  $('upTitle').textContent = type === 'video' ? 'رفع فيديو جديد' : 'رفع ملف PDF';
-  $('upName').value = ''; $('upFile').value = ''; $('upErr').textContent = '';
-  $('upFile').accept = type === 'video' ? 'video/mp4,video/webm' : 'application/pdf';
-  $('upProg').style.display = 'none'; $('upBar').value = 0; $('upSave').disabled = false;
-  $('upModal').classList.add('open'); syncScroll();
-  setTimeout(() => $('upName').focus(), 50);
+/* ---------- الرفع والتحليل في الخلفية (يُحفظ في IndexedDB ويُستكمل عند فتح الموقع) ---------- */
+const API_URL = "https://comprehensive-university-platform.abyd5372.workers.dev/";
+const R2_PUBLIC_URL = "https://pub-50aba6ec86af4979b1c3e494c77151d6.r2.dev";
+const SIMPLE_MAX = 90 * 1024 * 1024, CHUNK = 50 * 1024 * 1024;
+async function idToken() { if (!auth.currentUser) throw new Error('انتهت الجلسة، سجّل الدخول من جديد'); return auth.currentUser.getIdToken(); }
+const tasks = new Map(), memBlobs = new Map();
+let idbP = null;
+const idb = () => idbP || (idbP = new Promise((res, rej) => {
+  if (!window.indexedDB) { rej(new Error('no idb')); return; }
+  const r = indexedDB.open('uni_tasks_v1', 1);
+  r.onupgradeneeded = () => { r.result.createObjectStore('tasks', { keyPath: 'id' }); r.result.createObjectStore('blobs', { keyPath: 'id' }); };
+  r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+}));
+async function idbDo(store, mode, fn) {
+  const d = await idb();
+  return new Promise((res, rej) => { const tx = d.transaction(store, mode), rq = fn(tx.objectStore(store)); tx.oncomplete = () => res(rq && rq.result); tx.onerror = tx.onabort = () => rej(tx.error); });
 }
-function closeUpload() { if (uploading) return; $('upModal').classList.remove('open'); up = null; syncScroll(); }
-function xhrSend(url, headers, body, onProg) {
+const persist = async t => {
+  if (t.cancelled) return;
+  const o = {}; Object.keys(t).forEach(k => { if (!['running', 'xhr', 'cancelled'].includes(k)) o[k] = t[k]; });
+  try { await idbDo('tasks', 'readwrite', s => s.put(o)); } catch (e) { console.warn(e); }
+};
+async function getBlob(id) { if (memBlobs.has(id)) return memBlobs.get(id); try { const r = await idbDo('blobs', 'readonly', s => s.get(id)); return r ? r.blob : null; } catch (e) { return null; } }
+async function removeTask(id) {
+  tasks.delete(id); memBlobs.delete(id);
+  try { await idbDo('tasks', 'readwrite', s => s.delete(id)); await idbDo('blobs', 'readwrite', s => s.delete(id)); } catch (e) {}
+  updateBar();
+}
+async function loadTasks() {
+  if (resumed) return; resumed = true;
+  try { const all = await idbDo('tasks', 'readonly', s => s.getAll()); (all || []).forEach(t => { if (!tasks.has(t.id)) { t.paused = false; t.running = false; tasks.set(t.id, t); } }); } catch (e) { console.warn(e); }
+  if (tasks.size) toast('جارٍ استكمال العمليات غير المنتهية…');
+  updateBar();
+}
+function xhrSend(url, headers, body, onProg, t) {
   return new Promise((resolve, reject) => {
-    const x = new XMLHttpRequest();
-    x.open('POST', url);
+    const x = new XMLHttpRequest(); x.open('POST', url); if (t) t.xhr = x;
     Object.keys(headers).forEach(k => x.setRequestHeader(k, headers[k]));
     if (onProg) x.upload.onprogress = ev => { if (ev.lengthComputable) onProg(ev.loaded); };
-    x.onload = () => {
-      let j = {}; try { j = JSON.parse(x.responseText); } catch (e) {}
-      if (x.status >= 200 && x.status < 300) resolve(j); else reject(new Error(j.error || j.details || ('HTTP ' + x.status)));
-    };
+    x.onload = () => { let j = {}; try { j = JSON.parse(x.responseText); } catch (e) {} if (x.status >= 200 && x.status < 300) resolve(j); else reject(new Error(j.error || j.details || ('HTTP ' + x.status))); };
     x.onerror = () => reject(new Error('فشل الاتصال بالخادم'));
+    x.onabort = () => reject(new Error('أُلغي'));
     x.send(body);
   });
 }
-async function uploadToR2(file, onPct) {
-  const safe = file.name.replace(/[^\w.\-]+/g, '_'), type = file.type || 'application/octet-stream';
-  if (file.size <= SIMPLE_MAX) {
-    return xhrSend(API_URL, { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': type }, file, l => onPct(l / file.size * 100));
+async function doUpload(t) {
+  const blob = await getBlob(t.id);
+  if (!blob) { t.stage = 'lost'; throw new Error('الملف لم يعد متوفراً على الجهاز، أعد رفعه'); }
+  const safe = t.fileName.replace(/[^\w.\-]+/g, '_');
+  const fin = r => { if (!r || !r.key) throw new Error('رد غير متوقع من الخادم'); t.key = r.key; t.url = r.url || (R2_PUBLIC_URL + '/' + r.key); };
+  if (t.size <= SIMPLE_MAX) {
+    return fin(await xhrSend(API_URL, { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': t.fileType }, blob, l => { t.pct = l / t.size * 100; updateBar(); }, t));
   }
-  const c = await xhrSend(API_URL + '?action=create', { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': type }, null);
-  const q = '&key=' + encodeURIComponent(c.key) + '&uploadId=' + encodeURIComponent(c.uploadId);
-  const parts = []; let done = 0;
-  try {
-    for (let n = 1, off = 0; off < file.size; n++, off += CHUNK) {
-      const blob = file.slice(off, Math.min(off + CHUNK, file.size));
-      let tries = 0, p;
-      for (;;) {
-        try {
-          p = await xhrSend(API_URL + '?action=part&n=' + n + q, { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/octet-stream' }, blob, l => onPct((done + l) / file.size * 100));
-          break;
-        } catch (e) { if (++tries >= 3) throw e; }
-      }
-      parts.push({ partNumber: p.partNumber, etag: p.etag }); done += blob.size;
+  if (!t.uploadId) {
+    const c = await xhrSend(API_URL + '?action=create', { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': t.fileType }, null, null, t);
+    t.uploadId = c.uploadId; t.key = c.key; t.parts = []; await persist(t);
+  }
+  const q = () => '&key=' + encodeURIComponent(t.key) + '&uploadId=' + encodeURIComponent(t.uploadId);
+  for (let n = t.parts.length + 1; (n - 1) * CHUNK < t.size; n++) {
+    const off = (n - 1) * CHUNK, part = blob.slice(off, Math.min(off + CHUNK, t.size)); let tries = 0, p;
+    for (;;) {
+      try { p = await xhrSend(API_URL + '?action=part&n=' + n + q(), { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/octet-stream' }, part, l => { t.pct = (off + l) / t.size * 100; updateBar(); }, t); break; }
+      catch (e) { if (t.cancelled || ++tries >= 4) throw e; await sleep(1500 * tries); }
     }
-    return await xhrSend(API_URL + '?action=complete' + q, { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, JSON.stringify({ parts }));
+    t.parts.push({ partNumber: p.partNumber, etag: p.etag }); await persist(t);
+  }
+  fin(await xhrSend(API_URL + '?action=complete' + q(), { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, JSON.stringify({ parts: t.parts }), null, t));
+}
+async function doSave(t) {
+  const data = { courseId: t.courseId, type: t.kind, title: t.title, url: t.url, r2Key: t.key, date: t.createdAt };
+  if (t.kind === 'pdf' && t.lectureRef) data.lectureId = t.lectureRef;
+  if (t.kind === 'video') { data.aiStatus = 'processing'; data.aiStartedAt = Date.now(); }
+  await setDoc(doc(db, 'lectures', t.id), data);   /* المعرّف ثابت فلا يتكرر السجل عند الاستئناف */
+}
+async function doAnalyze(t) {
+  if (!t.force) { try { const s = await getDoc(doc(db, 'lectures', t.id)); if (s.exists() && s.data().aiData) return; } catch (e) {} }
+  try { await updateDoc(doc(db, 'lectures', t.id), { aiStatus: 'processing', aiStartedAt: Date.now(), aiError: '' }); } catch (e) { console.warn(e); }
+  try {
+    const res = await fetch(API_URL + '?action=analyze', { method: 'POST', keepalive: true, headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, body: JSON.stringify({ key: t.key, lectureId: t.id }) });
+    let j = {}; try { j = await res.json(); } catch (e) {}
+    if (!res.ok || !j.success || !j.data) throw new Error((j.error || 'HTTP ' + res.status) + (j.details ? ' — ' + j.details : ''));
+    await updateDoc(doc(db, 'lectures', t.id), { aiData: { summary: String(j.data.summary || ''), quiz: Array.isArray(j.data.quiz) ? j.data.quiz : [] }, aiStatus: 'done', aiError: '' });
   } catch (e) {
-    try { await xhrSend(API_URL + '?action=abort' + q, { Authorization: 'Bearer ' + await idToken() }, null); } catch (e2) {}
-    throw e;
+    const m = e.message === 'Failed to fetch' ? 'انقطع الاتصال بالخادم' : e.message;
+    try { await updateDoc(doc(db, 'lectures', t.id), { aiStatus: 'error', aiError: String(m).slice(0, 300) }); } catch (e2) {}
+    throw new Error(m);
   }
 }
+async function runTask(t) {
+  t.running = true; t.paused = false; t.err = ''; updateBar();
+  try {
+    if (t.stage === 'upload') { await doUpload(t); t.stage = 'save'; await persist(t); }
+    if (t.stage === 'save') { await doSave(t); if (t.kind !== 'video') { toast('تم رفع «' + t.title + '»'); await removeTask(t.id); return; } t.stage = 'analyze'; await persist(t); }
+    if (t.stage === 'analyze') { await doAnalyze(t); toast('اكتمل تلخيص «' + t.title + '»'); await removeTask(t.id); return; }
+  } catch (e) {
+    console.error(e);
+    if (!t.cancelled) { t.err = e && e.message || String(e); t.paused = true; await persist(t); }
+  } finally { t.running = false; updateBar(); }
+}
+let pumping = false;
+async function pump() {
+  if (pumping || !authUser) return; pumping = true;
+  try { for (;;) { const nx = [...tasks.values()].filter(t => !t.paused && !t.running).sort((a, b) => a.createdAt - b.createdAt)[0]; if (!nx) break; await runTask(nx); } }
+  finally { pumping = false; }
+}
+function startAnalysis(it, force) {
+  if (!it.r2Key) { toast('لا يوجد ملف مرتبط بهذه المحاضرة'); return; }
+  let t = tasks.get(it.id);
+  if (t) { t.paused = false; if (force) t.force = true; }
+  else { t = { id: it.id, kind: 'video', courseId: it.courseId, title: it.title || '', stage: 'analyze', key: it.r2Key, createdAt: Date.now(), force: !!force, err: '', paused: false, pct: 0, parts: [] }; tasks.set(it.id, t); persist(t); }
+  updateBar(); pump(); toast('بدأ التحليل — يستمر في الخلفية ويُستكمل عند فتح الموقع');
+}
+function updateBar() {
+  const bar = $('taskBar'); bar.textContent = '';
+  const list = [...tasks.values()].sort((a, b) => a.createdAt - b.createdAt);
+  if (!isStaff() || !list.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'block'; bar.append(el('h5', null, 'العمليات الجارية (' + list.length + ')'));
+  list.forEach(t => {
+    const r = el('div', 'trow'); r.append(el('b', null, (t.kind === 'video' ? '🎬 ' : '📄 ') + t.title));
+    const sm = el('div'); sm.style.cssText = 'font-size:.85rem;color:#475569';
+    sm.textContent = t.paused ? '⚠ توقف: ' + t.err : t.stage === 'upload' ? (t.running ? 'جاري الرفع ' + Math.round(t.pct || 0) + '%' : 'بانتظار الدور…') : t.stage === 'save' ? 'جاري حفظ البيانات…' : (t.running ? 'جاري التلخيص وإنشاء الامتحان…' : 'بانتظار الدور…');
+    r.append(sm);
+    if (t.stage === 'upload' && t.running) { const pr = document.createElement('progress'); pr.max = 100; pr.value = t.pct || 0; r.append(pr); }
+    const tb = el('div', 'tb');
+    if (t.paused && t.stage !== 'lost') { const b = el('button', 'abtn abtn-g', 'استئناف'); b.onclick = () => { t.paused = false; pump(); updateBar(); }; tb.append(b); }
+    const c = el('button', 'abtn abtn-l', 'إلغاء');
+    c.onclick = async () => {
+      if (!confirm('إلغاء «' + t.title + '»؟')) return;
+      t.cancelled = true; if (t.xhr) { try { t.xhr.abort(); } catch (e) {} }
+      if (t.uploadId && t.stage === 'upload') { try { await xhrSend(API_URL + '?action=abort&key=' + encodeURIComponent(t.key) + '&uploadId=' + encodeURIComponent(t.uploadId), { Authorization: 'Bearer ' + await idToken() }, null); } catch (e) {} }
+      removeTask(t.id);
+    };
+    tb.append(c); r.append(tb); bar.append(r);
+  });
+}
+window.addEventListener('online', () => { tasks.forEach(t => { if (t.paused && t.stage !== 'lost') t.paused = false; }); pump(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') pump(); });
+window.addEventListener('beforeunload', e => { if ([...tasks.values()].some(t => t.running)) { e.preventDefault(); e.returnValue = ''; } });
+
+/* نافذة الرفع: تبدأ العملية في الخلفية وتُغلق فوراً */
+let up = null;
+function openUpload(type, courseId, lecId, list) {
+  if (!courseId) return;
+  up = { type, courseId };
+  $('upTitle').textContent = type === 'video' ? 'رفع فيديو جديد' : 'رفع ملف PDF';
+  $('upName').value = ''; $('upFile').value = ''; $('upErr').textContent = '';
+  $('upFile').accept = type === 'video' ? 'video/mp4,video/webm' : 'application/pdf';
+  $('upName').placeholder = type === 'video' ? 'عنوان المحاضرة (يُسبق تلقائياً بـ «المحاضرة الأولى:» ...)' : 'عنوان الملف';
+  $('upNote').textContent = type === 'video' ? 'يستمر الرفع في الخلفية، ثم يبدأ التلخيص وإنشاء الامتحان تلقائياً، ويُستكمل كل ذلك عند إعادة فتح الموقع إن أُغلق.' : '';
+  const w = $('upLinkWrap'), sel = $('upLink'); w.style.display = type === 'pdf' ? '' : 'none'; sel.textContent = '';
+  if (type === 'pdf') {
+    vids(list || []).forEach(v => { const o = document.createElement('option'); o.value = v.id; o.textContent = lecLabel(v, list); sel.append(o); });
+    const g = document.createElement('option'); g.value = ''; g.textContent = 'ملف عام للشرح (غير مرتبط بمحاضرة)'; sel.append(g);
+    sel.value = lecId || (vids(list || [])[0] ? vids(list)[0].id : '');
+  }
+  $('upSave').disabled = false; $('upModal').classList.add('open'); syncScroll();
+  setTimeout(() => $('upName').focus(), 50);
+}
+function closeUpload() { $('upModal').classList.remove('open'); up = null; syncScroll(); }
 $('upSave').onclick = async () => {
-  if (!up || uploading) return;
+  if (!up) return;
   const title = $('upName').value.trim(), file = $('upFile').files[0];
   if (!title || !file) { $('upErr').textContent = 'اكتب العنوان واختر الملف'; return; }
-  $('upErr').textContent = '';
-  const cur = up;
-  const fail = msg => { uploading = false; $('upSave').disabled = false; $('upProg').style.display = 'none'; $('upErr').textContent = msg; };
-  uploading = true; $('upSave').disabled = true; $('upProg').style.display = 'block'; $('upBar').value = 0;
-  let res;
-  try { res = await uploadToR2(file, pct => { $('upBar').value = pct; }); }
-  catch (e) { console.error(e); fail('فشل الرفع: ' + e.message); return; }
-  if (!res || !res.key) { fail('رد غير متوقع من الخادم'); return; }
-  try {
-    await addDoc(collection(db, 'lectures'), { courseId: cur.courseId, type: cur.type, title, url: res.url || (R2_PUBLIC_URL + '/' + res.key), r2Key: res.key, date: Date.now() });
-    uploading = false; closeUpload(); toast('تم الرفع بنجاح');
-  } catch (e2) { console.error(e2); fail('تم رفع الملف لكن تعذّر حفظ بياناته'); }
+  const id = doc(collection(db, 'lectures')).id;
+  const t = { id, kind: up.type, courseId: up.courseId, lectureRef: up.type === 'pdf' ? $('upLink').value : '', title, fileName: file.name, fileType: file.type || 'application/octet-stream', size: file.size, stage: 'upload', pct: 0, uploadId: '', key: '', parts: [], url: '', createdAt: Date.now(), err: '', paused: false, force: false };
+  memBlobs.set(id, file);
+  try { await idbDo('blobs', 'readwrite', s => s.put({ id, blob: file })); } catch (e) { toast('تعذّر حفظ الملف على الجهاز؛ أبقِ الصفحة مفتوحة حتى ينتهي الرفع'); }
+  tasks.set(id, t); await persist(t); closeUpload(); updateBar(); toast('بدأ الرفع في الخلفية'); pump();
 };
 $('upCancel').onclick = closeUpload;
 $('upModal').addEventListener('click', e => { if (e.target === $('upModal')) closeUpload(); });
 
-/* ---------- تحليل المحاضرة بالذكاء الاصطناعي ---------- */
-let aiCur = null, aiBusy = false;
-function showAI(it, data) {
-  aiCur = it;
-  $('aiTitle').textContent = 'تلخيص وكويز — ' + (it.title || '');
-  $('aiSummary').textContent = data.summary || '';
-  renderQuiz(data.quiz || []);
-  $('aiModal').classList.add('open'); syncScroll();
-}
-function renderQuiz(quiz) {
-  const box = $('aiQuiz'); box.textContent = '';
-  $('aiScore').style.display = 'none';
-  $('aiSubmit').style.display = quiz.length ? '' : 'none';
-  $('aiRetry').style.display = 'none';
-  if (!quiz.length) { box.append(el('p', 'bempty', 'لا توجد أسئلة.')); return; }
-  quiz.forEach((q, i) => {
-    const c = el('div', 'qcard'); c.append(el('h5', null, (i + 1) + '. ' + q.question));
-    (q.options || []).forEach((o, j) => {
-      const lab = el('label', 'qopt');
-      const r = document.createElement('input'); r.type = 'radio'; r.name = 'aiq' + i; r.value = String(j);
-      lab.append(r, el('span', null, o)); c.append(lab);
-    });
-    box.append(c);
-  });
-}
-function gradeQuiz() {
-  const quiz = (aiCur && aiCur._data && aiCur._data.quiz) || [];
-  let score = 0;
-  quiz.forEach((q, i) => {
-    const cards = $('aiQuiz').querySelectorAll('.qcard')[i]; if (!cards) return;
-    const labs = cards.querySelectorAll('.qopt');
-    const picked = cards.querySelector('input:checked');
-    const pi = picked ? parseInt(picked.value, 10) : -1;
-    if (pi === q.correctIndex) score++;
-    labs.forEach((lab, j) => {
-      lab.querySelector('input').disabled = true;
-      if (j === q.correctIndex) lab.classList.add('ok');
-      else if (j === pi) lab.classList.add('bad');
-    });
-  });
-  const sc = $('aiScore'); sc.textContent = 'حصلت على ' + score + '/' + quiz.length; sc.style.display = '';
-  $('aiSubmit').style.display = 'none'; $('aiRetry').style.display = '';
-}
-function analyzeVideo(it, force) {
-  if (aiBusy) return;
-  if (it.aiData && !force) { aiCur = { ...it, _data: it.aiData }; showAI(aiCur, it.aiData); return; }
-  aiInItem = it; $('aiText').value = ''; $('aiInErr').textContent = '';
-  $('aiRunVideo').style.display = it.r2Key ? '' : 'none';
-  $('aiInput').classList.add('open'); syncScroll();
-  setTimeout(() => $('aiText').focus(), 50);
-}
-async function runAnalysis(it, payload) {
-  if (aiBusy) return;
-  aiBusy = true;
-  try { await updateDoc(doc(db, 'lectures', it.id), { aiStatus: 'processing', aiStartedAt: Date.now(), aiError: '' }); } catch (e) { console.warn(e); }
-  toast('بدأ التحليل — يمكنك التنقل أو إغلاق الصفحة وسيُحفظ تلقائياً');
-  try {
-    const res = await fetch(API_URL + '?action=analyze', {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, lectureId: it.id })
-    });
-    let j = {}; try { j = await res.json(); } catch (e) {}
-    if (!res.ok || !j.success || !j.data) throw new Error((j.error || 'HTTP ' + res.status) + (j.details ? ' — ' + j.details : ''));
-    const data = { summary: String(j.data.summary || ''), quiz: Array.isArray(j.data.quiz) ? j.data.quiz : [] };
-    try { await updateDoc(doc(db, 'lectures', it.id), { aiData: data, aiStatus: 'done', aiError: '' }); } catch (e) { console.warn(e); }
-    aiCur = { ...it, aiData: data, _data: data };
-    if ($('admin').classList.contains('open') && aSel === it.courseId && aTab === 'lectures') showAI(aiCur, data);
-    else toast('اكتمل تحليل «' + (it.title || '') + '»');
-  } catch (e) {
-    console.error(e);
-    const msg = e.message === 'Failed to fetch' ? 'انقطع الاتصال بالخادم. إن كنت قد أغلقت الصفحة فقد يكون التحليل ما زال يعمل، وإلا جرّب لصق نص المحاضرة بدل الفيديو.' : e.message;
-    try { await updateDoc(doc(db, 'lectures', it.id), { aiStatus: 'error', aiError: msg.slice(0, 300) }); } catch (e2) {}
-    alert('فشل التحليل:\n' + msg);
-  }
-  aiBusy = false;
-}
-let aiInItem = null;
-function closeAIInput() { $('aiInput').classList.remove('open'); syncScroll(); }
-$('aiRunText').onclick = () => {
-  const t = $('aiText').value.trim();
-  if (t.length < 50) { $('aiInErr').textContent = 'الصق نصاً أطول (50 حرفاً على الأقل)'; return; }
-  const it = aiInItem; closeAIInput(); runAnalysis(it, { text: t });
-};
-$('aiRunVideo').onclick = () => { const it = aiInItem; closeAIInput(); runAnalysis(it, { key: it.r2Key }); };
-$('aiInCancel').onclick = closeAIInput;
-$('aiInput').addEventListener('click', e => { if (e.target === $('aiInput')) closeAIInput(); });
-function closeAI() { $('aiModal').classList.remove('open'); syncScroll(); }
-$('aiSubmit').onclick = gradeQuiz;
-$('aiRetry').onclick = () => renderQuiz(aiCur._data.quiz || []);
-$('aiRe').onclick = () => { if (!aiCur) return; const it = aiCur; closeAI(); analyzeVideo(it, true); };
-$('aiClose').onclick = closeAI;
-$('aiModal').addEventListener('click', e => { if (e.target === $('aiModal')) closeAI(); });
-
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  if ($('aiInput').classList.contains('open')) { closeAIInput(); return; }
-  if ($('aiModal').classList.contains('open')) { closeAI(); return; }
-  if ($('upModal').classList.contains('open')) { closeUpload(); return; }
-  if ($('nameModal').classList.contains('open')) closeName();
+  if ($('upModal').classList.contains('open')) closeUpload();
+  else if ($('nameModal').classList.contains('open')) closeName();
   else if ($('authModal').classList.contains('open')) closeAuth();
   else if ($('admin').classList.contains('open')) closeAdmin();
-  else if ($('browser').classList.contains('open')) closeBrowser();
 });
 
+/* ---------- انضم إلينا ---------- */
+const J = { step: 'home', built: null, prev: { single: 'home', team: 'home', tjoin: 'team', tjoinform: 'tjoin', tnew: 'team', done: 'home' }, team: null };
+const DEG = ['طالب جامعي', 'بكالوريوس', 'ماجستير', 'دكتوراه', 'أخرى'];
+const MF = [['name', 'الاسم الرباعي', 'text'], ['phone', 'رقم الهاتف', 'tel'], ['phone2', 'رقم هاتف آخر', 'tel'], ['email', 'البريد الإلكتروني الشخصي', 'email'],
+  ['pass', 'كلمة المرور (8 أحرف على الأقل، حرف كبير وصغير ورقم)', 'password'], ['pass2', 'تأكيد كلمة المرور', 'password'], ['city', 'مكان الإقامة (الدولة / المدينة)', 'text'],
+  ['degree', 'التحصيل الدراسي', 'select'], ['college', 'الكلية التي يمكنك تقديم مادة دراسية فيها', 'text'], ['majors', 'التخصصات', 'text'],
+  ['certs', 'الشهادات التي حصلت عليها في مجالك', 'textarea'], ['job', 'طبيعة عملك الحالية', 'text'], ['years', 'سنوات الخبرة في التدريس أو المجال', 'text'],
+  ['subjects', 'المواد التي ترغب بتقديمها', 'textarea'], ['link', 'رابط قناة أو حساب أو أعمال سابقة (اختياري)', 'text'], ['bio', 'نبذة يسيرة عنك', 'textarea']];
+function hashPass(s) {
+  let h1 = 0xdeadbeef ^ 7, h2 = 0x41c6ce57 ^ 7; s = 'uni|' + s;
+  for (let i = 0, ch; i < s.length; i++) { ch = s.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+function memberForm(parent, title) {
+  const box = el('div', 'jbox'), ins = {};
+  if (title) box.append(el('h4', 'sh', title));
+  MF.forEach(([k, l, t]) => {
+    box.append(el('label', 'lbl', l)); let i;
+    if (t === 'select') { i = el('select', 'fld'); DEG.forEach(d => i.append(new Option(d, d))); }
+    else if (t === 'textarea') { i = el('textarea', 'fld'); i.rows = 3; }
+    else { i = el('input', 'fld'); i.type = t; if (t === 'email' || t === 'password') i.dir = 'ltr'; }
+    ins[k] = i; box.append(i);
+  });
+  parent.append(box);
+  return {
+    get() {
+      const v = {};
+      for (const [k, l] of MF) { v[k] = ins[k].value.trim(); if (!v[k] && k !== 'link') throw new Error('أكمل الحقل: ' + l.split('(')[0]); }
+      if (!/^\S+@\S+\.\S+$/.test(v.email)) throw new Error('البريد الإلكتروني غير صحيح');
+      const p = ins.pass.value;
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(p)) throw new Error('كلمة المرور ضعيفة: 8 أحرف على الأقل مع حرف كبير وصغير ورقم');
+      if (p !== ins.pass2.value) throw new Error('تأكيد كلمة المرور غير مطابق');
+      v.pass = p; return v;
+    }
+  };
+}
+function renderJoin(c) {
+  const st = J.step, err = el('p', 'merr'); err.style.fontSize = '1.1rem';
+  const go_ = s => { J.step = s; renderPage(); window.scrollTo(0, 0); };
+  c.className = 'container jform';
+  const choice = (arr) => { const g = el('div', 'bgrid'); g.style.gridTemplateColumns = 'repeat(2,1fr)'; arr.forEach(([e, t, d, f]) => { const b = el('button', 'bitem'); b.type = 'button'; b.append(el('span', 'emo', e), el('h4', null, t), el('span', null, d)); b.onclick = f; g.append(b); }); c.append(g); };
+  const field = (l, t, ph) => { c.append(el('label', 'lbl', l)); const i = el('input', 'fld'); i.type = t || 'text'; if (ph) i.placeholder = ph; c.append(i); return i; };
+  const send = async (btn, fn) => { err.textContent = ''; btn.disabled = true; try { await fn(); } catch (e) { console.error(e); err.textContent = e.code === 'permission-denied' || /permission/i.test(e.message || '') ? 'قواعد Firestore تمنع حفظ الطلب. الصق قواعد firestore.rules المرفقة في Firebase ثم أعد المحاولة.' : (e.message || 'تعذّر الإرسال'); } btn.disabled = false; };
+  if (st === 'home') { c.append(el('h3', 'btitle', 'اختر نوع الانضمام')); choice([['👤', 'انضمام فردي', 'للشارح الذي يعمل بمفرده', () => go_('single')], ['👥', 'انضمام جماعي (فريق)', 'إنشاء فريق جديد أو الانضمام لفريق قائم', () => go_('team')]]); return; }
+  if (st === 'done') { c.append(el('h3', 'btitle', '✅ تم إرسال طلبك')); c.append(msg('طلبك بانتظار موافقة الإدارة. بعد القبول سجّل دخولك من «التسجيل» ← «مدير / مساهم» بالبريد وكلمة المرور.')); return; }
+  if (st === 'team') { c.append(el('h3', 'btitle', 'الانضمام الجماعي')); choice([['🔑', 'الانضمام لفريق موجود', 'بالاسم وكلمة مرور الفريق', () => go_('tjoin')], ['🆕', 'إنشاء فريق جديد', 'أنشئ فريقك وأضف أعضاءه', () => go_('tnew')]]); return; }
+  const submit = el('button', 'abtn abtn-b', 'إرسال الطلب'); submit.style.cssText = 'font-size:1.2rem;padding:12px 28px;margin-top:14px';
+  if (st === 'single') {
+    c.append(el('h3', 'btitle', 'انضمام فردي')); const f = memberForm(c);
+    c.append(err, submit); submit.onclick = () => send(submit, async () => { await submitJoin('person', [f.get()], null); go_('done'); }); return;
+  }
+  if (st === 'tjoin') {
+    c.append(el('h3', 'btitle', 'الانضمام لفريق موجود')); const n = field('اسم الفريق'), p = field('كلمة مرور الفريق', 'password'); p.dir = 'ltr';
+    const b = el('button', 'abtn abtn-b', 'متابعة'); b.style.cssText = 'font-size:1.2rem;padding:12px 28px;margin-top:14px'; c.append(err, b);
+    b.onclick = () => send(b, async () => {
+      const q = await getDocs(query(collection(db, 'teams'), where('name', '==', n.value.trim())));
+      const t = q.docs[0]; if (!t || t.data().passHash !== hashPass(p.value)) throw new Error('اسم الفريق أو كلمة المرور غير صحيحة');
+      J.team = { id: t.id, name: t.data().name, university: t.data().university || '' }; go_('tjoinform');
+    }); return;
+  }
+  if (st === 'tjoinform') {
+    c.append(el('h3', 'btitle', 'بياناتك — فريق «' + (J.team ? J.team.name : '') + '»')); const f = memberForm(c);
+    c.append(err, submit); submit.onclick = () => send(submit, async () => { await submitJoin('team', [f.get()], J.team); go_('done'); }); return;
+  }
+  if (st === 'tnew') {
+    c.append(el('h3', 'btitle', 'إنشاء فريق جديد'));
+    const n = field('اسم الفريق'), p = field('كلمة مرور الفريق (يستخدمها الأعضاء الجدد للانضمام)', 'password'), u = field('الجامعة التي يستعد الفريق لتقديم مادة تعليمية فيها'); p.dir = 'ltr';
+    const forms = [], holder = el('div'); c.append(holder);
+    const addM = () => forms.push(memberForm(holder, 'العضو ' + (['الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر'][forms.length] || (forms.length + 1)) + ':'));
+    addM();
+    const more = el('button', 'abtn abtn-g', '+ إضافة عضو آخر'); more.style.cssText = 'font-size:1.1rem;padding:10px 22px;margin-top:12px'; more.onclick = addM;
+    c.append(more, err, submit);
+    submit.onclick = () => send(submit, async () => {
+      if (!n.value.trim() || !u.value.trim()) throw new Error('أكمل اسم الفريق والجامعة');
+      if (p.value.length < 6) throw new Error('كلمة مرور الفريق قصيرة (6 أحرف على الأقل)');
+      const ms = forms.map(f => f.get());
+      const ex = await getDocs(query(collection(db, 'teams'), where('name', '==', n.value.trim()))); if (!ex.empty) throw new Error('اسم الفريق مستخدم، اختر اسماً آخر');
+      await submitJoin('team', ms, { isNew: true, name: n.value.trim(), pass: p.value, university: u.value.trim() }); go_('done');
+    });
+  }
+}
+async function submitJoin(kind, members, team) {
+  joining = true;
+  try {
+    let teamId = team && team.id || '';
+    for (let i = 0; i < members.length; i++) {
+      const { pass, pass2, ...data } = members[i];
+      let cred;
+      try { cred = await createUserWithEmailAndPassword(auth, data.email, pass); }
+      catch (e) {
+        if (e.code === 'auth/email-already-in-use') {
+          try { cred = await signInWithEmailAndPassword(auth, data.email, pass); } catch (e3) { try { await sendPasswordResetEmail(auth, data.email); } catch (e4) {} throw new Error('هذا البريد له حساب سابق بكلمة مرور مختلفة. أرسلنا رابط إعادة تعيين كلمة المرور إلى بريدك، استخدم كلمة المرور القديمة ثم أعد التقديم.'); }
+          const ex = await getDoc(doc(db, 'applications', cred.user.uid)); if (ex.exists()) throw new Error('لهذا البريد طلب سابق');
+        } else throw new Error(e.code === 'auth/weak-password' ? 'كلمة المرور ضعيفة' : 'تعذّر إنشاء الحساب (' + (e.code || e.message) + ')'); }
+      if (kind === 'team' && team.isNew && i === 0) { teamId = doc(collection(db, 'teams')).id; await setDoc(doc(db, 'teams', teamId), { name: team.name, passHash: hashPass(team.pass), university: team.university, createdAt: Date.now() }); }
+      await setDoc(doc(db, 'applications', cred.user.uid), { ...data, uid: cred.user.uid, kind, teamId, teamName: team ? team.name : '', teamUniversity: team ? team.university || '' : '', status: 'pending', createdAt: Date.now() });
+      await signOut(auth);
+    }
+  } finally { joining = false; try { await signOut(auth); } catch (e) {} }
+}
+
+/* ---------- مراجعة الإدارة ---------- */
+let apps = [], unsubApps = null, staff = [], unsubStaff = null;
+const pendingRoots = () => nodes.filter(n => n.status === 'pending' && !(n.parentId && (byId(n.parentId) || {}).status === 'pending'));
+const revCount = () => (isAdmin() ? apps.length + pendingRoots().length : 0);
+function watchApps(on) {
+  if (unsubApps) { unsubApps(); unsubApps = null; } apps = [];
+  if (unsubStaff) { unsubStaff(); unsubStaff = null; } staff = [];
+  if (!on) return;
+  unsubApps = onSnapshot(query(collection(db, 'applications'), where('status', '==', 'pending')), snap => { apps = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderAdmin(); }, e => console.error(e));
+  unsubStaff = onSnapshot(query(collection(db, 'users'), where('role', '==', 'contrib')), snap => { staff = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderAdmin(); }, e => console.error(e));
+}
+async function purgeLectures(ids) {
+  for (const id of ids) {
+    const n = byId(id); if (!n || (n.type !== 'exp' && n.type !== 'cou')) continue;
+    const q = await getDocs(query(collection(db, 'lectures'), where('courseId', '==', id)));
+    for (const d of q.docs) {
+      const k = d.data().r2Key; await deleteDoc(d.ref); try { localStorage.removeItem(qkey(d.id)); } catch (e) {}
+      if (k) { try { await fetch(API_URL, { method: 'DELETE', headers: { Authorization: 'Bearer ' + await idToken(), 'File-Name': k } }); } catch (e) { console.warn(e); } }
+    }
+  }
+}
+function renderReview() {
+  const body = $('aReviewBox'); body.textContent = ''; body.className = 'aview jform';
+  body.append(el('h4', 'sh', 'طلبات الانضمام (' + apps.length + ')'));
+  if (!apps.length) body.append(msg('لا توجد طلبات.'));
+  apps.forEach(a => {
+    const c = el('div', 'att'); c.style.cssText = 'display:block;padding:14px';
+    c.append(el('b', null, a.name + ' — ' + (a.kind === 'team' ? 'فريق «' + a.teamName + '» (جامعة مقترحة: ' + (a.teamUniversity || '-') + ')' : 'فردي')));
+    const dl = el('div'); dl.style.cssText = 'font-size:1rem;line-height:1.9;margin:8px 0';
+    MF.filter(f => !['pass', 'pass2', 'name'].includes(f[0])).forEach(([k, l]) => { if (a[k]) { const r = el('div'); r.append(el('strong', null, l.split('(')[0] + ': '), document.createTextNode(a[k])); dl.append(r); } });
+    c.append(dl);
+    const us = el('select', 'fld'), cs = el('select', 'fld'); kids(null, 'uni').forEach(u => us.append(new Option(u.name, u.id)));
+    const fillC = () => { cs.textContent = ''; kids(us.value, 'col').forEach(x => cs.append(new Option(x.name, x.id))); }; us.onchange = fillC; fillC();
+    c.append(el('label', 'lbl', a.kind === 'team' ? 'الجامعة التي سيخدم فيها الفريق' : 'الجامعة والكلية التي سيخدم فيها'), us); if (a.kind !== 'team') c.append(cs);
+    const ok = el('button', 'abtn abtn-g', 'قبول'), no = el('button', 'abtn abtn-l', 'رفض'); no.style.marginRight = '8px';
+    ok.onclick = async () => {
+      const sc = a.kind === 'team' ? { type: 'university', id: us.value } : { type: 'college', id: cs.value };
+      if (!sc.id) { toast('اختر الجامعة' + (a.kind === 'team' ? '' : ' والكلية')); return; }
+      try { await setDoc(doc(db, 'users', a.uid), { role: 'contrib', name: a.name, email: a.email, scope: sc, teamId: a.teamId || '', teamName: a.teamName || '' }); await updateDoc(doc(db, 'applications', a.uid), { status: 'approved', scope: sc }); toast('تم القبول'); } catch (e) { console.error(e); toast('تعذّر القبول'); }
+    };
+    no.onclick = async () => { if (confirm('رفض طلب ' + a.name + '؟ سيتمكن من التقديم من جديد بنفس البريد.')) { try { await deleteDoc(doc(db, 'applications', a.uid)); } catch (e) { toast('تعذّر الرفض'); } } };
+    const act = el('div', 'mact'); act.append(ok, no); c.append(act); body.append(c);
+  });
+  const pr = pendingRoots();
+  body.append(el('h4', 'sh', 'محتوى بانتظار الموافقة (' + pr.length + ')'));
+  if (!pr.length) body.append(msg('لا يوجد محتوى معلّق.'));
+  pr.forEach(n => {
+    const c = el('div', 'att'), ids = [n.id, ...desc(n.id)];
+    const tx = el('div'); tx.append(el('b', null, L[n.type].one + ': ' + dn(n)), el('br'), el('small', null, pathOf(n.id).map(dn).join(' ‹ ') + ' — بواسطة ' + (n.ownerName || '') + ' — العناصر: ' + ids.length));
+    const act = el('div', 'mact'), ok = el('button', 'abtn abtn-g', 'موافقة'), no = el('button', 'abtn abtn-l', 'رفض وحذف'), op = el('button', 'abtn abtn-b', 'فتح');
+    ok.onclick = async () => { try { const b = writeBatch(db); ids.filter(i => (byId(i) || {}).status === 'pending').forEach(i => b.update(doc(db, 'structure', i), { status: 'approved' })); await b.commit(); toast('تمت الموافقة'); } catch (e) { console.error(e); toast('تعذّر الحفظ'); } };
+    no.onclick = async () => { if (!confirm('رفض «' + n.name + '» وحذفه مع كل محتواه وفيديوهاته نهائياً؟')) return; try { await purgeLectures(ids); const b = writeBatch(db); ids.forEach(i => b.delete(doc(db, 'structure', i))); await b.commit(); toast('تم الحذف'); } catch (e) { console.error(e); toast('تعذّر الحذف'); } };
+    op.onclick = () => { aView = 'struct'; selectNode(n.id); };
+    act.append(ok, no, op); c.append(tx, act); body.append(c);
+  });
+  body.append(el('h4', 'sh', '👥 المساهمون الحاليون (' + staff.length + ')'));
+  if (!staff.length) body.append(msg('لا يوجد مساهمون حالياً.'));
+  const sname = u => { const n = u.scope && byId(u.scope.id); return n ? n.name : '—'; };
+  const memberRow = u => {
+    const r = el('div', 'att'); r.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px';
+    const tx = el('div'); tx.append(el('b', null, u.name || u.email), el('br'), el('small', null, u.email + ' — ' + (u.scope && u.scope.type === 'college' ? 'كلية: ' : 'جامعة: ') + sname(u)));
+    const b = el('button', 'abtn abtn-l', '🚫 إلغاء الصلاحية'); b.onclick = () => revoke([u], 'إلغاء صلاحية ' + (u.name || u.email) + '؟'); r.append(tx, b); return r;
+  };
+  const teams = {}; staff.forEach(u => { if (u.teamId) (teams[u.teamId] = teams[u.teamId] || []).push(u); });
+  Object.keys(teams).forEach(tid => {
+    const ms = teams[tid], box = el('div', 'jbox'), h = el('div'); h.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:10px';
+    h.append(el('b', null, '👥 فريق «' + (ms[0].teamName || tid) + '» (' + ms.length + ')'));
+    const d = el('button', 'abtn abtn-l', '🗑 حذف الفريق'); d.onclick = () => revoke(ms, 'حذف فريق «' + (ms[0].teamName || tid) + '» وإلغاء صلاحيات كل أعضائه؟', tid); h.append(d); box.append(h);
+    ms.forEach(u => box.append(memberRow(u))); body.append(box);
+  });
+  const solo = staff.filter(u => !u.teamId);
+  if (solo.length) { body.append(el('h4', 'sh', '👤 الأفراد')); solo.forEach(u => body.append(memberRow(u))); }
+}
+async function revoke(list, q, teamId) {
+  if (!confirm(q + '\nسيتمكنون من التقديم من جديد بنفس البريد. المحتوى الذي أضافوه يبقى كما هو.')) return;
+  try {
+    for (const u of list) { await deleteDoc(doc(db, 'users', u.id)); try { await deleteDoc(doc(db, 'applications', u.id)); } catch (e) {} }
+    if (teamId) { for (const a of apps.filter(x => x.teamId === teamId)) await deleteDoc(doc(db, 'applications', a.uid)); try { await deleteDoc(doc(db, 'teams', teamId)); } catch (e) {} }
+    toast('تم التنفيذ');
+  } catch (e) { console.error(e); toast('تعذّر التنفيذ'); }
+}
+
+
+/* ---------- تفاعل الزوار: إعجاب، دردشة، تقييم (بدون تسجيل دخول) ---------- */
+const dev = (() => { try { let d = localStorage.getItem('uni_dev'); if (!d) { d = 'd' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); localStorage.setItem('uni_dev', d); } return d; } catch (e) { return 'anon'; } })();
+const getMail = () => { const m = (gUser && gUser.email) || (authUser && authUser.email) || ''; if (m) return m.toLowerCase(); try { return localStorage.getItem('uni_mail') || ''; } catch (e) { return ''; } };
+async function googleLogin() { const p = new GoogleAuthProvider(); p.setCustomParameters({ prompt: 'select_account' }); const u = (await signInWithPopup(auth, p)).user; gUser = u; return u; }
+let mailCb = null, RX = [], CM = [], RT = [];
+async function needMail(cb) {
+  const m = getMail(); if (m) { cb(m); return; }
+  try { const u = await googleLogin(), em = (u.email || '').toLowerCase(); if (!em) throw new Error('no email'); updateAuthUI(); cb(em); }
+  catch (e) {
+    const c = e && e.code || ''; if (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') return;
+    console.error(e); toast('تعذّر الدخول بحساب Google، أدخل بريدك يدوياً');
+    mailCb = cb; $('mailInput').value = ''; $('mailErr').textContent = ''; $('mailModal').classList.add('open'); syncScroll();
+  }
+}
+function closeMail() { $('mailModal').classList.remove('open'); mailCb = null; syncScroll(); }
+$('mailSave').onclick = () => {
+  const v = $('mailInput').value.trim().toLowerCase();
+  if (!/^\S+@\S+\.\S+$/.test(v)) { $('mailErr').textContent = 'اكتب بريداً إلكترونياً صحيحاً'; return; }
+  try { localStorage.setItem('uni_mail', v); } catch (e) {}
+  const cb = mailCb; mailCb = null; $('mailModal').classList.remove('open'); syncScroll();
+  if (vShell) { vShell.sig = ''; updateVideoUI(false); } else if (route.v !== 'home') renderPage();
+  if (cb) cb(v);
+};
+$('mailCancel').onclick = closeMail;
+const subs = {};
+function watchK(key, id, mk, cb) {
+  if (subs[key] && subs[key].id === id) return;
+  if (subs[key] && subs[key].u) subs[key].u();
+  subs[key] = { id, u: null }; cb([]);
+  if (id) subs[key].u = onSnapshot(mk(id), s => cb(s.docs.map(d => ({ id: d.id, ...d.data() }))), e => console.error(e));
+}
+function watchSocial() {
+  const home = route.v === 'home', last = !home && ready ? byId((route.path || [])[(route.path || []).length - 1]) : null;
+  const rt = last && last.type === 'cou' ? last.id : last && last.type === 'exp' && !last.legacy ? last.parentId : null;
+  watchK('rx', route.v === 'video' ? route.lec : null, id => query(collection(db, 'reactions'), where('lectureId', '==', id)), d => { RX = d; updateReact(); });
+  watchK('rt', rt, id => query(collection(db, 'ratings'), where('courseId', '==', id)), d => { RT = d; if (route.v === 'browse') renderPage(); });
+  const chat = route.v === 'video' && (route.tab || 'summary') === 'chat';
+  watchK('cm', chat ? route.lec : null, id => query(collection(db, 'comments'), where('lectureId', '==', id)), d => { CM = d; renderChatList(); });
+}
+function updateReact() {
+  if (!vShell) return;
+  const u = RX.filter(x => x.v === 1).length, d = RX.filter(x => x.v === -1).length, my = RX.find(x => x.dev === dev);
+  vShell.up.textContent = '👍 ' + u; vShell.down.textContent = '👎 ' + d;
+  vShell.up.classList.toggle('on', !!my && my.v === 1); vShell.down.classList.toggle('on', !!my && my.v === -1);
+}
+function react(v) {
+  const id = route.lec; if (!id) return;
+  const ref = doc(db, 'reactions', id + '_' + dev), my = RX.find(x => x.dev === dev);
+  (my && my.v === v ? deleteDoc(ref) : setDoc(ref, { lectureId: id, dev, v, t: Date.now() })).catch(e => { console.error(e); toast('تعذّر تسجيل التفاعل'); });
+}
+function rateLine(id) {
+  const r = RT.filter(x => x.expId === id), s = el('div', 'stars'); s.style.cssText = 'font-size:1.25rem;margin-top:8px';
+  if (!r.length) { s.textContent = '☆☆☆☆☆ '; const t = el('small', null, 'لا تقييمات بعد'); t.style.color = '#64748b'; s.append(t); return s; }
+  const a = r.reduce((t, x) => t + x.stars, 0) / r.length, k = Math.round(a);
+  s.textContent = '★'.repeat(k) + '☆'.repeat(5 - k) + ' ' + a.toFixed(1) + ' (' + r.length + ')'; return s;
+}
+function rateBox(exp) {
+  const box = el('div', 'rate'); box.append(el('b', null, '⭐ تقييم الشارح'), rateLine(exp.id));
+  const mail = getMail(), mine = mail && RT.find(x => x.expId === exp.id && x.email === mail), row = el('div'); row.style.marginTop = '8px';
+  row.append(el('span', null, 'قيّم هذا الشارح: '));
+  for (let i = 1; i <= 5; i++) {
+    const b = el('button', 'st' + (mine && i <= mine.stars ? ' on' : ''), '★'); b.type = 'button';
+    b.onclick = () => needMail(m => setDoc(doc(db, 'ratings', exp.id + '_' + m.replace(/[\/\s]/g, '')), { expId: exp.id, courseId: exp.parentId, email: m, stars: i, t: Date.now() }).then(() => toast('شكراً لتقييمك')).catch(e => { console.error(e); toast('تعذّر حفظ التقييم'); }));
+    row.append(b);
+  }
+  box.append(row); return box;
+}
+function renderChatList() {
+  if (!vShell || !vShell.chatList) return; const l = vShell.chatList; l.textContent = '';
+  const arr = CM.slice().sort((a, b) => (a.t || 0) - (b.t || 0));
+  if (!arr.length) { l.append(msg('لا توجد رسائل بعد، كن أول من يعلّق.')); return; }
+  arr.forEach(c => {
+    const r = el('div', 'cm'), nm_ = String(c.email || '').split('@')[0];
+    const h = el('small', null, '👤 ' + nm_ + ' — ' + new Date(c.t || 0).toLocaleString('ar')); r.append(h);
+    if (isAdmin()) { const d = el('button', 'ibtn d'); d.type = 'button'; d.innerHTML = ICO_DEL; d.onclick = () => deleteDoc(doc(db, 'comments', c.id)).catch(() => toast('تعذّر الحذف')); h.append(d); }
+    r.append(el('div', null, c.text)); l.append(r);
+  });
+  l.scrollTop = l.scrollHeight;
+}
+function panelChat(pn, lec) {
+  const list = el('div', 'cmlist'); vShell.chatList = list; pn.append(list); renderChatList();
+  const box = el('div', 'cmbox'), mail = getMail();
+  if (mail) { const w = el('small', null, '✉ تعلّق بالبريد: ' + mail + ' — '); const ch = el('a', null, 'تغيير'); ch.href = '#'; ch.onclick = async e => { e.preventDefault(); try { localStorage.removeItem('uni_mail'); } catch (x) {} if (gUser) { try { await signOut(auth); } catch (x) {} } gUser = null; updateAuthUI(); if (vShell) { vShell.sig = ''; updateVideoUI(false); } }; w.append(ch); box.append(w); }
+  const ta = el('textarea', 'fld'); ta.rows = 3; ta.maxLength = 1000; ta.placeholder = 'اكتب تعليقك أو سؤالك هنا…';
+  const b = el('button', 'abtn abtn-b', 'إرسال 💬'); b.style.marginTop = '8px';
+  b.onclick = () => { const t = ta.value.trim(); if (!t) return; needMail(m => addDoc(collection(db, 'comments'), { lectureId: lec.id, email: m, text: t, t: Date.now() }).then(() => { ta.value = ''; }).catch(e => { console.error(e); toast('تعذّر الإرسال'); })); };
+  box.append(ta, b); pn.append(box);
+}
+
 updateAuthUI();
+
 </script>
 
 </body>

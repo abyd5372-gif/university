@@ -468,6 +468,8 @@ a>.dot{top:-12px;left:-16px;min-width:20px;height:20px;font-size:.75rem;padding:
 .rafiq-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.rafiq-alert,.rafiq-job{border:1px solid #dbe5ed;border-radius:12px;padding:18px;margin:12px 0;background:#fff;overflow-wrap:anywhere}.rafiq-alert{border-right:4px solid #e8b440}.rafiq-alert h4{color:#174f77;font-size:1.25rem;margin-bottom:8px}.rafiq-alert blockquote{border-right:3px solid #94a3b8;padding:8px 12px;background:#f8fafc;margin:10px 0;white-space:pre-wrap}.rafiq-sources{margin-top:16px;padding-top:10px;border-top:1px solid #dae4ef}.rafiq-source{margin:10px 0;display:flex;flex-direction:column;gap:6px}.rafiq-source small{font-size:.95rem;line-height:1.8;color:#536678}.task-info{display:block;color:#526476;font-size:.85rem;line-height:1.7}.upload-entries{display:grid;gap:10px;margin:12px 0;max-height:43vh;overflow:auto}.upload-entry{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border:1px solid #dce5ec;padding:10px;border-radius:10px}.upload-entry small{width:calc(100% - 28px);overflow-wrap:anywhere;color:#64748b}.upload-entry .fld{flex:1;min-width:160px;margin:0}.upload-entry .abtn{padding:7px 10px}#upModal .mbox{width:min(680px,100%);max-height:92vh;overflow:auto}.taskbar{max-height:42vh}.rafiq-job small{color:#64748b}.ask-history .rafiq-source .abtn{text-align:right;white-space:normal;font-size:1rem}
 @media(max-width:600px){.rafiq-alert,.rafiq-job{padding:13px}.rafiq-actions .abtn{font-size:1rem}.upload-entry .fld{min-width:120px}.taskbar{max-height:35vh;right:8px;bottom:8px}}
 .upload-video-card{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;padding:16px;background:#f8fbff;border:2px solid #cfdeeb;border-radius:14px}.upload-card-head{border-bottom:1px solid #d8e3ee;padding-bottom:8px}.upload-card-head h4{margin:0;color:#1c557f;font-size:1.15rem}.upload-card-controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}.upload-entry .chosen-file{width:100%;line-height:1.7;overflow-wrap:anywhere}.upload-video-card .lbl{margin:5px 0 0}.upload-video-card .fld{width:100%;min-width:0;box-sizing:border-box}.upload-video-file{font-size:.95rem}#uploadAddVideo{width:100%;min-height:44px;margin:8px 0}.study-transcript{margin:20px 0;border:1px solid #d7e2ec;padding:16px;border-radius:12px}.study-transcript>summary{cursor:pointer;font-weight:700;color:#1b547c}.study-main-heading{border-right:4px solid #22618d;padding-right:10px;margin-top:22px}.study-sub-heading{font-size:1.1rem;color:#326784;margin:16px 0 8px}.sumbox .sp2{white-space:pre-wrap}
+/* شريط التقدم خلف لوحة التحكم والنوافذ حتى لا يحجب أزرار المراجعة. */
+.taskbar{z-index:35}
 
 </style>
 <script>
@@ -810,22 +812,41 @@ onSnapshot(query(collection(db, 'structure'), orderBy('createdAt')), snap => {
   ready = true; loadErr = false; render(); renderAdmin();
 }, err => { console.error(err); loadErr = true; render(); renderAdmin(); });
 
+/* مشاركة نتائج المحاضرات بين لوحة التحكم وصفحات العرض، دون مسحها عند التنقل. */
+const lectureFeeds = new Map();
+function lectureFeed(nextId) {
+  const ids = aliasIds(nextId).sort(), key = JSON.stringify(ids);
+  let feed = lectureFeeds.get(key);
+  if (feed) { clearTimeout(feed.expiry); feed.expiry = null; return feed; }
+  feed = { data: [], loaded: false, error: '', listeners: new Set(), stops: [], expiry: null };
+  lectureFeeds.set(key, feed);
+  const groups = []; for (let i = 0; i < ids.length; i += 10) groups.push(ids.slice(i, i + 10));
+  const parts = new Map(), done = new Set();
+  groups.forEach((group, index) => {
+    feed.stops.push(onSnapshot(query(collection(db, 'lectures'), where('courseId', group.length === 1 ? '==' : 'in', group.length === 1 ? group[0] : group)), snapshot => {
+      parts.set(index, snapshot.docs.map(d => ({ id: d.id, ...d.data() }))); done.add(index);
+      feed.data = [...new Map([...parts.values()].flat().filter(item => item.uploadStatus !== 'cancelled').map(item => [item.id, item])).values()];
+      feed.loaded = done.size === groups.length; feed.error = ''; feed.listeners.forEach(fn => fn());
+    }, error => { console.error(error); feed.error = 'تعذّر تحميل المحاضرات؛ تحقق من الاتصال ثم أعد فتح الشرح.'; done.add(index); feed.loaded = done.size === groups.length; feed.listeners.forEach(fn => fn()); }));
+  });
+  return feed;
+}
 function makeWatcher(onData, includeUploading = false) {
-  let id = null, signature = '', unsubscribers = [], data = [], loaded = false;
+  let id = null, signature = '', feed = null;
+  const notify = () => onData();
   return {
-    get id() { return id; }, get data() { return data; }, get loaded() { return loaded; },
+    get id() { return id; },
+    get data() { return (feed?.data || []).filter(item => includeUploading || item.type === 'video' || !['queued', 'uploading'].includes(item.uploadStatus)); },
+    get loaded() { return feed?.loaded || false; }, get error() { return feed?.error || ''; },
     set(nextId) {
-      const ids = nextId ? aliasIds(nextId) : [], nextSignature = JSON.stringify(ids);
+      const nextSignature = JSON.stringify(nextId ? aliasIds(nextId).sort() : []);
       if (nextId === id && signature === nextSignature) return;
-      unsubscribers.forEach(fn => fn()); unsubscribers = []; id = nextId; signature = nextSignature; data = []; loaded = false; if (!id) return;
-      const groups = []; for (let i = 0; i < ids.length; i += 10) groups.push(ids.slice(i, i + 10));
-      const parts = new Map(), done = new Set();
-      groups.forEach((group, index) => {
-        unsubscribers.push(onSnapshot(query(collection(db, 'lectures'), where('courseId', group.length === 1 ? '==' : 'in', group.length === 1 ? group[0] : group)), snapshot => {
-          parts.set(index, snapshot.docs.map(d => ({ id: d.id, ...d.data() }))); done.add(index);
-          data = [...new Map([...parts.values()].flat().filter(item => item.uploadStatus !== 'cancelled' && (includeUploading || item.type === 'video' || !['queued', 'uploading'].includes(item.uploadStatus))).map(item => [item.id, item])).values()]; loaded = done.size === groups.length; onData();
-        }, error => { console.error(error); done.add(index); loaded = done.size === groups.length; onData(); }));
-      });
+      if (feed) {
+        feed.listeners.delete(notify);
+        if (!feed.listeners.size) { const previous = feed, previousKey = signature; previous.expiry = setTimeout(() => { if (!previous.listeners.size) { previous.stops.forEach(fn => fn()); lectureFeeds.delete(previousKey); } }, 60000); }
+      }
+      id = nextId; signature = nextSignature; feed = nextId ? lectureFeed(nextId) : null;
+      if (feed) feed.listeners.add(notify);
     }
   };
 }
@@ -926,7 +947,8 @@ function expPage(c, exp, p) {
   c.append(bar); watchSocial();
   if (tab === 'rafiq') { const pn = el('div', 'vpanel'); c.append(pn); panelAsk(pn, exp, true); return; }
   if (tab === 'chat') { const pn = el('div', 'vpanel'); c.append(pn); panelChat(pn, { id: exp.parentId || realId(exp.id), name: 'دردشة المادة' }); return; }
-  if (!pubW.loaded) { c.append(msg('جاري التحميل…')); return; }
+  if (pubW.error && !pubW.data.length) { c.append(msg(pubW.error)); return; }
+  if (!pubW.loaded && !pubW.data.length) { c.append(msg('جاري تحميل المحاضرات والملفات…')); return; }
   const list = pubW.data;
   if (tab === 'lectures') {
     const vs = vids(list);
@@ -1399,6 +1421,8 @@ function renderContent(m, tab) {
   const btn = el('button', 'abtn ' + (isV ? 'abtn-b' : 'abtn-g'), isV ? '+ رفع فيديو' : '+ رفع ملف');
   btn.type = 'button'; btn.style.marginBottom = '14px'; btn.onclick = () => openUpload(isV ? 'video' : 'pdf', cid, '', list);
   if (up_) m.append(btn); else m.append(msg('هذا الشرح ليس شرحك، يمكنك الاطلاع فقط.'));
+  if (admW.error) { m.append(msg(admW.error)); return; }
+  if (!admW.loaded && !list.length) { m.append(msg('جاري تحميل المحاضرات والملفات…')); return; }
   const items = isV ? vids(list) : list.filter(x => x.type === 'pdf').sort((a, b) => (a.date || 0) - (b.date || 0));
   if (!items.length) { m.append(msg(isV ? 'لا توجد محاضرات بعد.' : 'لا توجد ملفات بعد.')); return; }
   const ml = el('div', 'mlist');
@@ -2086,10 +2110,7 @@ function timeLabel(seconds) { const value = Math.max(0, Math.floor(Number(second
 function pageLabel(source) { return source.endPage > source.page ? 'الصفحات ' + source.page + '–' + source.endPage : 'صفحة ' + source.page; }
 function panelAsk(pn, node, wholeCourse = false) {
   const root = wholeCourse ? materialRoot(node) : null, key = wholeCourse ? 'course:' + root.id : node.id, state = askState(key), shell = el('div', 'ask-shell');
-  shell.append(el('h4', 'sh', wholeCourse ? '🤖 اسأل رفيق عن المادة' : '🤖 اسأل رفيق'), el('p', 'ask-hint', wholeCourse ? 'اسأل عن أي موضوع في المحتوى المفهرس لهذه المادة. يربط رفيق جوابه بالمحاضرة والتوقيت أو بصفحة المصدر.' : 'اسأل عن هذه المحاضرة، وسيربط رفيق جوابه بمقاطع الشرح الداعمة.'));
-  if (isAdmin() && wholeCourse) {
-    const prepare = el('button', 'abtn abtn-g', 'تجهيز المحاضرات والملفات القديمة للبحث'); prepare.type = 'button'; prepare.onclick = async () => { prepare.disabled = true; try { await rafiqCall('index-course', { courseId: root.id }); toast('بدأ تجهيز المحتوى على الخادم؛ يمكنك إغلاق الموقع'); await refreshRafiqDashboard(); } catch (error) { toast(error.message); } finally { prepare.disabled = false; } }; shell.append(prepare);
-  }
+  shell.append(el('h4', 'sh', wholeCourse ? '🤖 اسأل رفيق عن المادة' : '🤖 اسأل رفيق'), el('p', 'ask-hint', wholeCourse ? 'اسأل عن أي موضوع في محتوى هذه المادة؛ تُجهّز المحاضرات والملفات للبحث تلقائيًا. يربط رفيق جوابه بالمحاضرة والتوقيت أو بصفحة المصدر.' : 'اسأل عن هذه المحاضرة، وسيربط رفيق جوابه بمقاطع الشرح الداعمة.'));
   const historyBox = el('div', 'ask-history'); historyBox.setAttribute('aria-live', 'polite');
   state.messages.forEach(message => {
     const row = el('div', 'ask-message ' + (message.role === 'user' ? 'ask-user' : 'ask-model')); row.append(el('b', null, message.role === 'user' ? 'أنت' : 'رفيق'));
@@ -2151,12 +2172,12 @@ function renderReview() {
     const dismiss = el('button', 'abtn abtn-l', alert.type === 'duplicate' ? 'العنصران مختلفان' : 'تمت المراجعة'); dismiss.type = 'button'; dismiss.onclick = async () => { try { await rafiqCall('alert-dismiss', { id: alert.id }); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } }; buttons.append(dismiss); card.append(buttons); body.append(card);
   });
   body.append(el('h4', 'sh', 'المهام الخلفية'));
-  const jobs = dashboardData.jobs || []; if (!jobs.length) body.append(msg('لا توجد مهام بعد.'));
+  const jobs = (dashboardData.jobs || []).filter(job => ['queued', 'running', 'error'].includes(job.status)); if (!jobs.length) body.append(msg('لا توجد مهام جارية أو متعثرة.'));
   jobs.slice(0, 80).forEach(job => { const card = el('div', 'rafiq-job'); card.append(el('b', null, ({ video: 'محاضرة', book: 'تلخيص كتاب', index: 'تجهيز البحث', structure: 'فحص الأقسام', batch: 'تجهيز المادة', undo: 'تراجع عن الدمج' }[job.kind] || 'مهمة') + ' • ' + ({ done: 'مكتملة', error: 'تُعاد المحاولة', queued: 'بانتظار الدور', running: 'جارية' }[job.status] || job.status)), el('p', null, job.progress || ''), el('small', null, new Date(job.createdAt).toLocaleString('ar-JO'))); if (job.error && job.status === 'error') card.append(el('p', 'merr', job.error)); body.append(card); });
   body.append(el('h4', 'sh', 'سجل الدمج والتراجع'));
-  for (const merge of dashboardData.merges || []) {
+  for (const merge of (dashboardData.merges || []).filter(item => !item.dismissedAt)) {
     const row = el('div', 'rafiq-job'); row.append(el('b', null, (merge.secondaryName || 'عنصر') + ' ← ' + (merge.primaryName || 'العنصر الأقدم')), el('p', null, 'العناصر المتأثرة: ' + merge.changeCount + ' • ' + ({ committed: 'اكتمل الدمج', applying: 'جارٍ', 'rolled-back': 'تم التراجع' }[merge.status] || merge.status)));
-    if (['committed', 'applying'].includes(merge.status)) { const undo = el('button', 'abtn abtn-l', 'التراجع عن هذا الدمج'); undo.type = 'button'; undo.onclick = async () => { if (!confirm('التراجع عن الدمج مع الحفاظ على أي تعديلات أحدث؟')) return; undo.disabled = true; try { await rafiqCall('merge-undo', { id: merge.id }); toast('بدأ التراجع على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { undo.disabled = false; } }; row.append(undo); } body.append(row);
+    if (['committed', 'applying'].includes(merge.status)) { const undo = el('button', 'abtn abtn-l', 'التراجع عن هذا الدمج'); undo.type = 'button'; undo.onclick = async () => { if (!confirm('التراجع عن الدمج مع الحفاظ على أي تعديلات أحدث؟')) return; undo.disabled = true; try { await rafiqCall('merge-undo', { id: merge.id }); toast('بدأ التراجع على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { undo.disabled = false; } }; row.append(undo); } if (['committed', 'rolled-back'].includes(merge.status)) { const dismiss = el('button', 'abtn abtn-g', merge.status === 'committed' ? 'الدمج صحيح، إخفاء' : 'إخفاء السجل'); dismiss.type = 'button'; dismiss.onclick = async () => { dismiss.disabled = true; try { await rafiqCall('merge-dismiss', { id: merge.id }); dashboardData.merges = dashboardData.merges.filter(item => item.id !== merge.id); renderReview(); } catch (e) { toast(e.message); dismiss.disabled = false; } }; row.append(dismiss); } body.append(row);
   }
 }
 setInterval(() => { if (isStaff() && document.visibilityState === 'visible') void refreshRafiqDashboard(); }, 15000);

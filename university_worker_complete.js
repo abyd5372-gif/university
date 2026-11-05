@@ -1,7 +1,7 @@
 import { WorkflowEntrypoint } from 'cloudflare:workers';
 
 /*
- * Cloudflare Worker — المنصة الجامعية
+ * Cloudflare Worker -— المنصة الجامعية
  * R2 upload/delete + Gemini lecture analysis + PDF book analysis
  *
  * Bindings:
@@ -1840,15 +1840,22 @@ async function routeRafiq(request, env, ctx, action) {
     requireAdmin(actor); const job = await createJob(env, ctx, { kind: 'structure', actor, runKey: String(Math.floor(Date.now() / 600000)) }); return json({ success: true, jobId: job.id }, 202);
   }
   if (action === 'rafiq-dashboard') {
-    const jobs = actor.role === 'admin' ? await recentDocuments(env, 'rafiqJobs') : await queryDocuments(env, 'rafiqJobs', 'ownerUid', actor.uid, 500);
+    const jobs = actor.role === 'admin' ? (await Promise.all(['queued', 'running', 'error'].map(status => queryDocuments(env, 'rafiqJobs', 'status', status, 150)))).flat() : await queryDocuments(env, 'rafiqJobs', 'ownerUid', actor.uid, 500);
     const alerts = actor.role === 'admin' ? await queryDocuments(env, 'rafiqAlerts', 'status', 'open', 200) : [], merges = actor.role === 'admin' ? await recentDocuments(env, 'rafiqMerges', 100) : [];
-    return json({ success: true, jobs: jobs.sort((a, b) => b.createdAt - a.createdAt).slice(0, 150).map(({ actor: _, ...j }) => j), alerts: alerts.sort((a, b) => b.createdAt - a.createdAt).slice(0, 200), merges: merges.sort((a, b) => b.createdAt - a.createdAt).slice(0, 100) });
+    return json({ success: true, jobs: jobs.filter(j => ['queued', 'running', 'error'].includes(j.status)).sort((a, b) => b.createdAt - a.createdAt).slice(0, 150).map(({ actor: _, ...j }) => j), alerts: alerts.sort((a, b) => b.createdAt - a.createdAt).slice(0, 200), merges: merges.filter(m => !m.dismissedAt).sort((a, b) => b.createdAt - a.createdAt).slice(0, 100) });
   }
   if (action === 'alert-dismiss') { requireAdmin(actor); const body = await parseBody(request); await patchDocument(env, 'rafiqAlerts/' + body.id, { status: 'dismissed', resolvedAt: Date.now() }); return json({ success: true }); }
   if (action === 'merge-approve') {
     requireAdmin(actor); const body = await parseBody(request), alert = await readDocument(env, 'rafiqAlerts/' + body.id);
     if (!alert || alert.type !== 'duplicate' || alert.status !== 'open') throw fail('التنبيه غير متاح.', 409);
     const job = await createJob(env, ctx, { kind: 'structure', actor, firstId: alert.firstId, secondId: alert.secondId, alertId: alert.id, runKey: 'approved-' + alert.id }); return json({ success: true, jobId: job.id }, 202);
+  }
+  if (action === 'merge-dismiss') {
+    requireAdmin(actor); const body = await parseBody(request), merge = await readDocument(env, 'rafiqMerges/' + String(body.id || ''));
+    if (!merge) throw fail('سجل الدمج غير موجود', 404);
+    if (!['committed', 'rolled-back'].includes(merge.status)) throw fail('انتظر اكتمال الدمج قبل إخفائه.', 409);
+    await patchDocument(env, 'rafiqMerges/' + merge.id, { dismissedAt: Date.now(), dismissedBy: actor.uid });
+    return json({ success: true });
   }
   if (action === 'merge-undo') {
     requireAdmin(actor); const body = await parseBody(request), merge = await readDocument(env, 'rafiqMerges/' + body.id); if (!merge) throw fail('سجل الدمج غير موجود', 404);
@@ -1887,6 +1894,7 @@ async function repairBackground(env, ctx) {
     await createJob(env, ctx, { kind: 'structure', actor: { uid: 'server-maintenance', role: 'admin', myKey: 'server' }, runKey: signature });
     await patchDocument(env, 'rafiqState/structure', { signature, checkedAt: Date.now() }, { create: true });
   }
+  await autoPrepareContent(env, ctx);
   // تحسين المذكرات القديمة القصيرة تدريجيًا، مع إبقاء الامتحانات الموجودة.
   const videos = await queryDocuments(env, 'lectures', 'type', 'video', 200);
   for (const lecture of videos.filter(l => l.r2Key && l.aiStatus === 'done' && l.rafiqStatus === 'ready' && l.aiData?.summary && l.aiData.detailVersion !== 2 && l.aiData.summary.length < Math.min(1800, Number(l.duration || 300) * 7)).slice(0, 2)) {
@@ -1907,6 +1915,27 @@ async function runBatchWorkflow(env, job, step) {
   });
   await step.do('batch-finish', async () => { await patchDocument(env, 'rafiqJobs/' + job.id, { status: 'done', progress: 'أُرسلت المحاضرات للتجهيز: ' + ids.length, updatedAt: Date.now() }); return true; });
   return { status: 'done', count: ids.length };
+}
+
+/* فحص دوري متدرّج للمحتوى القديم؛ الرفع الجديد يبدأ التجهيز بالفعل عند اكتماله. */
+async function autoPrepareContent(env, ctx) {
+  const state = await readDocument(env, 'rafiqState/auto-index');
+  const params = new URLSearchParams({ pageSize: '25' }); if (state?.pageToken) params.set('pageToken', state.pageToken);
+  let page;
+  try { page = await adminFetch(env, '/lectures?' + params); }
+  catch (error) { if (state?.pageToken && error.status === 400) { await patchDocument(env, 'rafiqState/auto-index', { pageToken: '' }, { create: true }); return; } throw error; }
+  let queued = 0;
+  for (const document of page.documents || []) {
+    const lecture = { id: document.name.split('/').pop(), ...plainFields(document.fields) };
+    if (queued >= 4 || !lecture.r2Key || !['video', 'pdf'].includes(lecture.type) || lecture.fkind === 'summary' || ['queued', 'uploading', 'cancelled'].includes(lecture.uploadStatus) || lecture.rafiqStatus === 'ready' && lecture.rafiqVersion === RAFIQ_VERSION) continue;
+    try {
+      const previous = lecture.rafiqJobId ? await readDocument(env, 'rafiqJobs/' + lecture.rafiqJobId) : null;
+      if (previous && ['queued', 'running', 'error'].includes(previous.status)) continue;
+      const kind = lecture.type === 'video' ? lecture.aiData ? 'index' : 'video' : lecture.aiBook ? 'index' : 'book';
+      await createJob(env, ctx, { kind, lectureId: lecture.id, actor: { uid: lecture.createdByUid || 'server-maintenance', role: 'admin', myKey: lecture.ownerKey || 'server' }, origin: 'https://comprehensive-university-platform.abyd5372.workers.dev', runKey: 'auto-index-v1' }); queued++;
+    } catch (error) { console.warn('auto-index', lecture.id, error.message); }
+  }
+  await patchDocument(env, 'rafiqState/auto-index', { pageToken: page.nextPageToken || '', checkedAt: Date.now() }, { create: true });
 }
 
 

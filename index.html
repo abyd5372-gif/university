@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1100, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>المنصة الجامعية الشاملة</title>
 <meta name="description" content="المنصة الجامعية الشاملة: تصفح المواد والجامعات وانضم إلينا.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -270,6 +270,204 @@ html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%}
 a>.dot{top:-12px;left:-16px;min-width:20px;height:20px;font-size:.75rem;padding:0 5px}
 .card>.dot{top:10px;left:10px}
 .cm div{word-break:break-word}
+
+/* ===== قسم ماذا تقدم المنصة؟ ===== */
+.features-section{
+  padding:64px 0 68px;
+  background:linear-gradient(180deg,#f7f9fb 0%,#fff 100%);
+  border-top:1px solid #edf1f4;
+}
+.features-head{text-align:center;margin-bottom:30px}
+.features-kicker{
+  display:inline-block;color:var(--primary-blue);font-size:.9rem;font-weight:800;
+  letter-spacing:.2px;margin-bottom:7px
+}
+.features-title{font-size:1.9rem;font-weight:800;color:#172b3a;line-height:1.4}
+.features-subtitle{color:#64748b;font-size:1.02rem;margin-top:7px}
+.features-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px
+}
+.feature-card{
+  position:relative;display:flex;flex-direction:column;align-items:flex-start;
+  min-height:142px;padding:22px 22px 20px;background:#fff;
+  border:1px solid #e7edf2;border-radius:16px;text-align:right;
+  box-shadow:0 5px 18px rgba(20,62,96,.055);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+  overflow:hidden
+}
+.feature-card::after{
+  content:"";position:absolute;right:0;top:18px;bottom:18px;width:3px;
+  border-radius:3px;background:linear-gradient(180deg,var(--accent),var(--primary-blue));
+  opacity:.85
+}
+.feature-card:hover{
+  transform:translateY(-4px);border-color:#cbd9e4;
+  box-shadow:0 12px 26px rgba(20,62,96,.11)
+}
+.feature-icon{
+  width:39px;height:39px;display:grid;place-items:center;margin-bottom:12px;
+  color:var(--primary-blue);background:#edf4f8;border:1px solid #e1ebf1;
+  border-radius:11px
+}
+.feature-icon svg{width:22px;height:22px;display:block}
+.feature-card h3{font-size:1.12rem;font-weight:800;color:#172b3a;margin-bottom:5px}
+.feature-card p{font-size:.94rem;color:#64748b;line-height:1.8}
+.feature-cta{
+  position:relative;isolation:isolate;overflow:hidden;margin-top:42px;
+  padding:34px 24px;text-align:center;color:#fff;border-radius:19px;
+  background:radial-gradient(ellipse at 50% 120%,rgba(212,175,55,.2),transparent 55%),
+             linear-gradient(120deg,#102f49,#1d5a8a 58%,#143e60);
+  box-shadow:0 12px 28px rgba(20,62,96,.16)
+}
+.feature-cta::before,.feature-cta::after{
+  content:"";position:absolute;z-index:-1;border:1px solid rgba(255,255,255,.09);
+  border-radius:50%;width:220px;height:220px
+}
+.feature-cta::before{right:-90px;top:-145px}
+.feature-cta::after{left:-100px;bottom:-165px;width:270px;height:270px}
+.feature-cta-icon{width:42px;height:42px;margin:0 auto 10px;color:#e8cf8a}
+.feature-cta-icon svg{width:100%;height:100%}
+.feature-cta h3{font-size:1.55rem;font-weight:800;margin-bottom:5px}
+.feature-cta p{color:rgba(255,255,255,.78);font-size:1rem;margin-bottom:18px}
+.feature-cta .btn{background:var(--accent);color:#17334a;padding:10px 27px;font-size:1rem}
+.feature-cta .btn:hover{box-shadow:0 7px 18px rgba(0,0,0,.2)}
+@media(max-width:768px){
+  .features-section{padding:44px 0 48px}
+  .features-head{margin-bottom:22px}
+  .features-title{font-size:1.55rem}
+  .features-subtitle{font-size:.93rem}
+  .features-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .feature-card{min-height:150px;padding:17px 15px 16px;border-radius:13px}
+  .feature-card h3{font-size:1rem}
+  .feature-card p{font-size:.86rem}
+  .feature-icon{width:35px;height:35px;margin-bottom:9px}
+  .feature-cta{margin-top:28px;padding:28px 18px;border-radius:15px}
+  .feature-cta h3{font-size:1.25rem}
+  .feature-cta p{font-size:.9rem}
+}
+@media(max-width:380px){
+  .features-grid{grid-template-columns:1fr}
+  .feature-card{min-height:unset}
+}
+
+
+/* ===== إثراء صفحة الانضمام ===== */
+.join-extra{margin:38px 0 54px;display:grid;gap:28px}
+.join-intro{text-align:center;padding:25px 20px 22px;background:linear-gradient(135deg,#eef5fa,#f9fbfd);border:1px solid #e3edf4;border-radius:18px;position:relative;overflow:hidden}
+.join-intro:before{content:"";position:absolute;width:170px;height:170px;border:1px solid rgba(29,90,138,.10);border-radius:50%;top:-112px;right:-42px}
+.join-intro .join-kicker{display:inline-block;color:var(--primary-blue);font-weight:800;font-size:.9rem;margin-bottom:5px}
+.join-intro h2{font-size:1.55rem;color:#173b58;font-weight:800;margin-bottom:6px}
+.join-intro p{color:#64748b;font-size:1rem;max-width:650px;margin:auto}
+.join-section-title{font-size:1.3rem;font-weight:800;color:#183d5b;margin-bottom:15px}
+.join-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.join-step{background:#fff;border:1px solid #e5edf3;border-radius:15px;padding:19px 17px;text-align:center;box-shadow:0 5px 16px rgba(20,62,96,.045)}
+.join-step .num{width:38px;height:38px;display:grid;place-items:center;margin:0 auto 10px;border-radius:12px;background:#eaf2f8;color:var(--primary-blue);font-weight:800;font-size:1.05rem}
+.join-step h3{font-size:1.05rem;color:#20394e;font-weight:800;margin-bottom:4px}
+.join-step p{font-size:.9rem;color:#718096;line-height:1.7}
+.join-benefits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.join-benefit{display:flex;align-items:center;gap:12px;padding:15px;background:#fff;border:1px solid #e7edf2;border-radius:13px}
+.join-benefit .ic{flex:0 0 40px;width:40px;height:40px;display:grid;place-items:center;background:#edf4f8;border-radius:11px;color:var(--primary-blue)}
+.join-benefit .ic svg{width:21px;height:21px}
+.join-benefit strong{display:block;color:#20394e;font-size:1rem;margin-bottom:2px}
+.join-benefit small{display:block;color:#718096;font-size:.86rem;line-height:1.55}
+.join-faq{display:grid;gap:9px}
+.join-faq details{background:#fff;border:1px solid #e5edf3;border-radius:12px;padding:13px 16px}
+.join-faq summary{cursor:pointer;font-weight:800;color:#23445e;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.join-faq summary::-webkit-details-marker{display:none}
+.join-faq summary:after{content:"+";color:var(--primary-blue);font-size:1.35rem;font-weight:500}
+.join-faq details[open] summary:after{content:"−"}
+.join-faq details p{padding-top:9px;color:#64748b;font-size:.93rem;line-height:1.8}
+.join-bottom-cta{padding:25px 22px;text-align:center;color:#fff;border-radius:17px;background:radial-gradient(ellipse at 50% 120%,rgba(212,175,55,.22),transparent 55%),linear-gradient(120deg,#102f49,#1d5a8a 60%,#143e60);box-shadow:0 10px 25px rgba(20,62,96,.13)}
+.join-bottom-cta .cap{font-size:1.8rem;color:#e8cf8a;margin-bottom:5px}
+.join-bottom-cta h3{font-size:1.35rem;font-weight:800;margin-bottom:5px}
+.join-bottom-cta p{font-size:.94rem;color:rgba(255,255,255,.8)}
+@media(max-width:700px){
+ .join-extra{margin:28px 0 38px;gap:23px}
+ .join-intro{padding:21px 15px}.join-intro h2{font-size:1.3rem}.join-intro p{font-size:.92rem}
+ .join-section-title{font-size:1.15rem;margin-bottom:11px}
+ .join-steps{grid-template-columns:1fr;gap:10px}
+ .join-step{display:flex;align-items:center;text-align:right;gap:12px;padding:13px 14px}
+ .join-step .num{margin:0;flex:0 0 36px;width:36px;height:36px}
+ .join-benefits{gap:9px}.join-benefit{padding:12px 10px;gap:9px;align-items:flex-start}
+ .join-benefit .ic{flex-basis:34px;width:34px;height:34px}.join-benefit .ic svg{width:18px;height:18px}
+ .join-benefit strong{font-size:.92rem}.join-benefit small{font-size:.8rem}
+ .join-bottom-cta{padding:22px 16px}.join-bottom-cta h3{font-size:1.15rem}
+}
+@media(max-width:370px){.join-benefits{grid-template-columns:1fr}}
+
+/* ===== تفاعل بصري لصفحة الانضمام ===== */
+.rv{opacity:0;transform:translateY(22px) scale(.98);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.join-intro{animation:introGlow 6s ease-in-out infinite}
+@keyframes introGlow{0%,100%{box-shadow:0 0 0 rgba(29,90,138,0)}50%{box-shadow:0 8px 30px rgba(29,90,138,.14)}}
+.join-intro:before{animation:ringPulse 5s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.3);opacity:.3}}
+.join-intro h2{background:linear-gradient(90deg,#173b58,#2a7ab8,#173b58);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shineTxt 6s linear infinite}
+@keyframes shineTxt{to{background-position:200% center}}
+.join-step{position:relative;transition:transform .3s,box-shadow .3s,border-color .3s}
+.join-step:hover{transform:translateY(-6px);box-shadow:0 14px 28px rgba(20,62,96,.15);border-color:#b9d3e6}
+.join-step .num{background:linear-gradient(135deg,#2a7ab8,#1d5a8a);color:#fff;transition:transform .45s}
+.join-step:hover .num{transform:rotate(360deg) scale(1.12)}
+.join-steps .join-step:not(:last-child):after{content:"←";position:absolute;left:-13px;top:50%;transform:translateY(-50%);color:#9bb8cf;font-size:1.3rem}
+.join-benefit{transition:transform .3s,box-shadow .3s,border-color .3s}
+.join-benefit:hover{transform:translateX(-5px);box-shadow:0 8px 20px rgba(20,62,96,.12);border-color:#b9d3e6}
+.join-benefit .ic{transition:all .3s}
+.join-benefit:hover .ic{background:var(--primary-blue);color:#fff;transform:scale(1.12) rotate(-8deg)}
+.join-faq details{transition:box-shadow .25s,border-color .25s,background .25s}
+.join-faq details:hover{border-color:#9fc2dc;box-shadow:0 6px 16px rgba(20,62,96,.09)}
+.join-faq details[open]{border-color:var(--primary-blue);background:linear-gradient(180deg,#f2f8fd,#fff)}
+.join-faq summary:after{width:28px;height:28px;border-radius:50%;background:#eaf2f8;display:inline-grid;place-items:center;line-height:1;transition:transform .3s,background .3s}
+.join-faq details[open] summary:after{transform:rotate(180deg);background:var(--primary-blue);color:#fff}
+.join-faq details[open] p{animation:faqIn .35s ease}
+@keyframes faqIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.join-bottom-cta{background-size:100% 100%,200% 200%;animation:ctaFlow 9s ease infinite}
+@keyframes ctaFlow{0%,100%{background-position:0 0,0% 50%}50%{background-position:0 0,100% 50%}}
+.join-bottom-cta .cap{display:inline-block;animation:floatStar 3s ease-in-out infinite}
+@keyframes floatStar{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(25deg)}}
+#joinChoices .bitem{transition:transform .3s,box-shadow .3s,border-color .3s}
+#joinChoices .bitem:hover{transform:translateY(-8px);box-shadow:0 16px 32px rgba(20,62,96,.17);border-color:var(--primary-blue)}
+#joinChoices .bitem:hover .emo{animation:emoBounce .6s}
+#joinChoices .bitem:active{transform:scale(.97)}
+@keyframes emoBounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px) scale(1.18)}70%{transform:translateY(0) scale(.95)}}
+@media(max-width:700px){.join-steps .join-step:not(:last-child):after{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+/* ===== مواد الجامعة ===== */
+.qtype{display:inline-block;background:#e0f2fe;color:#075985;border-radius:20px;padding:2px 12px;font-size:1rem;margin-left:8px}
+.ans{margin-top:10px;padding:14px 16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;font-size:1.25rem;line-height:1.9;white-space:pre-wrap}
+.qopt.ok{background:#dcfce7;border-color:#22c55e}
+.bookbox .abtn{margin:8px 0}
+/* ملفات المادة والمحادثات */
+.material-tabs{flex-wrap:wrap;overflow-x:visible}.material-tabs .ctab{padding:12px 14px;font-size:1.1rem}
+.book-card{border:1px solid #dbe5ec;border-radius:14px;padding:22px;margin-bottom:18px;background:#fff}
+.book-card h4{margin:0 0 8px;color:var(--primary-blue);font-size:1.4rem}
+.book-card .book-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.book-preview{border-top:1px solid #e2e8f0;margin-top:14px;padding-top:12px}
+.book-preview summary{cursor:pointer;font-weight:700;color:var(--primary-blue)}
+.book-status,.ask-hint,.quiz-source{color:#64748b;font-size:1rem;display:block;margin:6px 0 12px}
+.quiz-explanation{margin-top:12px;padding:12px;border-right:3px solid #10b981;background:#ecfdf5;line-height:1.9}
+.chat-shell{border:1px solid #d9e2e7;border-radius:14px;overflow:hidden}
+.chat-heading{padding:16px 20px;background:#f0f6f5;display:flex;flex-direction:column;color:#175b4b;gap:3px}
+.chat-heading small{color:#526c64}
+.chat-stream{height:480px;max-height:62vh;min-height:240px;overflow-y:auto;overscroll-behavior:contain;background:#f1f0e9;padding:18px;display:flex;flex-direction:column;gap:10px;scrollbar-gutter:stable}
+.chat-day{align-self:center;border-radius:8px;padding:3px 12px;background:#e6eef2;color:#526675;font-size:.85rem;margin:8px 0}
+.chat-bubble{align-self:flex-end;background:#fff;border-radius:12px 12px 12px 2px;box-shadow:0 1px 2px #0001;padding:10px 14px;max-width:84%;min-width:150px;overflow-wrap:anywhere;transition:box-shadow .2s}
+.chat-bubble.mine{align-self:flex-start;background:#dcf7df;border-radius:12px 12px 2px 12px}
+.chat-meta,.chat-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:.85rem;color:#526675}
+.chat-meta b{color:#1b6a54}.chat-text{white-space:pre-wrap;font-size:1.12rem;line-height:1.85;margin:5px 0}
+.chat-foot{justify-content:flex-end}.chat-reply{background:none;border:0;color:#27725c;font-family:inherit;font-weight:700;padding:2px 6px;cursor:pointer}
+.chat-quote{display:flex;flex-direction:column;gap:2px;text-align:right;width:100%;background:#00000006;border:0;border-right:3px solid #32a885;border-radius:6px;padding:8px 10px;font-family:inherit;cursor:pointer;margin-top:8px}
+.chat-quote span{white-space:pre-wrap;font-size:.9rem;max-height:65px;overflow:hidden;color:#53645c}.chat-quote b{color:#24705a}
+.chat-bubble.flash{box-shadow:0 0 0 3px #d4af37}
+.chat-composer{padding:14px;background:#f9fbfa;border-top:1px solid #dde7e1}
+.chat-controls{display:flex;align-items:flex-end;gap:10px}.chat-controls .fld{margin:0;resize:vertical;min-height:58px}.chat-controls .abtn{flex:none;min-height:52px}
+.chat-reply-preview{display:flex;align-items:center;justify-content:space-between;border-right:4px solid #10b981;padding:8px 12px;background:#eaf6f0;border-radius:6px;margin-bottom:10px;font-size:.9rem;overflow-wrap:anywhere}.chat-reply-preview[hidden]{display:none}
+.chat-new{display:block;margin:8px auto}.chat-new[hidden]{display:none}
+.ask-history{max-height:520px;overflow:auto;padding:8px 0;margin-bottom:16px}.ask-message{padding:16px 18px;border-radius:12px;margin-bottom:12px;border:1px solid #e1e8f0}.ask-user{background:#eff6ff;margin-left:8%}.ask-model{background:#f8fafc;margin-right:3%}.ask-message>.sumbox{font-size:1.12rem;line-height:1.9;margin-top:6px}.ask-message .sh{font-size:1.3rem;margin-top:12px}
+@media(max-width:600px){.vpanel{padding:15px}.book-card{padding:16px}.chat-stream{padding:10px}.chat-bubble{max-width:94%}.chat-controls{gap:6px}.chat-controls .abtn{padding:10px 12px;font-size:1rem}.m-card{flex-wrap:wrap}.m-btns{flex-wrap:wrap}.ask-user{margin-left:3%}}
+
+.rafiq-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.rafiq-alert,.rafiq-job{border:1px solid #dbe5ed;border-radius:12px;padding:18px;margin:12px 0;background:#fff;overflow-wrap:anywhere}.rafiq-alert{border-right:4px solid #e8b440}.rafiq-alert h4{color:#174f77;font-size:1.25rem;margin-bottom:8px}.rafiq-alert blockquote{border-right:3px solid #94a3b8;padding:8px 12px;background:#f8fafc;margin:10px 0;white-space:pre-wrap}.rafiq-sources{margin-top:16px;padding-top:10px;border-top:1px solid #dae4ef}.rafiq-source{margin:10px 0;display:flex;flex-direction:column;gap:6px}.rafiq-source small{font-size:.95rem;line-height:1.8;color:#536678}.task-info{display:block;color:#526476;font-size:.85rem;line-height:1.7}.upload-entries{display:grid;gap:10px;margin:12px 0;max-height:43vh;overflow:auto}.upload-entry{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border:1px solid #dce5ec;padding:10px;border-radius:10px}.upload-entry small{width:calc(100% - 28px);overflow-wrap:anywhere;color:#64748b}.upload-entry .fld{flex:1;min-width:160px;margin:0}.upload-entry .abtn{padding:7px 10px}#upModal .mbox{width:min(680px,100%);max-height:92vh;overflow:auto}.taskbar{max-height:42vh}.rafiq-job small{color:#64748b}.ask-history .rafiq-source .abtn{text-align:right;white-space:normal;font-size:1rem}
+@media(max-width:600px){.rafiq-alert,.rafiq-job{padding:13px}.rafiq-actions .abtn{font-size:1rem}.upload-entry .fld{min-width:120px}.taskbar{max-height:35vh;right:8px;bottom:8px}}
+
 </style>
 <script>
 /* منع التكبير بالكامل */
@@ -372,6 +570,76 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
     <div class="admin-wrap"><button type="button" class="admin-btn" id="adminBtn" style="display:none" onclick="openAdmin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>التحكم والإعدادات</button></div>
   </div>
 </section>
+
+<section class="features-section" id="platformFeatures">
+  <div class="container">
+    <div class="features-head">
+      <span class="features-kicker">كل ما تحتاجه في مكان واحد</span>
+      <h2 class="features-title">ماذا تقدم المنصة؟</h2>
+      <p class="features-subtitle">أدوات ومصادر تعليمية تساعدك في رحلتك الجامعية من البداية حتى التميز.</p>
+    </div>
+
+    <div class="features-grid">
+      <article class="feature-card">
+        <span class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M8 9h.01M12 9h.01M16 9h.01"/></svg>
+        </span>
+        <h3>الجامعات والتخصصات</h3>
+        <p>تصفح الجامعات والكليات والتخصصات، وانتقل بسهولة إلى مواد تخصصك.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8M8 11h8"/></svg>
+        </span>
+        <h3>المواد الدراسية</h3>
+        <p>الوصول إلى المواد مرتبة بحسب الجامعة والكلية والتخصص.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8Z"/></svg>
+        </span>
+        <h3>الشروحات والمحاضرات</h3>
+        <p>تابع الشروحات والمحاضرات التعليمية وسهّل على نفسك فهم الموضوعات.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>
+        </span>
+        <h3>الملفات والمرفقات</h3>
+        <p>استفد من الملفات التعليمية والمرفقات المرتبطة بالمواد والمحاضرات.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/><path d="m2 6 1 1 2-2"/></svg>
+        </span>
+        <h3>ملخصات ومراجعة</h3>
+        <p>نظّم مراجعتك واستفد من محتوى المحاضرات وملخصاتها عند توفرها.</p>
+      </article>
+
+      <article class="feature-card">
+        <span class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 14.5 8.5 20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3Z"/><path d="m19 16 .9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9L19 16Z"/></svg>
+        </span>
+        <h3>مجتمع طلابي متفاعل</h3>
+        <p>شارك الأسئلة والتعليقات، وقيّم الشروحات، ودوّن ملاحظاتك الخاصة.</p>
+      </article>
+    </div>
+
+    <div class="feature-cta">
+      <div class="feature-cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 7 4 17v14l20 10 20-10V17L24 7Z"/><path d="m4 17 20 10 20-10M24 27v14M15 12.5l20 10"/><path d="M34 7v8M30 11h8"/></svg>
+      </div>
+      <h3>هل لديك محتوى تعليمي ترغب في مشاركته؟</h3>
+      <p>ساهم في إثراء المنصة وشارك زملاءك ما لديك من علم ومعرفة.</p>
+      <button type="button" class="btn" onclick="openSection('join')">انضم إلينا الآن ←</button>
+    </div>
+  </div>
+</section>
+
 </div>
 <section class="pageview" id="pageView" style="display:none"></section>
 
@@ -490,16 +758,19 @@ const ICON = {
 const ICO_EDIT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="M13.5 6.5l4 4"/></svg>';
 const ICO_DEL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>';
 const ICO_CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+ICON.usec = ICON.cou; ICON.umat = ICON.pdf;
 const L = {
   uni: { one: 'جامعة', many: 'الجامعات', child: 'col' },
   col: { one: 'كلية', many: 'الكليات', child: 'maj' },
   maj: { one: 'تخصص', many: 'التخصصات', child: 'cou' },
   cou: { one: 'مادة', many: 'المواد', child: 'exp' },
   exp: { one: 'شرح', many: 'الشروحات', child: null },
+  usec: { one: 'قسم', many: 'المواد', child: 'umat' },
+  umat: { one: 'مادة', many: 'المواد', child: null },
   lec: { one: 'العنوان', many: '', child: null }
 };
 const ORD = ['الأولى','الثانية','الثالثة','الرابعة','الخامسة','السادسة','السابعة','الثامنة','التاسعة','العاشرة','الحادية عشرة','الثانية عشرة','الثالثة عشرة','الرابعة عشرة','الخامسة عشرة','السادسة عشرة','السابعة عشرة','الثامنة عشرة','التاسعة عشرة','العشرون'];
-const vids = list => list.filter(x => x.type === 'video').sort((a, b) => (a.date || 0) - (b.date || 0));
+const vids = list => list.filter(x => x.type === 'video').sort((a, b) => (a.sortOrder || (a.date || 0) * 1000) - (b.sortOrder || (b.date || 0) * 1000) || a.id.localeCompare(b.id));
 const ordOf = (it, list) => { const i = vids(list).findIndex(x => x.id === it.id); return i < 0 ? 'الجديدة' : (ORD[i] || 'رقم ' + (i + 1)); };
 const lecLabel = (it, list) => 'المحاضرة ' + ordOf(it, list) + ': ' + (it.title || '');
 const dn = n => n.type === 'exp' && !n.legacy ? (n.ownerKey ? 'الشارح: ' : 'شرح: ') + n.name : n.name;
@@ -509,38 +780,58 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 /* ---------- البيانات ---------- */
 let nodes = [], ready = false, loadErr = false;
 const LEG = 'legacy:';   /* محاضرات قديمة مرتبطة بالمادة مباشرة (قبل الشروحات) */
-const realId = id => String(id).startsWith(LEG) ? String(id).slice(LEG.length) : id;
+function canonicalId(id) {
+  if (!id) return null;
+  const virtual = /^sec_(mand|elec)_(.+)$/.exec(String(id)); if (virtual) return 'sec_' + virtual[1] + '_' + canonicalId(virtual[2]);
+  let current = String(id).replace(/^legacy:/, ''); const seen = new Set();
+  while (true) { if (seen.has(current)) return current; seen.add(current); const node = nodes.find(n => n.id === current); if (!node?.mergedInto) return current; current = node.mergedInto; }
+}
+function aliasIds(id) { const canonical = canonicalId(id); return [...new Set([canonical, ...nodes.filter(n => canonicalId(n.id) === canonical).map(n => n.id)])].filter(Boolean); }
+const realId = id => canonicalId(id);
+const SECRE = /^sec_(mand|elec)_(.+)$/;
+const secNode = (kind, uid) => ({ id: 'sec_' + kind + '_' + uid, type: 'usec', kind, name: kind === 'mand' ? 'مواد الجامعة إجباري' : 'مواد الجامعة اختياري', parentId: uid, virtual: true });
 const byId = id => {
-  if (typeof id === 'string' && id.startsWith(LEG)) { const c = nodes.find(n => n.id === id.slice(LEG.length)); return c ? { id, type: 'exp', name: 'محاضرات المادة', parentId: c.id, legacy: true } : undefined; }
-  return nodes.find(n => n.id === id);
+  if (typeof id !== 'string') return undefined;
+  const canonical = canonicalId(id), virtual = SECRE.exec(canonical);
+  if (virtual) return nodes.some(n => n.id === virtual[2]) ? secNode(virtual[1], virtual[2]) : undefined;
+  if (id.startsWith(LEG)) { const course = nodes.find(n => n.id === canonical); return course ? { id: LEG + course.id, type: 'exp', name: 'محاضرات المادة', parentId: course.id, legacy: true } : undefined; }
+  return nodes.find(n => n.id === canonical);
 };
-const vis = n => !n.status || n.status === 'approved' || isAdmin() || (isStaff() && !!n.ownerKey && n.ownerKey === myKey());
-const kids = (pid, type) => nodes.filter(n => n.type === type && (n.parentId || null) === pid && vis(n));
-const allKids = pid => nodes.filter(n => n.parentId === pid && vis(n));
-function desc(id) { const r = [], st = [id]; while (st.length) { const x = st.pop(); allKids(x).forEach(n => { r.push(n.id); st.push(n.id); }); } return r; }
-function pathOf(id) { const p = []; let n = byId(id); while (n) { p.unshift(n); n = n.parentId ? byId(n.parentId) : null; } return p; }
+const vis = node => !node.mergedInto && (!node.status || node.status === 'approved' || isAdmin() || isStaff() && !!node.ownerKey && node.ownerKey === myKey());
+const kids = (pid, type) => type === 'usec' ? pid ? [secNode('mand', canonicalId(pid)), secNode('elec', canonicalId(pid))] : [] : nodes.filter(n => n.type === type && canonicalId(n.parentId) === canonicalId(pid) && vis(n));
+const allKids = pid => nodes.filter(n => canonicalId(n.parentId) === canonicalId(pid) && vis(n));
+function desc(id) { const result = [], stack = [canonicalId(id)], seen = new Set(stack); while (stack.length) { const current = stack.pop(), children = allKids(current).concat(nodes.filter(n => !n.mergedInto && (canonicalId(n.parentId) === 'sec_mand_' + current || canonicalId(n.parentId) === 'sec_elec_' + current))); for (const child of children) if (!seen.has(child.id)) { seen.add(child.id); result.push(child.id); stack.push(child.id); } } return result; }
+function pathOf(id) { const path = [], seen = new Set(); let node = byId(id); while (node && !seen.has(node.id)) { seen.add(node.id); path.unshift(node); node = node.parentId ? byId(node.parentId) : null; } return path; }
+
+
 onSnapshot(query(collection(db, 'structure'), orderBy('createdAt')), snap => {
   nodes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   ready = true; loadErr = false; render(); renderAdmin();
 }, err => { console.error(err); loadErr = true; render(); renderAdmin(); });
 
-function makeWatcher(onData) {
-  let id = null, unsub = null, data = [], loaded = false;
+function makeWatcher(onData, includeUploading = false) {
+  let id = null, signature = '', unsubscribers = [], data = [], loaded = false;
   return {
     get id() { return id; }, get data() { return data; }, get loaded() { return loaded; },
-    set(nid) {
-      if (nid === id) return;
-      if (unsub) { unsub(); unsub = null; }
-      id = nid; data = []; loaded = false;
-      if (!id) return;
-      unsub = onSnapshot(query(collection(db, 'lectures'), where('courseId', '==', id)),
-        snap => { data = snap.docs.map(d => ({ id: d.id, ...d.data() })); loaded = true; onData(); },
-        err => { console.error(err); loaded = true; onData(); });
+    set(nextId) {
+      const ids = nextId ? aliasIds(nextId) : [], nextSignature = JSON.stringify(ids);
+      if (nextId === id && signature === nextSignature) return;
+      unsubscribers.forEach(fn => fn()); unsubscribers = []; id = nextId; signature = nextSignature; data = []; loaded = false; if (!id) return;
+      const groups = []; for (let i = 0; i < ids.length; i += 10) groups.push(ids.slice(i, i + 10));
+      const parts = new Map(), done = new Set();
+      groups.forEach((group, index) => {
+        unsubscribers.push(onSnapshot(query(collection(db, 'lectures'), where('courseId', group.length === 1 ? '==' : 'in', group.length === 1 ? group[0] : group)), snapshot => {
+          parts.set(index, snapshot.docs.map(d => ({ id: d.id, ...d.data() }))); done.add(index);
+          data = [...new Map([...parts.values()].flat().filter(item => item.uploadStatus !== 'cancelled' && (includeUploading || item.type === 'video' || !['queued', 'uploading'].includes(item.uploadStatus))).map(item => [item.id, item])).values()]; loaded = done.size === groups.length; onData();
+        }, error => { console.error(error); done.add(index); loaded = done.size === groups.length; onData(); }));
+      });
     }
   };
 }
+
+
 const pubW = makeWatcher(() => { if (route.v !== 'home') renderPage(); });
-const admW = makeWatcher(() => renderAdmin());
+const admW = makeWatcher(() => renderAdmin(), true);
 
 const toast = m => window.showToast && window.showToast(m);
 function syncScroll() {
@@ -567,7 +858,7 @@ $('heroBack').onclick = goBack;
 function pubTarget() {
   const last = (route.path || [])[(route.path || []).length - 1], n = last && byId(last);
   if (!n) return null;
-  return n.type === 'cou' ? n.id : n.type === 'exp' ? realId(n.id) : null;
+  return n.type === 'cou' ? n.id : n.type === 'exp' ? realId(n.id) : n.type === 'umat' ? n.id : null;
 }
 function render() {
   const home = route.v === 'home';
@@ -605,9 +896,10 @@ function renderPage() {
   const cur = p.length ? byId(p[p.length - 1]) : null;
   c.append(crumbBar(p));
   if (cur && cur.type === 'exp') { expPage(c, cur, p); return; }
+  if (cur && cur.type === 'umat') { matPage(c, cur, p); return; }
   const type = cur ? L[cur.type].child : 'uni';
   c.append(el('h3', 'btitle', cur ? L[type].many + ' — ' + dn(cur) : 'اختر الجامعة'));
-  const items = kids(cur ? cur.id : null, type).map(n => ({ n, id: n.id }));
+  const items = [...(cur && cur.type === 'uni' ? kids(cur.id, 'usec') : []), ...kids(cur ? cur.id : null, type)].map(n => ({ n, id: n.id }));
   if (cur && cur.type === 'cou' && pubW.id === cur.id && pubW.data.some(x => x.type === 'video' || x.type === 'pdf')) items.push({ n: byId(LEG + cur.id), id: LEG + cur.id });
   if (!items.length) { c.append(msg('لا توجد ' + L[type].many + ' مضافة بعد.')); return; }
   const grid = el('div', 'bgrid');
@@ -615,7 +907,7 @@ function renderPage() {
     const b = el('button', 'bitem'); b.type = 'button'; b.innerHTML = ICON[n.type];
     b.append(el('h4', null, dn(n)));
     const ch = L[n.type].child;
-    b.append(el('span', null, ch ? L[ch].many + ': ' + allKids(n.id).length : 'اضغط لعرض المحاضرات'));
+    b.append(el('span', null, n.type === 'umat' ? 'ملفات • ملخصات • دردشة' : ch ? L[ch].many + ': ' + allKids(n.id).length : 'اضغط لعرض المحاضرات'));
     if (n.type === 'exp' && !n.legacy) b.append(rateLine(n.id));
     b.onclick = () => go({ v: 'browse', path: [...p, id] });
     grid.append(b);
@@ -625,12 +917,14 @@ function renderPage() {
 function expPage(c, exp, p) {
   c.append(el('h3', 'btitle', dn(exp)));
   if (!exp.legacy) c.append(rateBox(exp));
-  const tab = route.xtab || 'lectures', bar = el('div', 'ctabs');
-  [['lectures', '🎬 المحاضرات'], ['files', '📎 ملفات المادة']].forEach(([k, t]) => {
+  const tab = route.xtab === 'quiz' ? 'summary' : route.xtab || 'lectures', bar = el('div', 'ctabs material-tabs');
+  [['lectures', '🎬 المحاضرات'], ['files', '📎 ملفات المادة'], ['summary', '📝 ملخصات ملفات المادة'], ['rafiq', '🤖 اسأل رفيق عن المادة'], ['chat', '💬 الدردشة']].forEach(([k, t]) => {
     const b = el('button', 'ctab' + (tab === k ? ' active' : ''), t); b.type = 'button';
     b.onclick = () => { route.xtab = k; try { history.replaceState(route, ''); } catch (e) {} renderPage(); }; bar.append(b);
   });
-  c.append(bar);
+  c.append(bar); watchSocial();
+  if (tab === 'rafiq') { const pn = el('div', 'vpanel'); c.append(pn); panelAsk(pn, exp, true); return; }
+  if (tab === 'chat') { const pn = el('div', 'vpanel'); c.append(pn); panelChat(pn, { id: exp.parentId || realId(exp.id), name: 'دردشة المادة' }); return; }
   if (!pubW.loaded) { c.append(msg('جاري التحميل…')); return; }
   const list = pubW.data;
   if (tab === 'lectures') {
@@ -638,18 +932,21 @@ function expPage(c, exp, p) {
     if (!vs.length) { c.append(msg('لا توجد محاضرات بعد.')); return; }
     const box = el('div', 'mlist');
     vs.forEach(it => {
-      const b = el('button', 'lcard'); b.type = 'button';
+      const b = el('button', 'lcard'); b.type = 'button'; b.disabled = ['queued', 'uploading'].includes(it.uploadStatus);
       const ic = el('span', 't-ic'); ic.innerHTML = ICON.exp;
       const tx = el('div'); tx.append(el('b', null, lecLabel(it, list)));
       const nf = list.filter(x => x.type === 'pdf' && x.lectureId === it.id).length;
       tx.append(el('small', null, [it.aiData ? 'ملخص وامتحان قصير' : '', nf ? 'ملفات: ' + nf : ''].filter(Boolean).join(' • ') || 'اضغط للمشاهدة'));
       b.append(ic, tx); b.onclick = () => go({ v: 'video', path: p, lec: it.id, tab: 'summary' });
+      if (b.disabled) { const label = tx.querySelector('small'); if (label) label.textContent = it.uploadStatus === 'queued' ? 'بانتظار اكتمال رفع المحاضرة' : 'جاري رفع المحاضرة…'; }
       box.append(b);
     });
     c.append(box); return;
   }
-  if (canUpload(exp)) { const u = el('button', 'abtn abtn-g', '+ رفع ملف عام للمادة'); u.type = 'button'; u.style.cssText = 'margin-bottom:14px;font-size:1.15rem;padding:10px 22px'; u.onclick = () => openUpload('pdf', pubW.id, '', list); c.append(u); }
-  const gen = list.filter(x => x.type === 'pdf' && !x.lectureId);
+  const books = list.filter(x => x.type === 'pdf' && !x.lectureId && x.fkind !== 'summary');
+  if (tab === 'summary') { const pn = el('div', 'vpanel'); c.append(pn); panelBookSummary(pn, books, 'course', exp); return; }
+  if (canUpload(exp)) { const u = el('button', 'abtn abtn-g', '+ رفع ملف عام للمادة'); u.type = 'button'; u.style.cssText = 'margin-bottom:14px;font-size:1.15rem;padding:10px 22px'; u.onclick = () => openUpload('pdf', pubW.id, '', list, { fkind: 'book', matType: 'course' }); c.append(u); }
+  const gen = list.filter(x => x.type === 'pdf' && !x.lectureId && x.fkind !== 'summary');
   if (!gen.length) { c.append(msg('لا توجد ملفات عامة للمادة.')); return; }
   const box = el('div', 'mlist'); gen.forEach(f => box.append(fileRow(f, list))); c.append(box);
 }
@@ -658,17 +955,18 @@ function fileRow(f, list) {
   info.append(ic, el('b', null, f.title || '')); info.style.cursor = 'default'; c.append(info);
   const a = el('a', 'abtn abtn-b', 'فتح / تحميل'); a.href = f.url; a.target = '_blank'; a.rel = 'noopener'; a.style.textDecoration = 'none';
   const box = el('div', 'm-btns'); box.append(a);
-  if (canEditLec(curExp())) { const d = el('button', 'ibtn d'); d.type = 'button'; d.innerHTML = ICO_DEL; d.onclick = () => delLec(f, list); box.append(d); }
+  if (canManageLecture(f)) { const d = el('button', 'ibtn d'); d.type = 'button'; d.innerHTML = ICO_DEL; d.onclick = () => delLec(f, list); box.append(d); }
   c.append(box); return c;
 }
 
 /* ---------- صفحة الفيديو ---------- */
-const VT = [['files', '📎 الملفات'], ['summary', '📝 ملخص المحاضرة'], ['quiz', '✍ امتحان قصير'], ['chat', '💬 الدردشة'], ['notes', '🗒 ملاحظاتك']];
+const VT = [['files', '📎 الملفات'], ['summary', '📝 ملخص المحاضرة'], ['quiz', '✍ امتحان قصير'], ['ask', '🤖 اسأل رفيق'], ['notes', '🗒 ملاحظاتك']];
 function aiState(it) {
-  if (it.aiData) return 'done';
   const tk = tasks.get(it.id);
   if (tk && tk.stage === 'analyze' && !tk.paused) return 'processing';
-  if (it.aiStatus === 'processing' && Date.now() - (it.aiStartedAt || 0) < 15 * 60 * 1000) return 'processing';
+  if (it.aiStatus === 'processing' && (it.rafiqJobId || Date.now() - (it.aiStartedAt || 0) < 15 * 60 * 1000)) return 'processing';
+  if (it.aiStatus === 'error') return 'error';
+  if (it.aiData || it.aiBook) return 'done';
   return it.aiStatus === 'error' || it.aiStatus === 'processing' ? 'error' : 'none';
 }
 function renderVideo() {
@@ -676,6 +974,7 @@ function renderVideo() {
   if (!exp || exp.type !== 'exp') { route = { v: 'browse', path: p.slice(0, -1) }; renderPage(); return; }
   const lec = pubW.data.find(x => x.id === route.lec);
   if (!lec) { vShell = null; pv.textContent = ''; const c = el('div', 'container'); c.append(crumbBar(p), msg(pubW.loaded ? 'المحاضرة غير موجودة.' : 'جاري التحميل…')); pv.append(c); return; }
+  if (['queued', 'uploading'].includes(lec.uploadStatus)) { vShell = null; pv.textContent = ''; const waiting = el('div', 'container'); waiting.append(crumbBar(p), msg('جاري رفع هذه المحاضرة؛ ستصبح متاحة بعد اكتمال الرفع.')); pv.append(waiting); return; }
   if (!vShell || vShell.lec !== lec.id) {
     pv.textContent = ''; const c = el('div', 'container');
     const title = el('h2', 'vtitle'), vid = document.createElement('video');
@@ -689,19 +988,20 @@ function renderVideo() {
   }
   if (vShell.url !== lec.url) { vShell.vid.src = lec.url; vShell.url = lec.url; }
   vShell.title.textContent = lecLabel(lec, pubW.data);
+  if (Number.isFinite(route.seek) && vShell.seekApplied !== route.seek) { const seek = route.seek; const apply = () => { if (vShell && route.lec === lec.id) { vShell.vid.currentTime = Math.min(seek, Number.isFinite(vShell.vid.duration) ? vShell.vid.duration : seek); vShell.seekApplied = seek; } }; if (vShell.vid.readyState >= 1) apply(); else vShell.vid.addEventListener('loadedmetadata', apply, { once: true }); }
   updateVideoUI(false);
 }
 function updateVideoUI(force) {
   const lec = pubW.data.find(x => x.id === route.lec); if (!lec || !vShell) return;
-  const tab = route.tab || 'summary';
+  const tab = route.tab === 'chat' ? 'ask' : (route.tab || 'summary');
   vShell.tabs.querySelectorAll('.ctab').forEach(b => b.classList.toggle('active', b.dataset.k === tab));
   const files = pubW.data.filter(x => x.type === 'pdf' && x.lectureId === lec.id).map(f => f.id + f.title + f.url);
-  const sig = JSON.stringify([tab, role, getMail(), files, lec.aiStatus, lec.aiError, lec.aiData || null, tasks.size]);
+  const sig = JSON.stringify([tab, role, getMail(), files, lec.aiStatus, lec.aiProgress, lec.rafiqStatus, lec.aiError, lec.aiData || null, tasks.size]);
   if (!force && sig === vShell.sig) return;
   vShell.sig = sig;
   const pn = vShell.panel; pn.textContent = '';
   watchSocial();
-  if (tab === 'files') panelFiles(pn, lec); else if (tab === 'summary') panelSummary(pn, lec); else if (tab === 'chat') panelChat(pn, lec); else if (tab === 'notes') panelNotes(pn, lec); else panelQuiz(pn, lec);
+  if (tab === 'files') panelFiles(pn, lec); else if (tab === 'summary') panelSummary(pn, lec); else if (tab === 'ask') panelAsk(pn, lec); else if (tab === 'notes') panelNotes(pn, lec); else panelQuiz(pn, lec);
 }
 function panelFiles(pn, lec) {
   if (canUpload(curExp())) { const b = el('button', 'abtn abtn-g', '+ رفع ملف لهذه المحاضرة'); b.type = 'button'; b.style.marginBottom = '12px'; b.onclick = () => openUpload('pdf', pubW.id, lec.id, pubW.data); pn.append(b); }
@@ -752,14 +1052,10 @@ function renderSummary(box, text) {
 }
 function panelSummary(pn, lec) {
   const st = aiState(lec);
-  if (st === 'done') { const b = el('div', 'sumbox'); renderSummary(b, lec.aiData.summary); pn.append(b); }
+  if (lec.aiData) { const b = el('div', 'sumbox'); renderSummary(b, lec.aiData.summary); pn.append(b); if (lec.aiData.detailUrl) { b.textContent = 'جاري تحميل المذكرة الكاملة…'; fetch(lec.aiData.detailUrl).then(r => { if (!r.ok) throw new Error('تعذّر تحميل المذكرة'); return r.json(); }).then(data => { b.textContent = ''; renderSummary(b, data.summary); }).catch(e => { b.textContent = e.message; }); } }
   else if (st === 'processing') { const m = msg('جاري تجهيز الملخص والامتحان القصير… سيظهر هنا تلقائياً عند الانتهاء.'); pn.append(m); }
   else pn.append(msg(st === 'error' ? 'تعذّر تجهيز الملخص لهذه المحاضرة.' + (isAdmin() && lec.aiError ? ' (' + lec.aiError + ')' : '') : 'لم يُجهَّز الملخص لهذه المحاضرة بعد.'));
-  if (canUpload(curExp()) && lec.r2Key && st !== 'processing') {
-    const b = el('button', 'abtn abtn-b', st === 'done' ? 'إعادة التحليل' : 'بدء التحليل'); b.type = 'button'; b.style.marginTop = '14px';
-    b.onclick = () => { if (st !== 'done' || confirm('سيُستبدل الملخص والامتحان الحاليان. متابعة؟')) startAnalysis(lec, true); };
-    pn.append(b);
-  }
+
 }
 
 /* ---------- الامتحان القصير: محاولات غير محدودة + سجل محلي ---------- */
@@ -776,14 +1072,18 @@ function drawQuiz(box, quiz, ans, locked) {
       if (locked) { if (j === q.correctIndex) lab.classList.add('ok'); else if (ans[i] === j) lab.classList.add('bad'); }
       lab.append(r, el('span', null, o)); c.append(lab);
     });
+    if (q.source) c.prepend(el('small', 'quiz-source', q.source));
+    if (locked && q.explanation) c.append(el('p', 'quiz-explanation', 'التوضيح: ' + q.explanation));
     box.append(c);
   });
 }
-function panelQuiz(pn, lec) {
-  const quiz = lec.aiData && Array.isArray(lec.aiData.quiz) ? lec.aiData.quiz : [];
+function panelQuiz(pn, lec, options = {}) {
+  const quiz = normalizeQuiz(lec.aiData && lec.aiData.quiz);
   if (!quiz.length) { pn.append(msg(aiState(lec) === 'processing' ? 'جاري تجهيز الامتحان القصير…' : 'لا يوجد امتحان قصير لهذه المحاضرة بعد.')); return; }
   const S = qs[lec.id] || (qs[lec.id] = { ans: [], sub: false, rev: null }), atts = getAtt(lec.id);
-  const redraw = () => updateVideoUI(true);
+  const redraw = options.redraw || (() => updateVideoUI(true));
+  const signature = JSON.stringify(quiz);
+  if (S.signature !== signature) { S.ans = []; S.sub = false; S.rev = null; S.signature = signature; }
   if (S.rev !== null && atts[S.rev]) {
     const a = atts[S.rev];
     pn.append(el('div', 'qres', 'مراجعة محاولة ' + new Date(a.t).toLocaleString('ar') + ' — ' + a.s + '/' + a.n));
@@ -797,8 +1097,8 @@ function panelQuiz(pn, lec) {
     b.onclick = () => {
       let s = 0; quiz.forEach((q, i) => { if (S.ans[i] === q.correctIndex) s++; });
       const list = getAtt(lec.id);
-      list.unshift({ t: Date.now(), s, n: quiz.length, a: quiz.map((_, i) => S.ans[i] == null ? -1 : S.ans[i]), q: quiz.map(q => ({ question: q.question, options: q.options, correctIndex: q.correctIndex })) });
-      saveAtt(lec.id, list); S.sub = true; redraw(); vShell.tabs.scrollIntoView({ behavior: 'smooth' });
+      list.unshift({ t: Date.now(), s, n: quiz.length, a: quiz.map((_, i) => S.ans[i] == null ? -1 : S.ans[i]), q: quiz.map(q => ({ question: q.question, options: q.options, correctIndex: q.correctIndex, explanation: q.explanation || '', source: q.source || '' })) });
+      saveAtt(lec.id, list); S.sub = true; redraw(); const tabs = vShell ? vShell.tabs : document.querySelector('#pageView .ctabs'); if (tabs) tabs.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
     act.append(b);
   } else {
@@ -807,7 +1107,7 @@ function panelQuiz(pn, lec) {
   }
   pn.append(act);
   if (atts.length) {
-    const h = el('h4', 'sh', 'محاولاتك السابقة (محفوظة على هذا الجهاز) — أفضل نتيجة: ' + Math.max(...atts.map(a => a.s)) + '/' + atts[0].n); pn.append(h);
+    const h = el('h4', 'sh', 'محاولاتك السابقة (محفوظة على هذا الجهاز) — أفضل نسبة: ' + Math.round(Math.max(...atts.map(a => a.n ? a.s / a.n * 100 : 0))) + '%'); pn.append(h);
     atts.forEach((a, i) => {
       const r = el('div', 'att'); r.append(el('span', null, new Date(a.t).toLocaleString('ar') + ' — ' + a.s + '/' + a.n));
       const b = el('button', 'abtn abtn-l', 'مراجعة'); b.onclick = () => { S.rev = i; redraw(); }; r.append(b); pn.append(r);
@@ -824,12 +1124,13 @@ let role = null, me = null, lastMe = null, joining = false, gUser = null;
 const isStaff = () => !!authUser, isAdmin = () => !!authUser && role === 'admin', myKey = () => me && authUser ? (me.teamId || authUser.uid) : null;
 const curExp = () => byId((route.path || [])[(route.path || []).length - 1]);
 const canUpload = en => isAdmin() || (role === 'contrib' && !!en && !!en.ownerKey && en.ownerKey === myKey());
-const canEditLec = en => isAdmin() || (canUpload(en) && en.status === 'pending');
-const canEdit = n => isAdmin() || (role === 'contrib' && !!n.ownerKey && n.ownerKey === myKey() && n.status === 'pending');
+const canEditLec = en => isAdmin() || canUpload(en);
+const canManageLecture = lec => isAdmin() || canUpload(byId(lec.courseId)) && (!lec.ownerKey || lec.ownerKey === myKey());
+const canEdit = n => !n.virtual && (isAdmin() || (role === 'contrib' && !!n.ownerKey && n.ownerKey === myKey() && !(n.aliasNames || []).length));
 function canAdd(parent, type) {
   if (isAdmin()) return true;
   if (role !== 'contrib' || !parent || !me || !me.scope) return false;
-  if (!pathOf(parent.id).some(p => p.id === me.scope.id)) return false;
+  if (!pathOf(parent.id).some(p => p.id === canonicalId(me.scope.id))) return false;
   if (type === 'exp') return true;
   const o = ['uni', 'col', 'maj', 'cou']; return o.indexOf(type) >= o.indexOf(me.scope.type === 'college' ? 'maj' : 'col');
 }
@@ -865,7 +1166,7 @@ onAuthStateChanged(auth, async u => {
   if (!authUser) closeAdmin();
   watchApps(isAdmin());
   updateAuthUI();
-  if (authUser) { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {} await loadTasks(); pump(); }
+  if (authUser) { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {} await loadTasks(); pump(); void refreshRafiqDashboard(); }
 });
 function closeAuth() { $('authModal').classList.remove('open'); syncScroll(); }
 window.openAuth = async () => {
@@ -923,12 +1224,12 @@ function drawAdminHome() {
   const h = $('aHome'); h.textContent = ''; h.className = 'aview jform'; h.style.padding = '0';
   const hb = $('heroSec').cloneNode(true); hb.querySelectorAll('[id]').forEach(x => x.removeAttribute('id')); hb.removeAttribute('id'); hb.classList.add('compact');
   const hc = hb.querySelector('.hc'), hh = hb.querySelector('.hero-content'); if (hh) hh.style.display = 'none';
-  if (hc) { hc.style.display = ''; hc.querySelector('h1').textContent = 'التحكم والإعدادات'; hc.querySelector('p').textContent = 'إدارة الأقسام ومراجعة المحتوى المنتظر للموافقة.'; const bt = hc.querySelector('button'); if (bt) bt.remove(); }
+  if (hc) { hc.style.display = ''; hc.querySelector('h1').textContent = 'التحكم والإعدادات'; hc.querySelector('p').textContent = 'إدارة الأقسام ومتابعة رفيق والمهام الخلفية.'; const bt = hc.querySelector('button'); if (bt) bt.remove(); }
   h.append(hb);
   const w = el('div'); w.style.padding = '28px'; h.append(w);
   w.append(el('h3', 'btitle', 'اختر القسم الذي تريد العمل عليه'));
   const g = el('div', 'bgrid'); g.style.gridTemplateColumns = 'repeat(2,1fr)';
-  [['📚', 'إدارة الأقسام', 'الجامعات والكليات والتخصصات والمواد والشروحات والمحاضرات', 'struct'], ['📝', 'مراجعة المحتوى', 'الأقسام والكليات والتخصصات والمواد والشروحات المنتظرة للموافقة', 'review']].forEach(([e, t, d, v]) => {
+  [['📚', 'إدارة الأقسام', 'الجامعات والكليات والتخصصات والمواد والشروحات والمحاضرات', 'struct'], ['📝', 'رفيق والتنبيهات', 'تنبيهات المحتوى والتكرار والمهام الخلفية وسجل الدمج', 'review']].forEach(([e, t, d, v]) => {
     const b = el('button', 'bitem'); b.type = 'button'; b.append(el('span', 'emo', e), el('h4', null, t), el('span', null, d));
     if (v === 'review' && revCount()) b.append(el('span', 'dot', String(revCount())));
     b.onclick = () => { aView = v; renderAdmin(); }; g.append(b);
@@ -967,7 +1268,7 @@ function treeNode(n) {
   const out = [row];
   if (hasKids && aOpen.has(n.id)) {
     const g = el('div', 't-group'), ch = L[n.type].child;
-    kids(n.id, ch).forEach(k => treeNode(k).forEach(x => g.append(x)));
+    (n.type === 'uni' ? kids(n.id, 'usec') : []).concat(kids(n.id, ch)).forEach(k => treeNode(k).forEach(x => g.append(x)));
     if (canAdd(n, ch)) g.append(addRow(ch, n.id)); out.push(g);
   }
   return out;
@@ -976,14 +1277,14 @@ function mcard(n) {
   const c = el('div', 'm-card'), info = el('div', 'm-info'), ic = el('span', 't-ic'); ic.innerHTML = ICON[n.type];
   const tx = el('div'); tx.append(el('b', null, dn(n)));
   const ch = L[n.type].child;
-  tx.append(el('small', null, ch ? L[ch].many + ': ' + allKids(n.id).length : 'شرح دراسي'));
+  tx.append(el('small', null, ch ? L[ch].many + ': ' + allKids(n.id).length : (n.type === 'umat' ? 'ملفات وملخصات ودردشة' : 'شرح دراسي')));
   info.append(ic, tx); info.onclick = () => selectNode(n.id);
   c.append(info); return c;
 }
-function admTarget() { const n = aSel && byId(aSel); return !n ? null : n.type === 'cou' ? n.id : n.type === 'exp' ? realId(n.id) : null; }
+function admTarget() { const n = aSel && byId(aSel); return !n ? null : n.type === 'cou' ? n.id : n.type === 'exp' ? realId(n.id) : n.type === 'umat' ? n.id : null; }
 function renderAdmin() {
   if (!$('admin').classList.contains('open')) return;
-  const AT = { home: '⚙ التحكم والإعدادات', struct: '📚 إدارة الأقسام', review: '📝 مراجعة الطلبات' };
+  const AT = { home: '⚙ التحكم والإعدادات', struct: '📚 إدارة الأقسام', review: '🤖 رفيق والتنبيهات' };
   if (!isAdmin() && aView !== 'struct') aView = 'struct';
   $('aHome').style.display = aView === 'home' ? '' : 'none'; $('aStruct').style.display = aView === 'struct' ? 'flex' : 'none'; $('aReviewBox').style.display = aView === 'review' ? '' : 'none';
   $('aBack').style.display = aView !== 'home' && isAdmin() ? '' : 'none'; $('aHead').textContent = AT[aView];
@@ -1018,6 +1319,7 @@ function renderAdmin() {
   head.append(el('h3', null, n ? (n.type === 'exp' ? dn(n) : L[n.type].one + ': ' + n.name) : 'الجامعات'));
   if (type && canAdd(n, type)) { const g = el('div', 'grp'), ab = el('button', 'abtn abtn-g', '+ إضافة ' + L[type].one); ab.type = 'button'; ab.onclick = () => openName('add', type, n ? n.id : null); g.append(ab); head.append(g); }
   m.append(head);
+  if (n && n.type === 'umat') { renderMaterialAdmin(m, n); return; }
   if (!type) {
     const bar = el('div', 'ctabs');
     [['lectures', 'المحاضرات'], ['files', 'الملفات']].forEach(([k, tt]) => {
@@ -1026,7 +1328,7 @@ function renderAdmin() {
     m.append(bar); renderContent(m, aTab === 'files' ? 'files' : 'lectures'); return;
   }
   const ml = el('div', 'mlist');
-  (n ? kids(n.id, type) : isAdmin() ? kids(null, 'uni') : [me && me.scope && byId(me.scope.id)].filter(Boolean)).forEach(x => ml.append(mcard(x)));
+  (n ? (n.type === 'uni' ? kids(n.id, 'usec') : []).concat(kids(n.id, type)) : isAdmin() ? kids(null, 'uni') : [me && me.scope && byId(me.scope.id)].filter(Boolean)).forEach(x => ml.append(mcard(x)));
   if (isAdmin() && n && n.type === 'cou' && admW.id === n.id && admW.data.some(x => x.type === 'video' || x.type === 'pdf')) ml.append(mcard(byId(LEG + n.id)));
   if (!ml.children.length) m.append(msg('لا توجد ' + L[type].many + ' بعد — أضف أول ' + L[type].one + '.')); else m.append(ml);
 }
@@ -1048,17 +1350,13 @@ async function saveName() {
   if (!nm || busy) return;
   const name = $('nInput').value.trim();
   if (!name) { $('nErr').textContent = 'الرجاء كتابة الاسم'; return; }
-  const dup = nm.type !== 'lec' && kids(nm.pid, nm.type).some(x => x.name === name && (!nm.node || x.id !== nm.node.id));
-  if (dup) { $('nErr').textContent = 'هذا الاسم موجود مسبقاً في نفس المكان'; return; }
   busy = true; $('nSave').disabled = true;
   try {
-    if (nm.mode === 'add') {
-      const nd = { type: nm.type, name, parentId: nm.pid, createdAt: Date.now() };
-      if (role === 'contrib') Object.assign(nd, { ownerKey: myKey(), ownerName: me.name || '', status: 'pending' });
-      await addDoc(collection(db, 'structure'), nd);
-      if (nm.pid) pathOf(nm.pid).forEach(p => aOpen.add(p.id));
-    } else if (nm.type === 'lec') await updateDoc(doc(db, 'lectures', nm.node.id), { title: name });
-    else await updateDoc(doc(db, 'structure', nm.node.id), { name });
+    if (nm.type === 'lec') await rafiqCall('lecture-rename', { id: nm.node.id, title: name });
+    else {
+      const result = await rafiqCall('structure-save', { ...(nm.mode === 'edit' ? { id: nm.node.id } : { type: nm.type, parentId: nm.pid }), name });
+      if (result.reused) toast(result.message); if (nm.pid) pathOf(nm.pid).forEach(p => aOpen.add(p.id));
+    }
     closeName();
   } catch (e) { console.error(e); $('nErr').textContent = 'تعذّر الحفظ، تحقق من الاتصال أو من صلاحيات قاعدة البيانات'; }
   busy = false; $('nSave').disabled = false;
@@ -1070,6 +1368,7 @@ $('nameModal').addEventListener('click', e => { if (e.target === $('nameModal'))
 async function delNode(n) {
   if (!canEdit(n)) return;
   const ids = [n.id, ...desc(n.id)], more = ids.length - 1;
+  if (!isAdmin() && ids.some(id => { const node = byId(id); return node && node.ownerKey && node.ownerKey !== myKey(); })) { toast('يحتوي القسم على محتوى لأصحاب آخرين؛ الحذف متاح للمدير.'); return; }
   if (!confirm('حذف ' + L[n.type].one + ' «' + n.name + '»' + (more ? ' مع كل ما بداخلها (' + more + ' عنصر)' : '') + ' نهائياً؟')) return;
   try {
     await purgeLectures(ids);
@@ -1105,11 +1404,12 @@ function renderContent(m, tab) {
     else { const a = el('a', 'abtn abtn-b', 'تحميل'); a.href = it.url; a.target = '_blank'; a.rel = 'noopener'; a.style.cssText = 'text-decoration:none;padding:4px 12px'; act.append(a); }
     const e = el('button', 'ibtn e'); e.type = 'button'; e.title = 'تعديل'; e.innerHTML = ICO_EDIT; e.onclick = () => openName('edit', 'lec', null, { id: it.id, name: it.title, type: 'lec' });
     const d = el('button', 'ibtn d'); d.type = 'button'; d.title = 'حذف'; d.innerHTML = ICO_DEL; d.onclick = () => delLec(it, list);
-    if (ed_) act.append(e, d); c.append(act); ml.append(c);
+    if (ed_ && canManageLecture(it)) act.append(e, d); c.append(act); ml.append(c);
   });
   m.append(ml);
 }
 async function delLec(it, list) {
+  if (!canManageLecture(it)) { toast('ليس لديك صلاحية حذف هذا الملف'); return; }
   const linked = it.type === 'video' ? list.filter(x => x.type === 'pdf' && x.lectureId === it.id) : [];
   if (!confirm('حذف «' + it.title + '»' + (linked.length ? ' مع ملفاته (' + linked.length + ')' : '') + ' نهائياً؟')) return;
   try {
@@ -1126,170 +1426,177 @@ async function delLec(it, list) {
 /* ---------- الرفع والتحليل في الخلفية (يُحفظ في IndexedDB ويُستكمل عند فتح الموقع) ---------- */
 const API_URL = "https://comprehensive-university-platform.abyd5372.workers.dev/";
 const R2_PUBLIC_URL = "https://pub-50aba6ec86af4979b1c3e494c77151d6.r2.dev";
-const SIMPLE_MAX = 90 * 1024 * 1024, CHUNK = 50 * 1024 * 1024;
-async function idToken() { if (!auth.currentUser) throw new Error('انتهت الجلسة، سجّل الدخول من جديد'); return auth.currentUser.getIdToken(); }
-const tasks = new Map(), memBlobs = new Map();
-let idbP = null;
-const idb = () => idbP || (idbP = new Promise((res, rej) => {
-  if (!window.indexedDB) { rej(new Error('no idb')); return; }
-  const r = indexedDB.open('uni_tasks_v1', 1);
-  r.onupgradeneeded = () => { r.result.createObjectStore('tasks', { keyPath: 'id' }); r.result.createObjectStore('blobs', { keyPath: 'id' }); };
-  r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+const UPLOAD_LIMIT = 2;
+async function idToken() { if (!auth.currentUser) throw new Error('انتهت الجلسة؛ سجّل الدخول من جديد'); return auth.currentUser.getIdToken(); }
+async function rafiqCall(action, body = {}) {
+  const response = await fetch(API_URL + '?action=' + encodeURIComponent(action), { method: 'POST', headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const data = await response.json().catch(() => ({})); if (!response.ok || !data.success) throw Object.assign(new Error(data.error || 'تعذّر الاتصال برفيق'), { status: response.status }); return data;
+}
+const tasks = new Map(), memBlobs = new Map(); let idbP = null, rafiqServerJobs = [];
+const idb = () => idbP || (idbP = new Promise((resolve, reject) => {
+  if (!window.indexedDB) { reject(new Error('التخزين المحلي غير متاح')); return; }
+  const request = indexedDB.open('uni_tasks_v1', 1);
+  request.onupgradeneeded = () => { request.result.createObjectStore('tasks', { keyPath: 'id' }); request.result.createObjectStore('blobs', { keyPath: 'id' }); };
+  request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
 }));
 async function idbDo(store, mode, fn) {
-  const d = await idb();
-  return new Promise((res, rej) => { const tx = d.transaction(store, mode), rq = fn(tx.objectStore(store)); tx.oncomplete = () => res(rq && rq.result); tx.onerror = tx.onabort = () => rej(tx.error); });
+  const db = await idb(); return new Promise((resolve, reject) => { const tx = db.transaction(store, mode), result = fn(tx.objectStore(store)); tx.oncomplete = () => resolve(result && result.result); tx.onerror = tx.onabort = () => reject(tx.error); });
 }
-const persist = async t => {
-  if (t.cancelled) return;
-  const o = {}; Object.keys(t).forEach(k => { if (!['running', 'xhr', 'cancelled'].includes(k)) o[k] = t[k]; });
-  try { await idbDo('tasks', 'readwrite', s => s.put(o)); } catch (e) { console.warn(e); }
-};
-async function getBlob(id) { if (memBlobs.has(id)) return memBlobs.get(id); try { const r = await idbDo('blobs', 'readonly', s => s.get(id)); return r ? r.blob : null; } catch (e) { return null; } }
+async function persist(task) {
+  if (task.cancelled) return; const value = {}; for (const key of Object.keys(task)) if (!['xhr', 'running', 'cancelled'].includes(key)) value[key] = task[key];
+  try { await idbDo('tasks', 'readwrite', store => store.put(value)); } catch (error) { task.storageWarning = true; }
+}
+async function getBlob(id) { if (memBlobs.has(id)) return memBlobs.get(id); try { return (await idbDo('blobs', 'readonly', store => store.get(id)))?.blob || null; } catch (_) { return null; } }
 async function removeTask(id) {
-  tasks.delete(id); memBlobs.delete(id);
-  try { await idbDo('tasks', 'readwrite', s => s.delete(id)); await idbDo('blobs', 'readwrite', s => s.delete(id)); } catch (e) {}
-  updateBar();
+  tasks.delete(id); memBlobs.delete(id); try { await idbDo('tasks', 'readwrite', store => store.delete(id)); await idbDo('blobs', 'readwrite', store => store.delete(id)); } catch (_) {} updateBar();
 }
 async function loadTasks() {
-  if (resumed) return; resumed = true;
-  try { const all = await idbDo('tasks', 'readonly', s => s.getAll()); (all || []).forEach(t => { if (!tasks.has(t.id)) { t.paused = false; t.running = false; tasks.set(t.id, t); } }); } catch (e) { console.warn(e); }
-  if (tasks.size) toast('جارٍ استكمال العمليات غير المنتهية…');
-  updateBar();
+  if (resumed === auth.currentUser?.uid) return; resumed = auth.currentUser?.uid;
+  try { const all = await idbDo('tasks', 'readonly', store => store.getAll()); for (const task of all || []) {
+    if (task.ownerUid && task.ownerUid !== auth.currentUser?.uid) continue;
+    if (tasks.has(task.id)) { const current = tasks.get(task.id); current.nextRetry = 0; current.paused = false; }
+    else {
+      if (!task.protocol && task.stage === 'upload') { task.protocol = 2; task.stage = 'reserve'; task.batchId = task.batchId || task.id; task.parts = []; task.key = ''; task.uploadId = ''; }
+      task.paused = false; task.running = false; task.nextRetry = 0; tasks.set(task.id, task);
+    }
+  } } catch (_) {}
+  if (tasks.size) toast('يُستأنف رفع الملفات المحفوظة تلقائيًا'); updateBar();
 }
-function xhrSend(url, headers, body, onProg, t) {
+function xhrSend(url, headers, body, onProgress, task) {
   return new Promise((resolve, reject) => {
-    const x = new XMLHttpRequest(); x.open('POST', url); if (t) t.xhr = x;
-    Object.keys(headers).forEach(k => x.setRequestHeader(k, headers[k]));
-    if (onProg) x.upload.onprogress = ev => { if (ev.lengthComputable) onProg(ev.loaded); };
-    x.onload = () => { let j = {}; try { j = JSON.parse(x.responseText); } catch (e) {} if (x.status >= 200 && x.status < 300) resolve(j); else reject(new Error(j.error || j.details || ('HTTP ' + x.status))); };
-    x.onerror = () => reject(new Error('فشل الاتصال بالخادم'));
-    x.onabort = () => reject(new Error('أُلغي'));
-    x.send(body);
+    const xhr = new XMLHttpRequest(); xhr.open('POST', url); if (task) task.xhr = xhr;
+    Object.entries(headers).forEach(([key, value]) => xhr.setRequestHeader(key, value));
+    if (onProgress) xhr.upload.onprogress = event => { if (event.lengthComputable) onProgress(event.loaded); };
+    xhr.onload = () => { let data = {}; try { data = JSON.parse(xhr.responseText); } catch (_) {} if (xhr.status >= 200 && xhr.status < 300) resolve(data); else reject(Object.assign(new Error(data.error || 'HTTP ' + xhr.status), { status: xhr.status })); };
+    xhr.onerror = () => reject(new Error('انقطع الاتصال؛ سيُستأنف الرفع تلقائيًا')); xhr.onabort = () => reject(new Error('أُلغي الرفع')); xhr.send(body);
   });
 }
-async function doUpload(t) {
-  const blob = await getBlob(t.id);
-  if (!blob) { t.stage = 'lost'; throw new Error('الملف لم يعد متوفراً على الجهاز، أعد رفعه'); }
-  const safe = t.fileName.replace(/[^\w.\-]+/g, '_');
-  const fin = r => { if (!r || !r.key) throw new Error('رد غير متوقع من الخادم'); t.key = r.key; t.url = r.url || (R2_PUBLIC_URL + '/' + r.key); };
-  if (t.size <= SIMPLE_MAX) {
-    return fin(await xhrSend(API_URL, { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': t.fileType }, blob, l => { t.pct = l / t.size * 100; updateBar(); }, t));
-  }
-  if (!t.uploadId) {
-    const c = await xhrSend(API_URL + '?action=create', { Authorization: 'Bearer ' + await idToken(), 'File-Name': safe, 'Content-Type': t.fileType }, null, null, t);
-    t.uploadId = c.uploadId; t.key = c.key; t.parts = []; await persist(t);
-  }
-  const q = () => '&key=' + encodeURIComponent(t.key) + '&uploadId=' + encodeURIComponent(t.uploadId);
-  for (let n = t.parts.length + 1; (n - 1) * CHUNK < t.size; n++) {
-    const off = (n - 1) * CHUNK, part = blob.slice(off, Math.min(off + CHUNK, t.size)); let tries = 0, p;
-    for (;;) {
-      try { p = await xhrSend(API_URL + '?action=part&n=' + n + q(), { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/octet-stream' }, part, l => { t.pct = (off + l) / t.size * 100; updateBar(); }, t); break; }
-      catch (e) { if (t.cancelled || ++tries >= 4) throw e; await sleep(1500 * tries); }
-    }
-    t.parts.push({ partNumber: p.partNumber, etag: p.etag }); await persist(t);
-  }
-  fin(await xhrSend(API_URL + '?action=complete' + q(), { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, JSON.stringify({ parts: t.parts }), null, t));
+const preparingBatches = new Map();
+async function reserveBatch(task) {
+  const batchId = task.batchId || task.id;
+  if (!preparingBatches.has(batchId)) preparingBatches.set(batchId, (async () => {
+    const batch = [...tasks.values()].filter(t => (t.batchId || t.id) === batchId && t.stage === 'reserve').sort((a, b) => a.createdAt - b.createdAt);
+    for (const t of batch) if (t.book && !t.pageCount) { await countBookPages(t); }
+    const response = await rafiqCall('upload-plan', { courseId: task.courseId, files: batch.map(t => ({ id: t.id, title: t.title, type: t.kind, size: t.size, fileName: t.fileName, fileType: t.fileType, pageCount: t.pageCount || 0, duration: t.duration || 0, lectureRef: t.lectureRef || '' })) });
+    for (const reserved of response.files) { const t = tasks.get(reserved.id); if (t) { t.stage = 'upload'; t.protocol = 2; t.sortOrder = reserved.sortOrder; t.date = reserved.date; await persist(t); } }
+  })().finally(() => preparingBatches.delete(batchId)));
+  return preparingBatches.get(batchId);
 }
-async function doSave(t) {
-  const data = { courseId: t.courseId, type: t.kind, title: t.title, url: t.url, r2Key: t.key, date: t.createdAt };
-  if (t.kind === 'pdf' && t.lectureRef) data.lectureId = t.lectureRef;
-  if (t.kind === 'video') { data.aiStatus = 'processing'; data.aiStartedAt = Date.now(); }
-  await setDoc(doc(db, 'lectures', t.id), data);   /* المعرّف ثابت فلا يتكرر السجل عند الاستئناف */
+async function doUpload(task) {
+  const blob = await getBlob(task.id); if (!blob) { task.stage = 'lost'; throw new Error('لم يعد ملف الجهاز محفوظًا. اختر الملف نفسه لاستكمال أجزائه.'); }
+  let state = await rafiqCall('upload-status', { id: task.id });
+  if (!state.initialized) state = await rafiqCall('upload-init', { id: task.id });
+  if (state.status === 'complete') { task.stage = 'complete'; return; }
+  const size = state.partSize || 8 * 1024 * 1024; task.key = state.key; task.uploadId = state.uploadId; task.parts = state.parts || []; await persist(task);
+  const completed = new Set(task.parts.map(p => p.partNumber));
+  for (let number = 1; (number - 1) * size < task.size; number++) {
+    if (task.ownerUid && task.ownerUid !== auth.currentUser?.uid) throw new Error('يُستأنف هذا الرفع عند العودة إلى حساب صاحبه.');
+    if (task.cancelled) throw new Error('أُلغي الرفع');
+    if (completed.has(number)) continue;
+    const start = (number - 1) * size, chunk = blob.slice(start, Math.min(start + size, task.size));
+    const result = await xhrSend(API_URL + '?action=upload-part&id=' + encodeURIComponent(task.id) + '&n=' + number, { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/octet-stream' }, chunk, loaded => { task.pct = (Math.min(task.size, completed.size * size) + loaded) / task.size * 100; updateBar(); }, task);
+    if (task.cancelled) throw new Error('أُلغي الرفع');
+    task.parts.push({ partNumber: result.partNumber, etag: result.etag }); completed.add(number); task.pct = Math.min(100, completed.size * size / task.size * 100); await persist(task); updateBar();
+  }
+  task.stage = 'complete'; await persist(task);
 }
-async function doAnalyze(t) {
-  if (!t.force) { try { const s = await getDoc(doc(db, 'lectures', t.id)); if (s.exists() && s.data().aiData) return; } catch (e) {} }
-  try { await updateDoc(doc(db, 'lectures', t.id), { aiStatus: 'processing', aiStartedAt: Date.now(), aiError: '' }); } catch (e) { console.warn(e); }
+async function doSave(task) { return rafiqCall('upload-complete', { id: task.id }); }
+async function doAnalyze(task) { return rafiqCall('job-start', { lectureId: task.id }); }
+async function runTask(task) {
+  task.running = true; task.paused = false; task.err = ''; updateBar();
   try {
-    const res = await fetch(API_URL + '?action=analyze', { method: 'POST', keepalive: true, headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, body: JSON.stringify({ key: t.key, lectureId: t.id }) });
-    let j = {}; try { j = await res.json(); } catch (e) {}
-    if (!res.ok || !j.success || !j.data) throw new Error((j.error || 'HTTP ' + res.status) + (j.details ? ' — ' + j.details : ''));
-    await updateDoc(doc(db, 'lectures', t.id), { aiData: { summary: String(j.data.summary || ''), quiz: Array.isArray(j.data.quiz) ? j.data.quiz : [] }, aiStatus: 'done', aiError: '' });
-  } catch (e) {
-    const m = e.message === 'Failed to fetch' ? 'انقطع الاتصال بالخادم' : e.message;
-    try { await updateDoc(doc(db, 'lectures', t.id), { aiStatus: 'error', aiError: String(m).slice(0, 300) }); } catch (e2) {}
-    throw new Error(m);
-  }
-}
-async function runTask(t) {
-  t.running = true; t.paused = false; t.err = ''; updateBar();
-  try {
-    if (t.stage === 'upload') { await doUpload(t); t.stage = 'save'; await persist(t); }
-    if (t.stage === 'save') { await doSave(t); if (t.kind !== 'video') { toast('تم رفع «' + t.title + '»'); await removeTask(t.id); return; } t.stage = 'analyze'; await persist(t); }
-    if (t.stage === 'analyze') { await doAnalyze(t); toast('اكتمل تلخيص «' + t.title + '»'); await removeTask(t.id); return; }
-  } catch (e) {
-    console.error(e);
-    if (!t.cancelled) { t.err = e && e.message || String(e); t.paused = true; await persist(t); }
-  } finally { t.running = false; updateBar(); }
+    if (task.stage === 'reserve') await reserveBatch(task);
+    if (task.stage === 'upload') await doUpload(task);
+    if (task.cancelled) return;
+    if (task.stage === 'complete' || task.stage === 'save') await doSave(task);
+    else if (task.stage === 'analyze') await doAnalyze(task);
+    if (!task.cancelled && task.stage !== 'lost') { toast('اكتمل رفع «' + task.title + '»؛ المعالجة تستمر على الخادم'); await removeTask(task.id); }
+  } catch (error) {
+    if (!task.cancelled) { task.err = error.message; task.failures = (task.failures || 0) + 1; task.paused = true; task.nextRetry = Date.now() + Math.min(300000, 2000 * 2 ** Math.min(task.failures, 7)); await persist(task); }
+  } finally { task.running = false; updateBar(); queueMicrotask(pump); }
 }
 let pumping = false;
 async function pump() {
-  if (pumping || !authUser) return; pumping = true;
-  try { for (;;) { const nx = [...tasks.values()].filter(t => !t.paused && !t.running).sort((a, b) => a.createdAt - b.createdAt)[0]; if (!nx) break; await runTask(nx); } }
-  finally { pumping = false; }
+  if (pumping || !authUser || navigator.onLine === false) return; pumping = true;
+  try {
+    const active = [...tasks.values()].filter(t => t.running).length;
+    const next = [...tasks.values()].filter(t => (!t.ownerUid || t.ownerUid === auth.currentUser.uid) && !t.running && !t.cancelled && t.stage !== 'lost' && (!t.nextRetry || t.nextRetry <= Date.now())).sort((a, b) => a.createdAt - b.createdAt).slice(0, Math.max(0, UPLOAD_LIMIT - active));
+    for (const task of next) { task.running = true; void runTask(task); }
+  } finally { pumping = false; }
 }
-function startAnalysis(it, force) {
-  if (!it.r2Key) { toast('لا يوجد ملف مرتبط بهذه المحاضرة'); return; }
-  let t = tasks.get(it.id);
-  if (t) { t.paused = false; if (force) t.force = true; }
-  else { t = { id: it.id, kind: 'video', courseId: it.courseId, title: it.title || '', stage: 'analyze', key: it.r2Key, createdAt: Date.now(), force: !!force, err: '', paused: false, pct: 0, parts: [] }; tasks.set(it.id, t); persist(t); }
-  updateBar(); pump(); toast('بدأ التحليل — يستمر في الخلفية ويُستكمل عند فتح الموقع');
-}
+async function startAnalysis(lecture) { try { await rafiqCall('job-start', { lectureId: lecture.id }); toast('أُرسلت المهمة إلى رفيق'); } catch (e) { toast(e.message); } }
 function updateBar() {
-  const bar = $('taskBar'); bar.textContent = '';
-  const list = [...tasks.values()].sort((a, b) => a.createdAt - b.createdAt);
-  if (!isStaff() || !list.length) { bar.style.display = 'none'; return; }
-  bar.style.display = 'block'; bar.append(el('h5', null, 'العمليات الجارية (' + list.length + ')'));
-  list.forEach(t => {
-    const r = el('div', 'trow'); r.append(el('b', null, (t.kind === 'video' ? '🎬 ' : '📄 ') + t.title));
-    const sm = el('div'); sm.style.cssText = 'font-size:.85rem;color:#475569';
-    sm.textContent = t.paused ? '⚠ توقف: ' + t.err : t.stage === 'upload' ? (t.running ? 'جاري الرفع ' + Math.round(t.pct || 0) + '%' : 'بانتظار الدور…') : t.stage === 'save' ? 'جاري حفظ البيانات…' : (t.running ? 'جاري التلخيص وإنشاء الامتحان…' : 'بانتظار الدور…');
-    r.append(sm);
-    if (t.stage === 'upload' && t.running) { const pr = document.createElement('progress'); pr.max = 100; pr.value = t.pct || 0; r.append(pr); }
-    const tb = el('div', 'tb');
-    if (t.paused && t.stage !== 'lost') { const b = el('button', 'abtn abtn-g', 'استئناف'); b.onclick = () => { t.paused = false; pump(); updateBar(); }; tb.append(b); }
-    const c = el('button', 'abtn abtn-l', 'إلغاء');
-    c.onclick = async () => {
-      if (!confirm('إلغاء «' + t.title + '»؟')) return;
-      t.cancelled = true; if (t.xhr) { try { t.xhr.abort(); } catch (e) {} }
-      if (t.uploadId && t.stage === 'upload') { try { await xhrSend(API_URL + '?action=abort&key=' + encodeURIComponent(t.key) + '&uploadId=' + encodeURIComponent(t.uploadId), { Authorization: 'Bearer ' + await idToken() }, null); } catch (e) {} }
-      removeTask(t.id);
-    };
-    tb.append(c); r.append(tb); bar.append(r);
+  const bar = $('taskBar'); bar.textContent = ''; const list = [...tasks.values()].filter(t => !t.ownerUid || t.ownerUid === authUser?.uid).sort((a, b) => a.createdAt - b.createdAt), jobs = dashboardUser === authUser?.uid ? rafiqServerJobs.filter(j => !['done', 'cancelled'].includes(j.status)) : [];
+  if (!isStaff() || !list.length && !jobs.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'block'; bar.append(el('h5', null, 'الرفع والمهام (' + (list.length + jobs.length) + ')'));
+  list.forEach(task => {
+    const row = el('div', 'trow'); row.append(el('b', null, (task.kind === 'video' ? '🎬 ' : '📄 ') + task.title));
+    const info = task.stage === 'lost' ? task.err : task.paused ? 'ينتظر الاتصال أو إعادة المحاولة تلقائيًا: ' + task.err : task.stage === 'reserve' ? 'حفظ الترتيب وتجهيز الملفات…' : task.stage === 'upload' ? task.running ? 'جاري الرفع ' + Math.round(task.pct || 0) + '%' : 'بانتظار الدور' : 'حفظ الملف وتشغيل المعالجة على الخادم…';
+    row.append(el('small', 'task-info', info));
+    if (task.stage === 'upload') { const progress = document.createElement('progress'); progress.max = 100; progress.value = task.pct || 0; row.append(progress); }
+    if (task.storageWarning) row.append(el('small', 'merr', 'لم يُحفظ الملف كاملًا على الجهاز؛ قد يلزم اختياره مجددًا عند الرجوع.'));
+    if (task.stage === 'lost') {
+      const file = el('input', 'fld'); file.type = 'file'; file.accept = task.kind === 'video' ? 'video/*' : 'application/pdf'; file.onchange = async () => { const chosen = file.files[0]; if (!chosen || chosen.size !== task.size || chosen.name !== task.fileName) { toast('اختر الملف الأصلي نفسه'); return; } memBlobs.set(task.id, chosen); await idbDo('blobs', 'readwrite', store => store.put({ id: task.id, blob: chosen })); task.stage = task.key ? 'upload' : 'reserve'; task.nextRetry = 0; task.paused = false; await persist(task); pump(); }; row.append(file);
+    }
+    const cancel = el('button', 'abtn abtn-l', 'إلغاء الرفع'); cancel.type = 'button'; cancel.onclick = async () => { if (!confirm('إلغاء رفع «' + task.title + '»؟')) return; task.cancelled = true; task.xhr?.abort(); try { await rafiqCall('upload-cancel', { id: task.id }); } catch (_) {} await removeTask(task.id); }; row.append(cancel); bar.append(row);
+  });
+  jobs.slice(0, 5).forEach(job => { const row = el('div', 'trow'); row.append(el('b', null, '🤖 رفيق'), el('small', 'task-info', job.progress || (job.status === 'error' ? 'تُعاد المحاولة تلقائيًا' : 'جاري العمل على الخادم'))); bar.append(row); });
+}
+setInterval(() => { if (isStaff()) pump(); }, 3000);
+window.addEventListener('online', () => { tasks.forEach(t => { t.nextRetry = 0; }); pump(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { tasks.forEach(t => { t.nextRetry = 0; }); pump(); refreshRafiqDashboard(); } });
+window.addEventListener('beforeunload', event => { if ([...tasks.values()].some(t => ['reserve', 'upload'].includes(t.stage))) { event.preventDefault(); event.returnValue = ''; } });
+
+let up = null;
+function openUpload(type, courseId, lectureId, list, opts) {
+  if (!courseId) return; const parent = byId(courseId), book = type === 'pdf' && !lectureId;
+  up = { type, courseId: realId(courseId), lecId: lectureId || '', fkind: book ? 'book' : '', matType: parent?.type === 'umat' ? materialType(parent) : 'course', ...(opts || {}), entries: [] };
+  $('upTitle').textContent = type === 'video' ? 'رفع محاضرات بالترتيب' : 'رفع ملفات المادة'; $('upName').value = ''; $('upName').style.display = type === 'video' ? 'none' : '';
+  $('upName').placeholder = 'عنوان اختياري لملف واحد'; $('upFile').value = ''; $('upFile').multiple = true; $('upFile').accept = type === 'video' ? 'video/*' : 'application/pdf';
+  $('upLinkWrap').style.display = 'none'; $('upErr').textContent = ''; $('upSave').disabled = false;
+  $('upNote').textContent = type === 'video' ? 'اختر عدة فيديوهات، وحدد عنوان كل محاضرة وترتيبها. يُرفع فيديوهان معًا والبقية في الانتظار. الحد لكل فيديو: 2 غيغابايت. يستأنف الرفع تلقائيًا عند عودتك، وتستمر المعالجة على الخادم بعد اكتماله.' : 'لكل كتاب PDF تلخيص مستقل باسمه دون امتحان. الحد لكل كتاب: 50 ميغابايت و1000 صفحة.';
+  let holder = $('uploadEntries'); if (!holder) { holder = el('div', 'upload-entries'); holder.id = 'uploadEntries'; $('upFile').after(holder); } holder.textContent = '';
+  $('upModal').classList.add('open'); syncScroll();
+}
+function renderUploadEntries() {
+  const holder = $('uploadEntries'); holder.textContent = ''; if (!up) return;
+  up.entries.forEach((entry, index) => {
+    const row = el('div', 'upload-entry'); row.append(el('b', null, String(index + 1)), el('small', null, entry.file.name));
+    const title = el('input', 'fld'); title.value = entry.title; title.maxLength = 160; title.placeholder = 'عنوان ' + (up.type === 'video' ? 'المحاضرة' : 'الملف'); title.setAttribute('aria-label', 'عنوان الملف ' + (index + 1)); title.oninput = () => { entry.title = title.value; }; row.append(title);
+    const move = (label, delta) => { const button = el('button', 'abtn abtn-l', label); button.type = 'button'; button.disabled = index + delta < 0 || index + delta >= up.entries.length; button.onclick = () => { const target = index + delta; [up.entries[index], up.entries[target]] = [up.entries[target], up.entries[index]]; renderUploadEntries(); }; row.append(button); };
+    move('↑', -1); move('↓', 1); holder.append(row);
   });
 }
-window.addEventListener('online', () => { tasks.forEach(t => { if (t.paused && t.stage !== 'lost') t.paused = false; }); pump(); });
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') pump(); });
-window.addEventListener('beforeunload', e => { if ([...tasks.values()].some(t => t.running)) { e.preventDefault(); e.returnValue = ''; } });
-
-/* نافذة الرفع: تبدأ العملية في الخلفية وتُغلق فوراً */
-let up = null;
-function openUpload(type, courseId, lecId, list) {
-  if (!courseId) return;
-  up = { type, courseId };
-  $('upTitle').textContent = type === 'video' ? 'رفع فيديو جديد' : 'رفع ملف PDF';
-  $('upName').value = ''; $('upFile').value = ''; $('upErr').textContent = '';
-  $('upFile').accept = type === 'video' ? 'video/mp4,video/webm' : 'application/pdf';
-  $('upName').placeholder = type === 'video' ? 'عنوان المحاضرة (يُسبق تلقائياً بـ «المحاضرة الأولى:» ...)' : 'عنوان الملف';
-  $('upNote').textContent = type === 'video' ? 'يستمر الرفع في الخلفية، ثم يبدأ التلخيص وإنشاء الامتحان تلقائياً، ويُستكمل كل ذلك عند إعادة فتح الموقع إن أُغلق.' : '';
-  up.lecId = lecId || ''; $('upLinkWrap').style.display = 'none';
-  if (type === 'pdf') { $('upTitle').textContent = lecId ? 'رفع ملف لهذه المحاضرة' : 'رفع ملف عام للمادة'; $('upNote').textContent = lecId ? 'سيظهر في تبويب «الملفات» داخل هذه المحاضرة.' : 'ملف عام للمادة غير مرتبط بمحاضرة، يظهر في «ملفات المادة».'; }
-  $('upSave').disabled = false; $('upModal').classList.add('open'); syncScroll();
-  setTimeout(() => $('upName').focus(), 50);
-}
 function closeUpload() { $('upModal').classList.remove('open'); up = null; syncScroll(); }
+$('upFile').onchange = () => { if (!up) return; up.entries = [...$('upFile').files].map(file => ({ file, title: file.name.replace(/\.[^.]+$/, '') })); renderUploadEntries(); };
+async function videoDuration(file) {
+  return new Promise(resolve => { const video = document.createElement('video'), url = URL.createObjectURL(file); let done = false;
+    const finish = value => { if (done) return; done = true; clearTimeout(timer); video.removeAttribute('src'); video.load(); URL.revokeObjectURL(url); resolve(Number.isFinite(value) ? value : 0); };
+    const timer = setTimeout(() => finish(0), 8000); video.preload = 'metadata'; video.onloadedmetadata = () => finish(video.duration); video.onerror = () => finish(0); video.src = url;
+  });
+}
 $('upSave').onclick = async () => {
-  if (!up) return;
-  const title = $('upName').value.trim(), file = $('upFile').files[0];
-  if (!title || !file) { $('upErr').textContent = 'اكتب العنوان واختر الملف'; return; }
-  const id = doc(collection(db, 'lectures')).id;
-  const t = { id, kind: up.type, courseId: up.courseId, lectureRef: up.type === 'pdf' ? up.lecId : '', title, fileName: file.name, fileType: file.type || 'application/octet-stream', size: file.size, stage: 'upload', pct: 0, uploadId: '', key: '', parts: [], url: '', createdAt: Date.now(), err: '', paused: false, force: false };
-  memBlobs.set(id, file);
-  try { await idbDo('blobs', 'readwrite', s => s.put({ id, blob: file })); } catch (e) { toast('تعذّر حفظ الملف على الجهاز؛ أبقِ الصفحة مفتوحة حتى ينتهي الرفع'); }
-  tasks.set(id, t); await persist(t); closeUpload(); updateBar(); toast('بدأ الرفع في الخلفية'); pump();
+  if (!up || $('upSave').disabled) return; const config = { ...up }, entries = config.entries;
+  if (!entries.length || entries.length > 50 || entries.some(entry => !entry.title.trim())) { $('upErr').textContent = 'اختر من 1 إلى 50 ملفًا، واكتب عنوانًا لكل ملف.'; return; }
+  if (config.type === 'pdf' && entries.some(entry => !/\.pdf$/i.test(entry.file.name) || entry.file.size > 50 * 1024 * 1024)) { $('upErr').textContent = 'اختر ملفات PDF لا تتجاوز 50 ميغابايت لكل ملف.'; return; }
+  if (entries.some(entry => !entry.file.size || entry.file.size > 2 * 1024 ** 3)) { $('upErr').textContent = 'حجم الملف غير صالح أو يتجاوز 2 غيغابايت.'; return; }
+  $('upSave').disabled = true;
+  try {
+    const setup = await rafiqCall('rafiq-config'); if (!setup.configured) throw new Error('أكمل إعداد رفيق والمهام الخلفية أولًا وفق دليل الإعداد.');
+    const batchId = crypto.randomUUID(), started = Date.now();
+    for (const [index, entry] of entries.entries()) {
+      const file = entry.file, id = doc(collection(db, 'lectures')).id;
+      const task = { id, protocol: 2, batchId, ownerUid: auth.currentUser.uid, kind: config.type, courseId: config.courseId, lectureRef: config.lecId, fkind: config.fkind, book: config.fkind === 'book', matType: config.matType, title: entries.length === 1 && config.type === 'pdf' && $('upName').value.trim() ? $('upName').value.trim() : entry.title.trim(), fileName: file.name, fileType: file.type, size: file.size, lastModified: file.lastModified, duration: config.type === 'video' ? await videoDuration(file) : 0, stage: 'reserve', createdAt: started + index, pct: 0, parts: [], err: '', paused: false, nextRetry: 0 };
+      memBlobs.set(id, file); try { await idbDo('blobs', 'readwrite', store => store.put({ id, blob: file })); } catch (_) { task.storageWarning = true; }
+      tasks.set(id, task); await persist(task);
+    }
+    closeUpload(); updateBar(); toast('أُضيفت الملفات بالترتيب إلى قائمة الرفع'); pump();
+  } catch (error) { $('upErr').textContent = error.message; }
+  finally { $('upSave').disabled = false; }
 };
 $('upCancel').onclick = closeUpload;
-$('upModal').addEventListener('click', e => { if (e.target === $('upModal')) closeUpload(); });
+$('upModal').addEventListener('click', event => { if (event.target === $('upModal')) closeUpload(); });
+
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
@@ -1346,7 +1653,56 @@ function renderJoin(c) {
   const send = async (btn, fn) => { err.textContent = ''; btn.disabled = true; try { await fn(); } catch (e) { console.error(e); err.textContent = e.code === 'permission-denied' || /permission/i.test(e.message || '') ? 'قواعد Firestore تمنع حفظ الطلب. الصق قواعد firestore.rules المرفقة في Firebase ثم أعد المحاولة.' : (e.message || 'تعذّر الإرسال'); } btn.disabled = false; };
   const cT = apps.filter(a => a.kind === 'team').length, cJ = apps.filter(a => a.kind === 'team' && !a.newTeam).length, cP = apps.filter(a => a.kind === 'person').length;
   if (isAdmin() && ['single', 'tjoin', 'tnew'].includes(st)) { adminJoin(c, st); return; }
-  if (st === 'home') { c.append(el('h3', 'btitle', 'اختر نوع الانضمام')); choice([['👤', 'انضمام فردي', 'للشارح الذي يعمل بمفرده', () => go_('single'), cP], ['👥', 'انضمام جماعي (فريق)', 'إنشاء فريق جديد أو الانضمام لفريق قائم', () => go_('team'), cT]]); return; }
+  if (st === 'home') {
+    c.append(el('h3', 'btitle', 'اختر نوع الانضمام'));
+    const choices = el('div'); choices.id = 'joinChoices'; c.append(choices);
+    const oldParent = c; c = choices;
+    choice([['👤', 'انضمام فردي', 'للشارح الذي يعمل بمفرده', () => go_('single'), cP], ['👥', 'انضمام جماعي (فريق)', 'إنشاء فريق جديد أو الانضمام لفريق قائم', () => go_('team'), cT]]);
+    c = oldParent;
+    const extra = el('div', 'join-extra');
+    extra.innerHTML = `
+      <section class="join-intro">
+        <span class="join-kicker">خطوتك الأولى نحو المشاركة</span>
+        <h2>ابدأ رحلتك معنا وكن جزءاً من مجتمعنا الأكاديمي</h2>
+        <p>سواء كنت تعمل بمفردك أو ترغب في التعاون مع فريق، تتيح لك المنصة تقديم طلبك للمساهمة في إثراء المحتوى التعليمي.</p>
+      </section>
+      <section aria-labelledby="joinStepsTitle">
+        <h2 class="join-section-title" id="joinStepsTitle">كيف تتم عملية الانضمام؟</h2>
+        <div class="join-steps">
+          <article class="join-step"><span class="num">١</span><div><h3>اختر طريقة الانضمام</h3><p>حدد الانضمام الفردي أو الجماعي بحسب طريقة مشاركتك.</p></div></article>
+          <article class="join-step"><span class="num">٢</span><div><h3>أدخل بياناتك</h3><p>أكمل البيانات المطلوبة، أو أضف أعضاء فريقك عند إنشاء فريق.</p></div></article>
+          <article class="join-step"><span class="num">٣</span><div><h3>انتظر مراجعة الإدارة</h3><p>يصل طلبك إلى الإدارة لمراجعته، ثم يمكنك المتابعة بعد الموافقة.</p></div></article>
+        </div>
+      </section>
+      <section aria-labelledby="joinBenefitsTitle">
+        <h2 class="join-section-title" id="joinBenefitsTitle">لماذا تنضم إلى المنصة؟</h2>
+        <div class="join-benefits">
+          <article class="join-benefit"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span><div><strong>إثراء المحتوى التعليمي</strong><small>ساهم في توفير شروحات ومواد يستفيد منها الطلبة.</small></div></article>
+          <article class="join-benefit"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6M23 11h-6"/></svg></span><div><strong>التعاون والعمل الجماعي</strong><small>أنشئ فريقاً أو انضم إلى فريق تعليمي قائم.</small></div></article>
+          <article class="join-benefit"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 14.5 8.5 20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3Z"/></svg></span><div><strong>مشاركة المعرفة والخبرة</strong><small>اجعل خبرتك ومعلوماتك عوناً لزملائك.</small></div></article>
+          <article class="join-benefit"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v5c0 5 3.8 8.5 9 10 5.2-1.5 9-5 9-10V7l-9-5Z"/><path d="m8 12 2.5 2.5L16 9"/></svg></span><div><strong>مراجعة وتنظيم الطلبات</strong><small>تتم مراجعة طلبات الانضمام من خلال إدارة المنصة.</small></div></article>
+        </div>
+      </section>
+      <section aria-labelledby="joinFaqTitle">
+        <h2 class="join-section-title" id="joinFaqTitle">أسئلة قد تخطر ببالك</h2>
+        <div class="join-faq">
+          <details><summary>هل يمكنني الانضمام بمفردي؟</summary><p>نعم، اختر «انضمام فردي» وأكمل بياناتك لإرسال طلبك.</p></details>
+          <details><summary>هل يمكنني الانضمام إلى فريق موجود؟</summary><p>نعم، اختر «انضمام جماعي» ثم «الانضمام لفريق موجود»، وأدخل اسم الفريق وكلمة مروره.</p></details>
+          <details><summary>هل أستطيع إنشاء فريق جديد؟</summary><p>نعم، يمكنك إنشاء فريق جديد وإضافة بيانات أعضائه والجامعة التي يستعد الفريق لتقديم مادة تعليمية فيها.</p></details>
+          <details><summary>ماذا يحدث بعد إرسال الطلب؟</summary><p>يصبح الطلب بانتظار مراجعة الإدارة، ويمكنك المتابعة بعد الموافقة عليه.</p></details>
+        </div>
+      </section>
+      <section class="join-bottom-cta">
+        <div class="cap" aria-hidden="true">✦</div>
+        <h3>معاً نُثري المعرفة ونصنع أثراً</h3>
+        <p>ابدأ باختيار طريقة الانضمام المناسبة لك من الأعلى.</p>
+      </section>`;
+    c.append(extra);
+    const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: 0.12 }) : null;
+    extra.querySelectorAll('.join-intro,.join-section-title,.join-step,.join-benefit,.join-faq details,.join-bottom-cta').forEach((e, i) => { e.classList.add('rv'); e.style.transitionDelay = (i % 4) * 80 + 'ms'; if (io) io.observe(e); else e.classList.add('in'); });
+    extra.querySelectorAll('.join-faq details').forEach(d => d.addEventListener('toggle', () => { if (d.open) extra.querySelectorAll('.join-faq details').forEach(o => { if (o !== d) o.open = false; }); }));
+    return;
+  }
   if (st === 'done') { c.append(el('h3', 'btitle', '✅ تم إرسال طلبك')); c.append(msg('طلبك بانتظار موافقة الإدارة. بعد القبول سجّل دخولك من «التسجيل» ← «مدير / مساهم» بالبريد وكلمة المرور.')); return; }
   if (st === 'team') { c.append(el('h3', 'btitle', 'الانضمام الجماعي')); choice([['🔑', 'الانضمام لفريق موجود', 'بالاسم وكلمة مرور الفريق', () => go_('tjoin'), cJ], ['🆕', 'إنشاء فريق جديد', 'أنشئ فريقك وأضف أعضاءه', () => go_('tnew'), cT - cJ]]); return; }
   const submit = el('button', 'abtn abtn-b', 'إرسال الطلب'); submit.style.cssText = 'font-size:1.2rem;padding:12px 28px;margin-top:14px';
@@ -1406,8 +1762,7 @@ async function submitJoin(kind, members, team) {
 
 /* ---------- مراجعة الإدارة ---------- */
 let apps = [], unsubApps = null, staff = [], unsubStaff = null;
-const pendingRoots = () => nodes.filter(n => n.status === 'pending' && !(n.parentId && (byId(n.parentId) || {}).status === 'pending'));
-const revCount = () => (isAdmin() ? pendingRoots().length : 0);
+const revCount = () => isAdmin() && dashboardData ? (dashboardData.alerts || []).filter(a => a.status === 'open').length : 0;
 function watchApps(on) {
   if (unsubApps) { unsubApps(); unsubApps = null; } apps = [];
   if (unsubStaff) { unsubStaff(); unsubStaff = null; } staff = [];
@@ -1416,8 +1771,8 @@ function watchApps(on) {
   unsubStaff = onSnapshot(query(collection(db, 'users'), where('role', '==', 'contrib')), snap => { staff = snap.docs.map(d => ({ id: d.id, ...d.data() })); afterApps(); renderAdmin(); }, e => console.error(e));
 }
 async function purgeLectures(ids) {
-  for (const id of ids) {
-    const n = byId(id); if (!n || (n.type !== 'exp' && n.type !== 'cou')) continue;
+  for (const id of [...new Set(ids.flatMap(aliasIds))]) {
+    const n = byId(id); if (!n || (n.type !== 'exp' && n.type !== 'cou' && n.type !== 'umat')) continue;
     const q = await getDocs(query(collection(db, 'lectures'), where('courseId', '==', id)));
     for (const d of q.docs) {
       const k = d.data().r2Key; await deleteDoc(d.ref); try { localStorage.removeItem(qkey(d.id)); } catch (e) {}
@@ -1481,21 +1836,6 @@ function updateDots() {
   });
 }
 function afterApps() { updateDots(); if (route.v === 'join' && isAdmin()) { J.built = null; renderPage(); } }
-function renderReview() {
-  const body = $('aReviewBox'); body.textContent = ''; body.className = 'aview jform';
-  const pr = pendingRoots();
-  body.append(el('h4', 'sh', '⏳ محتوى بانتظار الموافقة (' + pr.length + ')'));
-  if (!pr.length) body.append(msg('لا يوجد محتوى معلّق (أقسام أو كليات أو تخصصات أو مواد أو شروحات).'));
-  pr.forEach(n => {
-    const c = el('div', 'att'), ids = [n.id, ...desc(n.id)];
-    const tx = el('div'); tx.append(el('b', null, L[n.type].one + ': ' + dn(n)), el('br'), el('small', null, pathOf(n.id).map(dn).join(' ‹ ') + ' — بواسطة ' + (n.ownerName || '') + ' — العناصر: ' + ids.length));
-    const act = el('div', 'mact'), ok = el('button', 'abtn abtn-g', '✅ موافقة'), no = el('button', 'abtn abtn-l', '❌ رفض وحذف'), op = el('button', 'abtn abtn-b', 'فتح');
-    ok.onclick = async () => { try { const b = writeBatch(db); ids.filter(i => (byId(i) || {}).status === 'pending').forEach(i => b.update(doc(db, 'structure', i), { status: 'approved' })); await b.commit(); toast('تمت الموافقة'); } catch (e) { console.error(e); toast('تعذّر الحفظ'); } };
-    no.onclick = async () => { if (!confirm('رفض «' + n.name + '» وحذفه مع كل محتواه وفيديوهاته نهائياً؟')) return; try { await purgeLectures(ids); const b = writeBatch(db); ids.forEach(i => b.delete(doc(db, 'structure', i))); await b.commit(); toast('تم الحذف'); } catch (e) { console.error(e); toast('تعذّر الحذف'); } };
-    op.onclick = () => { aView = 'struct'; selectNode(n.id); };
-    act.append(ok, no, op); c.append(tx, act); body.append(c);
-  });
-}
 async function revoke(list, q, teamId) {
   if (!confirm(q + '\nسيتمكنون من التقديم من جديد بنفس البريد. المحتوى الذي أضافوه يبقى كما هو.')) return;
   try {
@@ -1534,17 +1874,34 @@ const subs = {};
 function watchK(key, id, mk, cb) {
   if (subs[key] && subs[key].id === id) return;
   if (subs[key] && subs[key].u) subs[key].u();
-  subs[key] = { id, u: null }; cb([]);
-  if (id) subs[key].u = onSnapshot(mk(id), s => cb(s.docs.map(d => ({ id: d.id, ...d.data() }))), e => console.error(e));
+  const entry = { id, u: null }; subs[key] = entry;
+  if (key === 'cm') chatError = ''; cb([]);
+  if (!id) return;
+  const made = mk(id), queries = Array.isArray(made) ? made : [made], groups = new Map();
+  const unsubscribes = queries.map((q, index) => onSnapshot(q, snapshot => {
+    if (subs[key] !== entry) return;
+    groups.set(index, snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    cb([...new Map([...groups.values()].flat().map(d => [d.id, d])).values()]);
+  }, error => {
+    console.error(error); if (key === 'cm') { chatError = 'تعذّر تحميل الدردشة. تحقق من الاتصال وصلاحيات قاعدة البيانات.'; renderChatList(); }
+  }));
+  entry.u = () => unsubscribes.forEach(fn => fn());
+}
+function aliasQueries(collectionName, field, id) {
+  const ids = aliasIds(id), queries = [];
+  for (let i = 0; i < ids.length; i += 10) queries.push(query(collection(db, collectionName), where(field, 'in', ids.slice(i, i + 10))));
+  return queries;
 }
 function watchSocial() {
   const home = route.v === 'home', last = !home && ready ? byId((route.path || [])[(route.path || []).length - 1]) : null;
   const rt = last && last.type === 'cou' ? last.id : last && last.type === 'exp' && !last.legacy ? last.parentId : null;
   watchK('rx', route.v === 'video' ? route.lec : null, id => query(collection(db, 'reactions'), where('lectureId', '==', id)), d => { RX = d; updateReact(); });
-  watchK('rt', rt, id => query(collection(db, 'ratings'), where('courseId', '==', id)), d => { RT = d; if (route.v === 'browse') renderPage(); });
-  const chat = route.v === 'video' && (route.tab || 'summary') === 'chat';
-  watchK('cm', chat ? route.lec : null, id => query(collection(db, 'comments'), where('lectureId', '==', id)), d => { CM = d; renderChatList(); });
+  watchK('rt', rt && JSON.stringify(aliasIds(rt)), () => aliasQueries('ratings', 'courseId', rt), d => { RT = d; if (route.v === 'browse') renderPage(); });
+  const chatId = route.v === 'browse' && last ? (last.type === 'umat' && route.mtab === 'chat' ? last.id : last.type === 'exp' && route.xtab === 'chat' ? (last.parentId || realId(last.id)) : null) : null;
+  watchK('cm', chatId && JSON.stringify(aliasIds(chatId)), () => aliasQueries('comments', 'lectureId', chatId), d => { CM = d; renderChatList(); });
 }
+
+
 function updateReact() {
   if (!vShell) return;
   const u = RX.filter(x => x.v === 1).length, d = RX.filter(x => x.v === -1).length, my = RX.find(x => x.dev === dev);
@@ -1573,27 +1930,194 @@ function rateBox(exp) {
   }
   box.append(row); return box;
 }
+/* دردشة المادة: رسائل مباشرة وردود مقتبسة دون تغيير موقع القراءة. */
+let chatRoom = null, chatError = '';
+const chatDrafts = new Map();
+const roomDraft = id => { if (!chatDrafts.has(id)) chatDrafts.set(id, { text: '', reply: null, sending: false }); return chatDrafts.get(id); };
+const chatName = c => String(c.displayName || c.email && c.email.split('@')[0] || 'طالب');
+function updateReplyPreview() {
+  if (!chatRoom) return;
+  const draft = roomDraft(chatRoom.id), box = chatRoom.reply;
+  box.textContent = ''; box.hidden = !draft.reply;
+  if (!draft.reply) return;
+  const txt = el('div'); txt.append(el('b', null, 'رد على ' + draft.reply.name), el('div', null, draft.reply.text));
+  const cancel = el('button', 'ibtn', '×'); cancel.type = 'button'; cancel.setAttribute('aria-label', 'إلغاء الرد');
+  cancel.onclick = () => { draft.reply = null; updateReplyPreview(); chatRoom.ta.focus(); };
+  box.append(txt, cancel);
+}
 function renderChatList() {
-  if (!vShell || !vShell.chatList) return; const l = vShell.chatList; l.textContent = '';
-  const arr = CM.slice().sort((a, b) => (a.t || 0) - (b.t || 0));
-  if (!arr.length) { l.append(msg('لا توجد رسائل بعد، كن أول من يعلّق.')); return; }
+  if (!chatRoom || !chatRoom.list.isConnected) return;
+  const { list, id } = chatRoom, wasBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 100 || !list.children.length;
+  const oldHeight = list.scrollHeight, oldTop = list.scrollTop;
+  list.textContent = '';
+  if (chatError) { list.append(msg(chatError)); return; }
+  const arr = CM.filter(c => aliasIds(id).includes(c.lectureId)).slice().sort((a, b) => (a.t || 0) - (b.t || 0) || a.id.localeCompare(b.id));
+  if (!arr.length) { list.append(msg('ابدأ الحديث مع زملائك. يمكنك الرد على أي رسالة مباشرة.')); return; }
+  let day = '';
   arr.forEach(c => {
-    const r = el('div', 'cm'), nm_ = String(c.email || '').split('@')[0];
-    const h = el('small', null, '👤 ' + nm_ + ' — ' + new Date(c.t || 0).toLocaleString('ar')); r.append(h);
-    if (isAdmin()) { const d = el('button', 'ibtn d'); d.type = 'button'; d.innerHTML = ICO_DEL; d.onclick = () => deleteDoc(doc(db, 'comments', c.id)).catch(() => toast('تعذّر الحذف')); h.append(d); }
-    r.append(el('div', null, c.text)); l.append(r);
+    const date = new Date(c.t || 0), label = date.toLocaleDateString('ar-JO', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (day !== label) { day = label; list.append(el('div', 'chat-day', label)); }
+    const own = !!(c.dev === dev || c.uid && auth.currentUser && c.uid === auth.currentUser.uid);
+    const bubble = el('div', 'chat-bubble' + (own ? ' mine' : '')); bubble.dataset.messageId = c.id;
+    const head = el('div', 'chat-meta'); head.append(el('b', null, own ? 'أنت' : chatName(c)));
+    if (isAdmin()) {
+      const del = el('button', 'ibtn d'); del.type = 'button'; del.title = 'حذف الرسالة'; del.innerHTML = ICO_DEL;
+      del.onclick = () => deleteDoc(doc(db, 'comments', c.id)).catch(() => toast('تعذّر حذف الرسالة')); head.append(del);
+    }
+    bubble.append(head);
+    if (c.replyToId) {
+      const original = arr.find(x => x.id === c.replyToId), quote = el('button', 'chat-quote'); quote.type = 'button';
+      quote.append(el('b', null, original ? chatName(original) : c.replyToName || 'رسالة سابقة'), el('span', null, original ? original.text : c.replyToText || 'تم حذف الرسالة الأصلية'));
+      quote.onclick = () => { const target = [...list.querySelectorAll('[data-message-id]')].find(x => x.dataset.messageId === c.replyToId); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'center' }); target.classList.add('flash'); setTimeout(() => target.classList.remove('flash'), 1400); } else toast('الرسالة الأصلية لم تعد متاحة'); };
+      bubble.append(quote);
+    }
+    bubble.append(el('div', 'chat-text', c.text || ''));
+    const foot = el('div', 'chat-foot'), reply = el('button', 'chat-reply', '↩ رد'); reply.type = 'button';
+    reply.onclick = () => { roomDraft(id).reply = { id: c.id, name: chatName(c), text: String(c.text || '').slice(0, 220) }; updateReplyPreview(); chatRoom.ta.focus(); };
+    foot.append(el('time', null, date.toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })), reply); bubble.append(foot); list.append(bubble);
   });
-  l.scrollTop = l.scrollHeight;
+  if (wasBottom) { list.scrollTop = list.scrollHeight; chatRoom.newBtn.hidden = true; }
+  else { list.scrollTop = oldTop; chatRoom.newBtn.hidden = list.scrollHeight <= oldHeight; }
 }
-function panelChat(pn, lec) {
-  const list = el('div', 'cmlist'); vShell.chatList = list; pn.append(list); renderChatList();
-  const box = el('div', 'cmbox'), mail = getMail();
-  if (mail) { const w = el('small', null, '✉ تعلّق بالبريد: ' + mail + ' — '); const ch = el('a', null, 'تغيير'); ch.href = '#'; ch.onclick = async e => { e.preventDefault(); try { localStorage.removeItem('uni_mail'); } catch (x) {} if (gUser) { try { await signOut(auth); } catch (x) {} } gUser = null; updateAuthUI(); if (vShell) { vShell.sig = ''; updateVideoUI(false); } }; w.append(ch); box.append(w); }
-  const ta = el('textarea', 'fld'); ta.rows = 3; ta.maxLength = 1000; ta.placeholder = 'اكتب تعليقك أو سؤالك هنا…';
-  const b = el('button', 'abtn abtn-b', 'إرسال 💬'); b.style.marginTop = '8px';
-  b.onclick = () => { const t = ta.value.trim(); if (!t) return; needMail(m => addDoc(collection(db, 'comments'), { lectureId: lec.id, email: m, text: t, t: Date.now() }).then(() => { ta.value = ''; }).catch(e => { console.error(e); toast('تعذّر الإرسال'); })); };
-  box.append(ta, b); pn.append(box);
+function panelChat(pn, node) {
+  const draft = roomDraft(node.id), shell = el('div', 'chat-shell'), head = el('div', 'chat-heading');
+  head.append(el('b', null, '💬 الدردشة'), el('small', null, 'شارك زملاءك النقاش واضغط «رد» لاقتباس أي رسالة.'));
+  const list = el('div', 'chat-stream'); list.setAttribute('role', 'log'); list.setAttribute('aria-label', 'رسائل المادة');
+  const newBtn = el('button', 'abtn abtn-l chat-new', 'رسائل جديدة ↓'); newBtn.hidden = true; newBtn.type = 'button';
+  newBtn.onclick = () => { list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' }); newBtn.hidden = true; };
+  const composer = el('div', 'chat-composer'), reply = el('div', 'chat-reply-preview'); reply.hidden = true;
+  const ta = el('textarea', 'fld'); ta.rows = 2; ta.maxLength = 3000; ta.value = draft.text; ta.placeholder = 'اكتب رسالة…'; ta.setAttribute('aria-label', 'رسالتك');
+  ta.oninput = () => { draft.text = ta.value; };
+  const send = el('button', 'abtn abtn-b', 'إرسال ↑'); send.type = 'button'; send.disabled = draft.sending;
+  const error = el('p', 'merr'); error.setAttribute('role', 'status');
+  send.onclick = () => {
+    if (draft.sending || !ta.value.trim()) return;
+    const text = ta.value.trim(), quote = draft.reply && { ...draft.reply };
+    needMail(async email => {
+      if (draft.sending) return; draft.sending = true; send.disabled = true; error.textContent = '';
+      try {
+        const payload = { lectureId: node.id, email, displayName: (auth.currentUser && auth.currentUser.displayName) || (me && me.name) || email.split('@')[0], dev, uid: auth.currentUser ? auth.currentUser.uid : '', text, t: Date.now() };
+        if (quote) Object.assign(payload, { replyToId: quote.id, replyToText: quote.text, replyToName: quote.name });
+        await addDoc(collection(db, 'comments'), payload);
+        if (draft.text.trim() === text) { draft.text = ''; if (chatRoom && chatRoom.id === node.id) chatRoom.ta.value = ''; }
+        draft.reply = null; if (chatRoom && chatRoom.id === node.id) { updateReplyPreview(); chatRoom.list.scrollTop = chatRoom.list.scrollHeight; }
+      } catch (e) { console.error(e); error.textContent = 'لم تُرسل الرسالة. بقي النص محفوظاً؛ حاول مجدداً.'; }
+      finally { draft.sending = false; send.disabled = false; }
+    });
+  };
+  ta.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send.click(); } };
+  const controls = el('div', 'chat-controls'); controls.append(ta, send); composer.append(reply, controls, error);
+  shell.append(head, list, newBtn, composer); pn.append(shell);
+  chatRoom = { id: node.id, list, reply, ta, newBtn }; renderChatList(); updateReplyPreview();
 }
+
+/* واجهة رفيق؛ محادثات الطالب محفوظة محليًا ومفصولة حسب المادة والمحاضرة. */
+const askStates = new Map();
+function askState(id) {
+  if (!askStates.has(id)) {
+    let messages = []; try { messages = JSON.parse(localStorage.getItem('uni_ask_' + id) || '[]'); } catch (_) {}
+    askStates.set(id, { messages: Array.isArray(messages) ? messages.slice(-20) : [], draft: '', busy: false, error: '', coverage: '' });
+  }
+  return askStates.get(id);
+}
+function materialRoot(node) {
+  return pathOf(realId(node.id)).findLast(n => n.type === 'cou' || n.type === 'umat') || node;
+}
+function openRafiqCitation(citation) {
+  if (citation.sourceType === 'pdf') {
+    try { const url = new URL(citation.url); if (!['https:', 'http:'].includes(url.protocol)) return; url.hash = 'page=' + Math.max(1, Number(citation.page || 1)); window.open(url.href, '_blank', 'noopener'); } catch (_) {} return;
+  }
+  const parent = byId(citation.parentId); if (!parent) { toast('المحاضرة لم تعد متاحة في هذا القسم'); return; }
+  const path = parent.type === 'cou' ? [...pathOf(parent.id).map(n => n.id), LEG + parent.id] : pathOf(parent.id).map(n => n.id);
+  go({ v: 'video', path, lec: citation.lectureId, tab: 'summary', seek: Math.max(0, Number(citation.start || 0)) });
+}
+function renderRafiqCitations(box, citations) {
+  if (!Array.isArray(citations) || !citations.length) return;
+  const wrapper = el('div', 'rafiq-sources'); wrapper.append(el('b', null, 'مصادر الإجابة'));
+  citations.forEach(citation => {
+    const row = el('div', 'rafiq-source'), button = el('button', 'abtn abtn-l', (citation.sourceType === 'pdf' ? '📄 ' : '🎬 ') + citation.title + (citation.sourceType === 'pdf' ? ' • ' + pageLabel(citation) : ' • ' + timeLabel(citation.start)));
+    button.type = 'button'; button.onclick = () => openRafiqCitation(citation); row.append(button);
+    if (citation.quote) row.append(el('small', null, citation.quote)); wrapper.append(row);
+  }); box.append(wrapper);
+}
+function timeLabel(seconds) { const value = Math.max(0, Math.floor(Number(seconds || 0))); return Math.floor(value / 60) + ':' + String(value % 60).padStart(2, '0'); }
+function pageLabel(source) { return source.endPage > source.page ? 'الصفحات ' + source.page + '–' + source.endPage : 'صفحة ' + source.page; }
+function panelAsk(pn, node, wholeCourse = false) {
+  const root = wholeCourse ? materialRoot(node) : null, key = wholeCourse ? 'course:' + root.id : node.id, state = askState(key), shell = el('div', 'ask-shell');
+  shell.append(el('h4', 'sh', wholeCourse ? '🤖 اسأل رفيق عن المادة' : '🤖 اسأل رفيق'), el('p', 'ask-hint', wholeCourse ? 'اسأل عن أي موضوع في المحتوى المفهرس لهذه المادة. يربط رفيق جوابه بالمحاضرة والتوقيت أو بصفحة المصدر.' : 'اسأل عن هذه المحاضرة، وسيربط رفيق جوابه بمقاطع الشرح الداعمة.'));
+  if (isAdmin() && wholeCourse) {
+    const prepare = el('button', 'abtn abtn-g', 'تجهيز المحاضرات والملفات القديمة للبحث'); prepare.type = 'button'; prepare.onclick = async () => { prepare.disabled = true; try { await rafiqCall('index-course', { courseId: root.id }); toast('بدأ تجهيز المحتوى على الخادم؛ يمكنك إغلاق الموقع'); await refreshRafiqDashboard(); } catch (error) { toast(error.message); } finally { prepare.disabled = false; } }; shell.append(prepare);
+  }
+  const historyBox = el('div', 'ask-history'); historyBox.setAttribute('aria-live', 'polite');
+  state.messages.forEach(message => {
+    const row = el('div', 'ask-message ' + (message.role === 'user' ? 'ask-user' : 'ask-model')); row.append(el('b', null, message.role === 'user' ? 'أنت' : 'رفيق'));
+    const text = el('div', 'sumbox'); renderSummary(text, String(message.text || '')); row.append(text); renderRafiqCitations(row, message.citations); historyBox.append(row);
+  });
+  if (!state.messages.length) historyBox.append(msg(wholeCourse ? 'مثلاً: اشرح العلاقة بين موضوعين وردا في محاضرات مختلفة.' : 'اكتب سؤالك عن فكرة أو تفصيل في هذه المحاضرة.'));
+  if (state.busy) historyBox.append(el('p', 'ask-hint', '⏳ يبحث رفيق في المصادر…'));
+  const input = el('textarea', 'fld'); input.rows = 3; input.maxLength = 2000; input.placeholder = wholeCourse ? 'ما سؤالك عن المادة؟' : 'اسأل رفيق عن المحاضرة…'; input.value = state.draft; input.disabled = state.busy; input.oninput = () => { state.draft = input.value; };
+  const error = el('p', 'merr', state.error), actions = el('div', 'mact'), send = el('button', 'abtn abtn-b', state.busy ? 'جاري البحث…' : 'اسأل رفيق'), clear = el('button', 'abtn abtn-l', 'مسح المحادثة'); send.type = clear.type = 'button'; send.disabled = clear.disabled = state.busy;
+  const redraw = () => {
+    if (wholeCourse && route.v === 'browse' && ((route.xtab === 'rafiq') || (route.mtab === 'rafiq'))) renderPage();
+    else if (!wholeCourse && route.v === 'video' && route.lec === node.id && ['ask', 'chat'].includes(route.tab)) updateVideoUI(true);
+  };
+  clear.onclick = () => { state.messages = []; state.error = ''; try { localStorage.removeItem('uni_ask_' + key); } catch (_) {} redraw(); };
+  send.onclick = async () => {
+    const question = input.value.trim(); if (!question || state.busy) return; state.busy = true; state.error = ''; state.draft = question; redraw();
+    try {
+      if (!auth.currentUser) { await googleLogin(); updateAuthUI(); }
+      const out = await rafiqCall(wholeCourse ? 'ask-course' : 'ask', { ...(wholeCourse ? { courseId: root.id } : { lectureId: node.id }), question, history: state.messages.slice(-6) });
+      state.messages.push({ role: 'user', text: question }, { role: 'model', text: String(out.answer), citations: out.citations || [] }); state.messages = state.messages.slice(-20); state.draft = '';
+      state.coverage = Number.isInteger(out.total) ? 'المحتوى المجهّز للبحث: ' + out.indexed + ' من ' + out.total : '';
+      try { localStorage.setItem('uni_ask_' + key, JSON.stringify(state.messages)); } catch (_) {}
+    } catch (err) { state.error = err.code?.startsWith('auth/') ? 'سجّل الدخول بحساب Google لاستخدام رفيق.' : err.message; }
+    finally { state.busy = false; redraw(); }
+  };
+  input.onkeydown = event => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); send.click(); } };
+  actions.append(send, clear); shell.append(historyBox, input, error, actions); if (state.coverage) shell.append(el('small', 'ask-hint', state.coverage)); pn.append(shell); historyBox.scrollTop = historyBox.scrollHeight;
+}
+
+let dashboardData = null, dashboardLoading = false, dashboardError = '', dashboardUser = '', dashboardRequestAt = 0;
+async function refreshRafiqDashboard(force = false) {
+  if (!authUser || dashboardLoading || !force && Date.now() - dashboardRequestAt < 8000) return;
+  dashboardLoading = true; dashboardRequestAt = Date.now(); const uid = authUser.uid;
+  try {
+    const response = await rafiqCall('rafiq-dashboard'); if (authUser?.uid !== uid) return;
+    dashboardData = response; dashboardUser = uid; dashboardError = ''; rafiqServerJobs = response.jobs || []; updateBar(); updateDots();
+  } catch (error) { dashboardError = error.message; }
+  finally { dashboardLoading = false; if ($('admin').classList.contains('open') && aView === 'review') renderReview(); }
+}
+function renderReview() {
+  const body = $('aReviewBox'); body.textContent = ''; body.className = 'aview jform';
+  body.append(el('h3', 'btitle', '🤖 رفيق: التنبيهات والمهام وسجل الدمج'));
+  const actions = el('div', 'rafiq-actions'), refresh = el('button', 'abtn abtn-b', 'تحديث'), scan = el('button', 'abtn abtn-g', 'فحص أسماء الأقسام والدمج'); refresh.type = scan.type = 'button';
+  refresh.onclick = () => refreshRafiqDashboard(true); scan.onclick = async () => { scan.disabled = true; try { await rafiqCall('rafiq-structure-scan'); toast('بدأ الفحص على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { scan.disabled = false; } }; actions.append(refresh, scan); body.append(actions);
+  if (dashboardError) body.append(el('p', 'merr', dashboardError));
+  if (!dashboardData || dashboardUser !== authUser?.uid) { body.append(msg('جاري تحميل مهام رفيق…')); void refreshRafiqDashboard(); return; }
+  const alerts = (dashboardData.alerts || []).filter(a => a.status === 'open'); body.append(el('h4', 'sh', 'التنبيهات (' + alerts.length + ')'));
+  if (!alerts.length) body.append(msg('لا توجد تنبيهات مفتوحة.'));
+  alerts.forEach(alert => {
+    const card = el('div', 'rafiq-alert'); card.append(el('h4', null, alert.title), el('p', null, alert.reason || ''));
+    if (alert.firstName) card.append(el('p', null, alert.firstName + ' ↔ ' + alert.secondName));
+    if (alert.courseName) card.append(el('p', null, 'المادة: ' + alert.courseName + ' • ' + (alert.lectureName || '')));
+    for (const evidence of alert.evidence || []) card.append(el('blockquote', null, evidence.text + (evidence.page ? ' • ' + pageLabel(evidence) : Number.isFinite(evidence.start) ? ' • ' + timeLabel(evidence.start) : '')));
+    const buttons = el('div', 'rafiq-actions');
+    if (alert.type === 'duplicate') {
+      const merge = el('button', 'abtn abtn-g', 'اعتماد الدمج تحت الاسم الأقدم'); merge.type = 'button'; merge.onclick = async () => { if (!confirm('دمج «' + alert.firstName + '» و«' + alert.secondName + '» مع حفظ المحتوى وسجل التراجع؟')) return; merge.disabled = true; try { await rafiqCall('merge-approve', { id: alert.id }); toast('أُرسلت مهمة الدمج'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { merge.disabled = false; } }; buttons.append(merge);
+    }
+    if (alert.type === 'content' && alert.parentId) { const show = el('button', 'abtn abtn-b', 'فتح المصدر'); show.type = 'button'; show.onclick = () => { closeAdmin(); openRafiqCitation({ lectureId: alert.lectureId, parentId: alert.parentId, sourceType: alert.sourceType, url: alert.url, page: alert.evidence?.[0]?.page, start: alert.evidence?.[0]?.start || 0 }); }; buttons.append(show); }
+    const dismiss = el('button', 'abtn abtn-l', alert.type === 'duplicate' ? 'العنصران مختلفان' : 'تمت المراجعة'); dismiss.type = 'button'; dismiss.onclick = async () => { try { await rafiqCall('alert-dismiss', { id: alert.id }); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } }; buttons.append(dismiss); card.append(buttons); body.append(card);
+  });
+  body.append(el('h4', 'sh', 'المهام الخلفية'));
+  const jobs = dashboardData.jobs || []; if (!jobs.length) body.append(msg('لا توجد مهام بعد.'));
+  jobs.slice(0, 80).forEach(job => { const card = el('div', 'rafiq-job'); card.append(el('b', null, ({ video: 'محاضرة', book: 'تلخيص كتاب', index: 'تجهيز البحث', structure: 'فحص الأقسام', batch: 'تجهيز المادة', undo: 'تراجع عن الدمج' }[job.kind] || 'مهمة') + ' • ' + ({ done: 'مكتملة', error: 'تُعاد المحاولة', queued: 'بانتظار الدور', running: 'جارية' }[job.status] || job.status)), el('p', null, job.progress || ''), el('small', null, new Date(job.createdAt).toLocaleString('ar-JO'))); if (job.error && job.status === 'error') card.append(el('p', 'merr', job.error)); body.append(card); });
+  body.append(el('h4', 'sh', 'سجل الدمج والتراجع'));
+  for (const merge of dashboardData.merges || []) {
+    const row = el('div', 'rafiq-job'); row.append(el('b', null, (merge.secondaryName || 'عنصر') + ' ← ' + (merge.primaryName || 'العنصر الأقدم')), el('p', null, 'العناصر المتأثرة: ' + merge.changeCount + ' • ' + ({ committed: 'اكتمل الدمج', applying: 'جارٍ', 'rolled-back': 'تم التراجع' }[merge.status] || merge.status)));
+    if (['committed', 'applying'].includes(merge.status)) { const undo = el('button', 'abtn abtn-l', 'التراجع عن هذا الدمج'); undo.type = 'button'; undo.onclick = async () => { if (!confirm('التراجع عن الدمج مع الحفاظ على أي تعديلات أحدث؟')) return; undo.disabled = true; try { await rafiqCall('merge-undo', { id: merge.id }); toast('بدأ التراجع على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { undo.disabled = false; } }; row.append(undo); } body.append(row);
+  }
+}
+setInterval(() => { if (isStaff() && document.visibilityState === 'visible') void refreshRafiqDashboard(); }, 15000);
 
 
 /* ---------- ملاحظاتك الخاصة (على جهازك فقط) ---------- */
@@ -1612,7 +2136,7 @@ function panelNotes(pn, lec) {
   const load = async () => {
     list.textContent = ''; let all = [];
     try { all = await nDo('readonly', s => s.getAll()); } catch (e) { list.append(msg('تعذّر الوصول لذاكرة الجهاز.')); return; }
-    all = all.filter(n => n.lec === lec.id).sort((x, y) => y.t - x.t);
+    all = all.filter(n => aliasIds(lec.id).includes(n.lec)).sort((x, y) => y.t - x.t);
     if (!all.length) { list.append(msg('لا توجد ملاحظات بعد.')); return; }
     all.forEach(n => {
       const r = el('div', 'cm'), h = el('small', null, new Date(n.t).toLocaleString('ar') + ' ');
@@ -1630,7 +2154,160 @@ function panelNotes(pn, lec) {
   load();
 }
 
+
+/* ملفات المادة: تلخيص تفصيلي وملف PDF مستقل لكل كتاب. */
+const BOOK_SECTION_PAGES = 8;
+const materialType = n => String(n.parentId || '').startsWith('sec_mand_') ? 'mandatory' : String(n.parentId || '').startsWith('sec_elec_') ? 'elective' : 'course';
+const canAnalyzeBook = n => n.type === 'umat' ? isAdmin() : canUpload(n);
+const summaryTitle = book => 'تلخيص كتاب ' + String(book.title || book.fileName || 'الكتاب').replace(/\.pdf$/i, '').replace(/^تلخيص كتاب\s+/, '').trim();
+function normalizeQuiz(raw) {
+  return (Array.isArray(raw) ? raw : []).filter(q => q && typeof q === 'object').map(q => ({ question: String(q.question || '').trim(), options: Array.isArray(q.options) ? q.options.map(String) : [], correctIndex: Number(q.correctIndex), explanation: String(q.explanation || ''), source: String(q.source || q.chapter || '') })).filter(q => q.question && q.options.length === 4 && q.options.every(x => x.trim()) && Number.isInteger(q.correctIndex) && q.correctIndex >= 0 && q.correctIndex < 4);
+}
+const scriptPromises = new Map();
+function loadScript(url, ready) {
+  if (ready()) return Promise.resolve();
+  if (!scriptPromises.has(url)) scriptPromises.set(url, new Promise((resolve, reject) => {
+    const script = document.createElement('script'); script.src = url; script.async = true;
+    script.onload = () => ready() ? resolve() : reject(new Error('لم تكتمل تهيئة مكتبة PDF'));
+    script.onerror = () => { scriptPromises.delete(url); script.remove(); reject(new Error('تعذّر تحميل مكتبة PDF؛ تحقق من الاتصال وحاول مجدداً')); };
+    document.head.append(script);
+  }));
+  return scriptPromises.get(url);
+}
+const detailCache = new Map();
+async function detailedBook(book) {
+  const data = book.aiBook;
+  if (!data) throw new Error('لم يكتمل تلخيص هذا الكتاب');
+  if (!data.detailUrl) return data;
+  if (!detailCache.has(data.detailUrl)) detailCache.set(data.detailUrl, fetch(data.detailUrl).then(async res => { if (!res.ok) throw new Error('تعذّر تحميل الملخص التفصيلي'); const out = await res.json(); if (!out.chapters || !out.chapters.length) throw new Error('ملف الملخص غير مكتمل'); return out; }).catch(e => { detailCache.delete(data.detailUrl); throw e; }));
+  return detailCache.get(data.detailUrl);
+}
+function renderBook(box, b) {
+  const summary = el('div', 'sumbox'); renderSummary(summary, b.summary); box.append(...summary.childNodes);
+  (b.chapters || []).forEach(ch => {
+    box.append(el('h4', 'sh', ch.title));
+    if (ch.startPage) box.append(el('p', 'book-status', 'صفحات المصدر: ' + ch.startPage + ' – ' + ch.endPage));
+    const body = el('div', 'sumbox'); renderSummary(body, ch.summary); box.append(...body.childNodes);
+    if (Array.isArray(ch.points) && ch.points.length) { const ul = el('ul', 'sul'); ch.points.forEach(point => { const li = el('li'); inline(li, String(point)); ul.append(li); }); box.append(ul); }
+  });
+  if (Array.isArray(b.keyPoints) && b.keyPoints.length) { box.append(el('h4', 'sh', 'أهم النقاط للمراجعة')); const ul = el('ul', 'sul'); b.keyPoints.forEach(point => ul.append(el('li', null, String(point)))); box.append(ul); }
+  if (Array.isArray(b.coverageWarnings) && b.coverageWarnings.length) { box.append(el('h4', 'sh', 'ملاحظات على قراءة المصدر')); b.coverageWarnings.forEach(x => box.append(el('p', null, x))); }
+}
+
+/* رسم كل صفحة على حدة يمنع قصّ الكتب الطويلة بسبب حدّ طول canvas في الهواتف. */
+async function downloadBookPdf(book, button) {
+  if (button.disabled) return;
+  const old = button.textContent; button.disabled = true; button.textContent = 'جاري تجهيز PDF…';
+  let host;
+  try {
+    const [data] = await Promise.all([detailedBook(book), loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js', () => !!window.jspdf), loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js', () => !!window.html2canvas)]);
+    await document.fonts.ready;
+    const title = summaryTitle(book), pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+    pdf.setProperties({ title, subject: 'تلخيص تفصيلي لملف المادة', creator: 'المنصة الجامعية الشاملة' });
+    const source = el('div'); renderBook(source, data);
+    const blocks = [];
+    [...source.children].forEach(node => { if (node.tagName === 'UL') [...node.children].forEach(li => blocks.push(el('p', 'pdf-bullet', '• ' + li.textContent))); else if (node.className !== 'sp') blocks.push(node.cloneNode(true)); });
+    host = el('div'); host.style.cssText = 'position:absolute;top:0;left:-10000px;width:794px;direction:rtl;z-index:-1;';
+    const style = document.createElement('style'); style.textContent = '.book-pdf-page{width:794px;height:1123px;background:white;color:#142b3d;box-sizing:border-box;padding:44px 54px 30px;display:flex;flex-direction:column;gap:14px;font-family:Tajawal,Tahoma,Arial,sans-serif;direction:rtl;text-align:right}.book-pdf-page header{flex:none;border-bottom:2px solid #1d5a8a;padding-bottom:12px}.book-pdf-page header h2{font-size:25px;line-height:1.55;margin:0;color:#174b70}.book-pdf-page header small{font-size:12px;color:#607080}.book-pdf-content{flex:1;min-height:0;overflow:hidden;font-size:16px;line-height:1.9;overflow-wrap:anywhere}.book-pdf-content p{margin:0 0 10px;line-height:1.9}.book-pdf-content h4,.book-pdf-content h5{font-size:20px;line-height:1.6;margin:14px 0 8px;border:0;padding:0;color:#1d5a8a}.book-pdf-content .book-status{font-size:12px;color:#667788}.book-pdf-content .pdf-bullet{padding-right:12px}.book-pdf-page footer{flex:none;font-size:12px;color:#607080;border-top:1px solid #dae3e8;padding-top:8px;display:flex;justify-content:space-between}';
+    host.append(style); document.body.append(host);
+    let page, content, pageIndex = 0;
+    const makePage = () => {
+      page = el('article', 'book-pdf-page'); const head = el('header'); head.append(el('h2', null, title), el('small', null, 'المنصة الجامعية الشاملة | ملخص ملف المادة'));
+      content = el('div', 'book-pdf-content'); const foot = el('footer'); foot.append(el('span', null, book.title), el('span', null, 'صفحة ' + (pageIndex + 1))); page.append(head, content, foot); host.append(page);
+    };
+    const fits = () => content.scrollHeight <= content.clientHeight + 1;
+    const commit = async () => {
+      if (!content.children.length) return;
+      button.textContent = 'تجهيز صفحة ' + (pageIndex + 1) + '…';
+      const canvas = await window.html2canvas(page, { scale: 1.6, backgroundColor: '#ffffff', useCORS: true, logging: false, windowWidth: 1000, scrollX: 0, scrollY: 0 });
+      if (pageIndex) pdf.addPage(); pdf.addImage(canvas.toDataURL('image/jpeg', 0.94), 'JPEG', 0, 0, 210, 297, undefined, 'FAST'); canvas.width = canvas.height = 0;
+      pageIndex++; page.remove(); makePage(); await new Promise(resolve => setTimeout(resolve, 0));
+    };
+    makePage();
+    for (const block of blocks) {
+      const usedHeight = content.lastElementChild ? content.lastElementChild.getBoundingClientRect().bottom - content.getBoundingClientRect().top : 0;
+      if (/^H[1-6]$/.test(block.tagName) && content.children.length && content.clientHeight - usedHeight < 120) await commit();
+      content.append(block);
+      if (fits()) continue;
+      block.remove();
+      if (content.children.length) await commit();
+      content.append(block); if (fits()) continue; block.remove();
+      // تقسيم الفقرات الطويلة بقياسها الفعلي يحافظ على كل الكلمات.
+      let words = block.textContent.split(/\s+/).filter(Boolean);
+      while (words.length) {
+        let low = 1, high = words.length, take = 0;
+        const part = el('p', block.className); content.append(part);
+        while (low <= high) { const mid = Math.floor((low + high) / 2); part.textContent = words.slice(0, mid).join(' '); if (fits()) { take = mid; low = mid + 1; } else high = mid - 1; }
+        if (!take) { part.remove(); if (!content.children.length) throw new Error('تعذّر توزيع فقرة على صفحة PDF'); await commit(); continue; }
+        part.textContent = words.slice(0, take).join(' '); words = words.slice(take); if (words.length) await commit();
+      }
+    }
+    await commit();
+    if (!pageIndex) throw new Error('لا يوجد محتوى لتنزيله');
+    pdf.save(title.replace(/[\\/:*?"<>|\u0000-\u001f]/g, ' ').trim() + '.pdf');
+  } catch (e) { console.error(e); toast(e.message || 'تعذّر إنشاء PDF'); }
+  finally { if (host) host.remove(); button.disabled = false; button.textContent = old; }
+}
+
+function panelBookSummary(pn, books, mt, node) {
+  if (!books.length) { pn.append(msg('ارفع ملفات المادة ليظهر لكل كتاب ملخصه المستقل هنا.')); return; }
+  books.forEach(book => {
+    const card = el('article', 'book-card'), status = aiState(book); card.append(el('h4', null, summaryTitle(book)));
+    if (book.aiBook) {
+      card.append(el('p', 'book-status', book.aiBook.version >= 2 ? 'تلخيص تفصيلي مستقل • ' + (book.aiBook.sourcePages || '') + ' صفحة في المصدر' : 'تلخيص محفوظ لهذا الكتاب.'));
+      const actions = el('div', 'book-actions'), download = el('button', 'abtn abtn-b', '↓ تنزيل PDF'); download.type = 'button'; download.onclick = () => downloadBookPdf(book, download); actions.append(download); card.append(actions);
+      const details = el('details', 'book-preview'), toggle = el('summary', null, 'معاينة الملخص'); details.append(toggle); card.append(details);
+      let loaded = false;
+      details.ontoggle = async () => { if (!details.open || loaded) return; loaded = true; const preview = el('div', 'sumbox'); preview.append(msg('جاري تحميل الملخص…')); details.append(preview); try { const data = await detailedBook(book); preview.textContent = ''; renderBook(preview, data); } catch (e) { loaded = false; preview.textContent = e.message; } };
+    }
+    if (status === 'processing') card.append(el('p', 'book-status', '⏳ ' + (tasks.get(book.id)?.bookProgress || book.aiProgress || 'جاري إعداد التلخيص التفصيلي…')));
+    else if (!book.aiBook) card.append(el('p', 'book-status', status === 'error' ? 'تعذّرت خطوة من التلخيص؛ ستُعاد المحاولة تلقائيًا.' : 'لم يُحلّل هذا الملف بعد.'));
+    if (isStaff() && book.aiError) card.append(el('small', 'merr', book.aiError));
+    pn.append(card);
+  });
+}
+function matPage(c, node, p) {
+  c.append(el('h3', 'btitle', '📘 ' + dn(node)));
+  const tab = ['questions', 'quiz'].includes(route.mtab) ? 'summary' : route.mtab || 'files', bar = el('div', 'ctabs material-tabs');
+  [['files', '📎 ملفات المادة'], ['summary', '📝 ملخصات ملفات المادة'], ['rafiq', '🤖 اسأل رفيق عن المادة'], ['chat', '💬 الدردشة'], ['notes', '🗒 ملاحظاتك']].forEach(([key, label]) => { const button = el('button', 'ctab' + (tab === key ? ' active' : ''), label); button.type = 'button'; button.onclick = () => { route.mtab = key; try { history.replaceState(route, ''); } catch (e) {} renderPage(); }; bar.append(button); });
+  c.append(bar); watchSocial(); const panel = el('div', 'vpanel'); c.append(panel);
+  if (tab === 'rafiq') { panelAsk(panel, node, true); return; }
+  if (tab === 'chat') { panelChat(panel, node); return; } if (tab === 'notes') { panelNotes(panel, node); return; }
+  if (!pubW.loaded) { panel.append(msg('جاري التحميل…')); return; }
+  const list = pubW.data, books = list.filter(x => x.type === 'pdf' && x.fkind !== 'summary').sort((a, b) => (a.date || 0) - (b.date || 0)), mt = materialType(node);
+  if (tab === 'summary') { panelBookSummary(panel, books, mt, node); return; }
+  if (isAdmin()) { const upload = el('button', 'abtn abtn-g', '+ رفع ملفات المادة'); upload.type = 'button'; upload.style.marginBottom = '14px'; upload.onclick = () => openUpload('pdf', node.id, '', list, { fkind: 'book', matType: mt }); panel.append(upload); }
+  if (!books.length) panel.append(msg('لا توجد ملفات بعد.')); else { const box = el('div', 'mlist'); books.forEach(book => box.append(fileRow(book, list))); panel.append(box); }
+}
+function renderMaterialAdmin(m, node) {
+  const books = admW.data.filter(x => x.type === 'pdf' && x.fkind !== 'summary'), mt = materialType(node);
+  m.append(el('h4', 'sh', '📎 ملفات المادة: تلخيص تلقائي لكل كتاب'));
+  const upload = el('button', 'abtn abtn-g', '+ رفع ملفات المادة'); upload.type = 'button'; upload.onclick = () => openUpload('pdf', node.id, '', admW.data, { fkind: 'book', matType: mt }); m.append(upload);
+  if (!books.length) m.append(msg('لا توجد ملفات.'));
+  books.forEach(book => {
+    const row = fileRow(book, admW.data), state = aiState(book), info = row.querySelector('.m-info');
+    info.append(el('span', 'chip ' + (state === 'done' ? 'ok' : state === 'processing' ? 'pr' : state === 'error' ? 'er' : ''), state === 'done' ? '✓ التلخيص جاهز' : state === 'processing' ? book.aiProgress || 'جاري التحليل…' : state === 'error' ? 'تعذّر التحليل' : 'بدون تحليل'));
+    const actions = row.querySelector('.m-btns');
+    const edit = el('button', 'ibtn e'); edit.type = 'button'; edit.title = 'تعديل اسم الكتاب'; edit.innerHTML = ICO_EDIT; edit.onclick = () => openName('edit', 'lec', null, { id: book.id, name: book.title, type: 'lec' }); actions.append(edit); m.append(row);
+  });
+  const view = el('button', 'abtn abtn-b', '👁 عرض كما يراها الطالب'); view.type = 'button'; view.style.marginTop = '18px'; view.onclick = () => { const path = pathOf(aSel).map(x => x.id); closeAdmin(); go({ v: 'browse', path }); }; m.append(view);
+}
+async function countBookPages(t) {
+  if (t.pageCount) return t.pageCount;
+  await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js', () => !!window.PDFLib);
+  const blob = await getBlob(t.id);
+  if (!blob && t.protocol === 2 && t.stage === 'reserve') { t.stage = 'lost'; await persist(t); updateBar(); throw new Error('اختر ملف PDF الأصلي مجددًا لقراءة صفحاته واستكمال الرفع.'); }
+  const buffer = blob ? await blob.arrayBuffer() : await fetch(API_URL + '?action=book-source', { method: 'POST', headers: { Authorization: 'Bearer ' + await idToken(), 'Content-Type': 'application/json' }, body: JSON.stringify({ lectureId: t.id, key: t.key }) }).then(res => { if (!res.ok) throw new Error('تعذّر قراءة الكتاب؛ تأكد من تحديث الوركر وصلاحية الملف'); return res.arrayBuffer(); });
+  try { const pdf = await window.PDFLib.PDFDocument.load(buffer, { updateMetadata: false }); t.pageCount = pdf.getPageCount(); }
+  catch (e) { throw new Error('تعذّر قراءة صفحات PDF؛ تأكد أنه غير مشفّر وغير تالف.'); }
+  if (!t.pageCount || t.pageCount > 1000) throw new Error('يلزم تقسيم الكتاب إلى ملفات لا تتجاوز 1000 صفحة لكل ملف.');
+  await persist(t); return t.pageCount;
+}
+async function doAnalyzeBook(task) { return rafiqCall('job-start', { lectureId: task.id }); }
+async function startBookAnalysis(book) { return rafiqCall('job-start', { lectureId: book.id }); }
+
 updateAuthUI();
+
 
 </script>
 

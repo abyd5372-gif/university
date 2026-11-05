@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="platform-release" content="university-services-20261105-1">
+<meta name="platform-release" content="university-services-20261105-2">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>المنصة الجامعية الشاملة</title>
 <meta name="description" content="المنصة الجامعية الشاملة: تصفح المواد والجامعات وانضم إلينا.">
@@ -476,6 +476,19 @@ a>.dot{top:-12px;left:-16px;min-width:20px;height:20px;font-size:.75rem;padding:
 @media(max-width:700px){.service-grid,.gpa-results{grid-template-columns:1fr}.gpa-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.gpa-row .service-field:first-child{grid-column:1/-1}.gpa-row .abtn{justify-self:start}.service-box{padding:16px}.services-home .cards{gap:18px}.service-page{padding-top:18px}.gpa-result strong{font-size:2.6rem}.service-page .btitle{font-size:1.6rem}.image-picker>small{display:block;margin:6px 0}}
 .services-home button.card{font-family:inherit;color:inherit}
 
+
+/* صورة مشتركة لكل أقسام الإدارة دون الشريط الأزرق العلوي. */
+.admin-visual-header{position:relative;flex:none;background:#e3ebf1}
+.admin-books-banner{height:150px;overflow:hidden}
+.admin-books-banner .hero{height:100%;margin:0;border:0;box-shadow:none}
+.admin-visual-actions{position:absolute;top:14px;left:18px;z-index:4;display:flex;align-items:center;gap:10px}
+.admin-visual-actions .bclose{background:#fff;color:var(--primary-blue);border:1px solid #d6e1e9;box-shadow:0 2px 8px #173f6020}
+.admin-visual-actions .abtn{background:#fff;color:var(--primary-blue);border:1px solid #d6e1e9}
+.admin-page-heading{flex:none;margin:0;padding:17px 28px 14px;font-size:1.65rem;font-weight:800;color:var(--primary-blue);line-height:1.5;background:#f4f7fa}
+#aHome,#aReviewBox{min-height:0}
+@media(max-width:600px){.admin-books-banner{height:120px}.admin-page-heading{font-size:1.35rem;padding:13px 16px 10px}.admin-visual-actions{top:10px;left:12px}}
+@media(max-height:500px){.admin-books-banner{height:80px}.admin-page-heading{padding-top:8px;padding-bottom:8px;font-size:1.15rem}}
+
 </style>
 <script>
 /* منع التكبير بالكامل */
@@ -656,7 +669,7 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 
 
 <div class="aov" id="admin" role="dialog" aria-modal="true" aria-labelledby="aHead">
-  <div class="ahead"><span id="aHead">⚙ التحكم والإعدادات</span><div style="display:flex;gap:10px;align-items:center"><button class="abtn abtn-l" id="aBack" style="display:none">→ رجوع</button><button class="bclose" id="aClose" aria-label="إغلاق">×</button></div></div>
+  <div class="admin-visual-header"><div id="aBanner" class="admin-books-banner" aria-hidden="true"></div><div class="admin-visual-actions"><button type="button" class="abtn abtn-l" id="aBack" style="display:none">→ رجوع</button><button type="button" class="bclose" id="aClose" aria-label="إغلاق">×</button></div></div><h2 id="aHead" class="admin-page-heading">⚙ التحكم والإعدادات</h2>
   <div class="aview" id="aHome"></div>
   <div class="abody" id="aStruct" style="display:none">
     <aside class="aside">
@@ -1266,10 +1279,6 @@ $('aClose').onclick = closeAdmin;
 $('aBack').onclick = () => { aView = 'home'; renderAdmin(); };
 function drawAdminHome() {
   const h = $('aHome'); h.textContent = ''; h.className = 'aview jform'; h.style.padding = '0';
-  const hb = $('heroSec').cloneNode(true); hb.querySelectorAll('[id]').forEach(x => x.removeAttribute('id')); hb.removeAttribute('id'); hb.classList.add('compact');
-  const hc = hb.querySelector('.hc'), hh = hb.querySelector('.hero-content'); if (hh) hh.style.display = 'none';
-  if (hc) { hc.style.display = ''; hc.querySelector('h1').textContent = 'التحكم والإعدادات'; hc.querySelector('p').textContent = 'إدارة الأقسام ومتابعة رفيق والمهام الخلفية.'; const bt = hc.querySelector('button'); if (bt) bt.remove(); }
-  h.append(hb);
   const w = el('div'); w.style.padding = '28px'; h.append(w);
   w.append(el('h3', 'btitle', 'اختر القسم الذي تريد العمل عليه'));
   const g = el('div', 'bgrid'); g.style.gridTemplateColumns = 'repeat(2,1fr)';
@@ -1326,8 +1335,17 @@ function mcard(n) {
   c.append(info); return c;
 }
 function admTarget() { const n = aSel && byId(aSel); return !n ? null : n.type === 'cou' ? n.id : n.type === 'exp' ? realId(n.id) : n.type === 'umat' ? n.id : null; }
+function ensureAdminBanner() {
+  const host = $('aBanner'); if (host.firstChild) return;
+  const hero = $('heroSec').cloneNode(true); hero.removeAttribute('id');
+  hero.querySelectorAll('[id]').forEach(node => { if (node.closest('svg')) node.id = 'admin-banner-' + node.id; else node.removeAttribute('id'); });
+  hero.querySelectorAll('svg *').forEach(node => { for (const attribute of [...node.attributes]) { let value = attribute.value.replace(/url\(#([^)]*)\)/g, 'url(#admin-banner-$1)'); if ((attribute.name === 'href' || attribute.name === 'xlink:href') && value.startsWith('#')) value = '#admin-banner-' + value.slice(1); if (value !== attribute.value) node.setAttribute(attribute.name, value); } });
+  hero.classList.add('compact'); hero.querySelectorAll('.hero-content,.hc').forEach(node => node.remove());
+  host.append(hero);
+}
 function renderAdmin() {
   if (!$('admin').classList.contains('open')) return;
+  ensureAdminBanner();
   const AT = { home: '⚙ التحكم والإعدادات', struct: '📚 إدارة الأقسام', review: '🤖 رفيق والتنبيهات' };
   if (!isAdmin() && aView !== 'struct') aView = 'struct';
   $('aHome').style.display = aView === 'home' ? '' : 'none'; $('aStruct').style.display = aView === 'struct' ? 'flex' : 'none'; $('aReviewBox').style.display = aView === 'review' ? '' : 'none';
@@ -2167,7 +2185,7 @@ async function refreshRafiqDashboard(force = false) {
 }
 function renderReview() {
   const body = $('aReviewBox'); body.textContent = ''; body.className = 'aview jform';
-  body.append(el('h3', 'btitle', '🤖 رفيق: التنبيهات والمهام وسجل الدمج'));
+
   const actions = el('div', 'rafiq-actions'), refresh = el('button', 'abtn abtn-b', 'تحديث'), scan = el('button', 'abtn abtn-g', 'فحص أسماء الأقسام والدمج'); refresh.type = scan.type = 'button';
   refresh.onclick = () => refreshRafiqDashboard(true); scan.onclick = async () => { scan.disabled = true; try { await rafiqCall('rafiq-structure-scan'); toast('بدأ الفحص على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { scan.disabled = false; } }; actions.append(refresh, scan); body.append(actions);
   if (dashboardError) body.append(el('p', 'merr', dashboardError));
@@ -2385,7 +2403,7 @@ async function doAnalyzeBook(task) { return rafiqCall('job-start', { lectureId: 
 async function startBookAnalysis(book) { return rafiqCall('job-start', { lectureId: book.id }); }
 
 /* خدمات الطلبة؛ جميع القيم المدخلة تُرسم كنص ولا تُنفّذ كـ HTML. */
-const RELEASE_ID = 'university-services-20261105-1';
+const RELEASE_ID = 'university-services-20261105-2';
 const FORUM_ID = 'public-forum';
 let serviceShell = null, contactUnsub = null, contactOwner = '', contactRows = [], contactLoadError = '';
 async function communityUser() {

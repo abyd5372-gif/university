@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "comprehensive-university-platform",
+  "main": "university_worker_complete.js",
+  "compatibility_date": "2026-11-05",
+  "keep_vars": true,
+  "r2_buckets": [
+    { "binding": "VIDEO_BUCKET", "bucket_name": "university" },
+    { "binding": "RAFIQ_BUCKET", "bucket_name": "rafiq-internal" }
+  ],
+  "workflows": [
+    { "name": "rafiq-processing", "binding": "RAFIQ_WORKFLOW", "class_name": "RafiqWorkflow" }
+  ],
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "vars": {
+    "PUBLIC_URL": "https://pub-50aba6ec86af4979b1c3e494c77151d6.r2.dev",
+    "EMBED_MODEL": "gemini-embedding-001",
+    "RAFIQ_EMBED_DIMENSION": "768",
+    "RAFIQ_NAMESPACE": "rafiq_v1"
+  }
+}

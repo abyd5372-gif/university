@@ -1,0 +1,11 @@
+{
+  "name": "university-rafiq-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check university_worker_complete.js && wrangler deploy --dry-run --outdir .build",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": { "wrangler": "4.157.0" }
+}

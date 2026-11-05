@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="platform-release" content="university-services-20261105-1">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>المنصة الجامعية الشاملة</title>
 <meta name="description" content="المنصة الجامعية الشاملة: تصفح المواد والجامعات وانضم إلينا.">
@@ -471,6 +472,10 @@ a>.dot{top:-12px;left:-16px;min-width:20px;height:20px;font-size:.75rem;padding:
 /* شريط التقدم خلف لوحة التحكم والنوافذ حتى لا يحجب أزرار المراجعة. */
 .taskbar{z-index:35}
 
+.services-home{padding-top:10px;padding-bottom:55px}.services-home .card{border-bottom:4px solid var(--primary-blue);text-align:center}.services-home .card-icon{width:58px;height:58px;margin:0 auto 20px;color:var(--primary-blue)}.service-page{padding-top:24px;padding-bottom:60px;max-width:1100px}.service-intro{color:#64748b;margin:12px 0 28px;line-height:1.9}.service-box{border:1px solid #e0e8ee;border-radius:14px;background:#fff;padding:22px;margin:18px 0;box-shadow:0 4px 15px rgba(25,65,95,.045);overflow-wrap:anywhere}.service-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.service-grid .service-box{margin:0}.service-field{display:block;min-width:0}.service-field .fld{width:100%;box-sizing:border-box}.service-field .lbl{display:block}.service-note{background:#fffbea;border:1px solid #eadca8;padding:16px;border-radius:12px;line-height:1.9;margin:20px 0}.service-status{white-space:pre-wrap;margin:14px 0;overflow-wrap:anywhere;color:#236343}.contact-form>small{display:block;margin:10px 0}.attachment-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;overflow-wrap:anywhere}.contact-ticket summary{cursor:pointer;font-weight:800;color:var(--primary-blue)}.contact-ticket p{white-space:pre-wrap;line-height:1.9;margin:12px 0}.contact-ticket .abtn{margin:6px}.gpa-row{display:grid;grid-template-columns:1.4fr 1fr .8fr 1.2fr auto;gap:10px;align-items:end;border-bottom:1px solid #e4eaf0;padding:12px 0}.gpa-row .fld{margin:0}.gpa-row .lbl{font-size:.85rem;line-height:1.7;min-height:30px}.gpa-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.gpa-result{display:flex;flex-direction:column;gap:8px}.gpa-result:first-child{background:linear-gradient(135deg,#174769,#2a6888);color:#fff}.gpa-result strong{font-size:3rem;line-height:1.4;direction:ltr;text-align:right}.image-picker{margin:10px 0}.image-picker>small{display:inline-block;margin:6px;color:#64748b;font-size:.8rem}.image-select{display:inline-block;cursor:pointer}.image-previews{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}.image-preview{position:relative;width:82px;height:82px}.image-preview img{width:100%;height:100%;object-fit:cover;border-radius:10px}.image-preview button{position:absolute;right:-5px;top:-7px;background:#fff;box-shadow:0 2px 5px #999}.chat-image{display:block;max-width:100%;width:auto;max-height:320px;border-radius:10px;margin:8px 0;object-fit:contain}.chat-image-link{display:block;max-width:100%}.sources-details{margin-top:12px;color:#5d7182;font-size:.85rem}.sources-details>summary{cursor:pointer;display:list-item;font-weight:600}.sources-details[open]{font-size:1rem}.join-pledge{display:flex;align-items:flex-start;gap:10px;margin:20px 0;padding:16px;background:#f0f6fa;border:1px solid #d7e4ec;border-radius:10px;line-height:1.9}.join-pledge input{margin-top:8px;flex-shrink:0;width:20px;height:20px}.profile-details{width:100%;padding-top:12px}.profile-details summary{cursor:pointer;color:var(--primary-blue);font-weight:800}.profile-details p{white-space:pre-wrap;line-height:1.9;margin:7px 0}.profile-member{flex-wrap:wrap}.new-release-note{position:fixed;bottom:10px;left:12px;background:#164c6b;color:#fff;border-radius:10px;padding:12px 18px;z-index:60;max-width:90vw}
+@media(max-width:700px){.service-grid,.gpa-results{grid-template-columns:1fr}.gpa-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.gpa-row .service-field:first-child{grid-column:1/-1}.gpa-row .abtn{justify-self:start}.service-box{padding:16px}.services-home .cards{gap:18px}.service-page{padding-top:18px}.gpa-result strong{font-size:2.6rem}.service-page .btitle{font-size:1.6rem}.image-picker>small{display:block;margin:6px 0}}
+.services-home button.card{font-family:inherit;color:inherit}
+
 </style>
 <script>
 /* منع التكبير بالكامل */
@@ -574,6 +579,7 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
   </div>
 </section>
 
+<section class="programs services-home" id="services"><div class="container"><h2 class="section-title">خدماتنا</h2><div class="cards"><button type="button" class="card clickable-card" onclick="navService('forum')"><svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5h38v27H22L11 42V32H5V5Z"/><path d="M13 14h22M13 22h15"/></svg><h3>المنتدى العام</h3><p>ناقش الأفكار واطرح أسئلتك وتبادل الخبرات والصور مع مجتمع المنصة.</p></button><button type="button" class="card clickable-card" onclick="navService('contact')"><svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="40" height="30" rx="4"/><path d="m5 12 19 15 19-15"/></svg><h3>تواصل معنا<span data-contact-count></span></h3><p>شاركنا شكاواك واقتراحاتك، وأرسل المواد والمرفقات إلى الإدارة.</p></button><button type="button" class="card clickable-card" onclick="navService('gpa')"><svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="3" width="28" height="42" rx="4"/><path d="M16 10h16v8H16zM16 25h3m10 0h3M16 33h3m10 0h3"/></svg><h3>حساب المعدل التراكمي</h3><p>احسب معدلك الفصلي والتراكمي مع احتساب المواد المعادة.</p></button></div></div></section>
 <section class="features-section" id="platformFeatures">
   <div class="container">
     <div class="features-head">
@@ -730,7 +736,7 @@ document.querySelectorAll('.clickable-card').forEach(function(c){
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, getDoc, setDoc, deleteDoc, updateDoc, writeBatch, query, where, orderBy, onSnapshot , getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, getDoc, setDoc, deleteDoc, updateDoc, writeBatch, query, where, orderBy, onSnapshot , getDocs, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCtsRMlKA2YIOhMX_RD5hCXm-XAlNWBrjM",
@@ -776,7 +782,7 @@ const ORD = ['الأولى','الثانية','الثالثة','الرابعة','
 const vids = list => list.filter(x => x.type === 'video').sort((a, b) => (a.sortOrder || (a.date || 0) * 1000) - (b.sortOrder || (b.date || 0) * 1000) || a.id.localeCompare(b.id));
 const ordOf = (it, list) => { const i = vids(list).findIndex(x => x.id === it.id); return i < 0 ? 'الجديدة' : (ORD[i] || 'رقم ' + (i + 1)); };
 const lecLabel = (it, list) => 'المحاضرة ' + ordOf(it, list) + ': ' + (it.title || '');
-const dn = n => n.type === 'exp' && !n.legacy ? (n.ownerKey ? 'الشارح: ' : 'شرح: ') + n.name : n.name;
+const dn = n => n.type === 'exp' && !n.legacy ? 'شرح: ' + n.name : n.name;
 const msg = t => el('p', 'bempty', t);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -890,8 +896,8 @@ function render() {
   $('heroHome').style.display = home ? '' : 'none';
   $('heroCompact').style.display = home ? 'none' : '';
   $('heroBack').textContent = !home && (route.v === 'browse' && !(route.path || []).length) || (route.v === 'join' && J.step === 'home') ? 'الرجوع للرئيسية' : '→ رجوع';
-  $('heroCompact').querySelector('h1').textContent = route.v === 'join' ? 'انضم إلينا' : 'تصفح الجامعات';
-  $('heroCompact').querySelector('p').textContent = route.v === 'join' ? 'قدّم طلبك للانضمام كشارح أو كفريق، وستراجعه الإدارة.' : 'اختر الجامعة ثم الكلية والتخصص والمادة للوصول إلى المحاضرات.';
+  $('heroCompact').querySelector('h1').textContent = route.v === 'service' ? ({forum:'المنتدى العام',contact:'تواصل معنا',gpa:'حساب المعدل التراكمي'}[route.service] || 'خدماتنا') : route.v === 'join' ? 'انضم إلينا' : 'تصفح الجامعات';
+  $('heroCompact').querySelector('p').textContent = route.v === 'service' ? 'خدمات طلابية ومجتمع يجمعنا على المعرفة والتعاون.' : route.v === 'join' ? 'قدّم طلبك للانضمام كشارح أو كفريق، وستراجعه الإدارة.' : 'اختر الجامعة ثم الكلية والتخصص والمادة للوصول إلى المحاضرات.';
   pubW.set(home || !ready ? null : pubTarget()); watchSocial();
   if (!home) renderPage();
 }
@@ -908,6 +914,7 @@ function crumbBar(p, last) {
 let vShell = null;
 function renderPage() {
   const pv = $('pageView');
+  if (route.v === 'service') { renderServicePage(); return; }
   if (route.v === 'join') { if (J.built === J.step && pv.firstChild) return; vShell = null; pv.textContent = ''; const c = el('div', 'container'); pv.append(c); J.built = J.step; renderJoin(c); return; }
   if (!ready || loadErr) { vShell = null; pv.textContent = ''; const c = el('div', 'container'); c.append(msg(loadErr ? 'تعذّر تحميل البيانات. تحقق من الاتصال ثم أعد المحاولة.' : 'جاري التحميل…')); pv.append(c); return; }
   let p = route.path || [];
@@ -1189,19 +1196,19 @@ function updateAuthUI() {
   const label = authUser ? ((me && me.name) || authUser.email) : gUser ? (gUser.displayName || gUser.email) : 'التسجيل';
   document.querySelectorAll('.auth-link').forEach(a => { a.textContent = label; });
   $('adminBtn').style.display = isStaff() ? 'inline-flex' : 'none';
-  updateBar(); updateDots();
+  updateBar(); updateDots(); watchContacts(); watchRafiqRealtime();
   if (route.v === 'video' && vShell) updateVideoUI(false); else if (route.v !== 'home') renderPage();
 }
 let resumed = false;
 onAuthStateChanged(auth, async u => {
   if (joining) return;
-  if (u && u.providerData.some(p => p.providerId === 'google.com')) { gUser = u; authUser = null; role = null; me = null; watchApps(false); closeAdmin(); updateAuthUI(); return; }
+  if (u && u.providerData.some(p => p.providerId === 'google.com')) { gUser = u; authUser = null; role = null; me = null; watchApps(false); watchSelfProfile(null); closeAdmin(); updateAuthUI(); return; }
   gUser = null;
   let ok = false;
   if (u) { ok = await checkAdmin(u); if (!ok) { try { await signOut(auth); } catch (e) {} } }
   authUser = ok ? u : null; role = ok ? lastMe.role : null; me = ok ? lastMe : null;
   if (!authUser) closeAdmin();
-  watchApps(isAdmin());
+  watchApps(isAdmin()); watchSelfProfile(ok ? u : null);
   updateAuthUI();
   if (authUser) { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {} await loadTasks(); pump(); void refreshRafiqDashboard(); }
 });
@@ -1697,16 +1704,18 @@ function memberForm(parent, title) {
     else { i = el('input', 'fld'); i.type = t; if (t === 'email' || t === 'password') i.dir = 'ltr'; }
     ins[k] = i; box.append(i);
   });
+  const pledge = el('label', 'join-pledge'), agree = el('input'); agree.type = 'checkbox'; agree.setAttribute('aria-label', 'أتعهد بالأمانة والمسؤولية'); pledge.append(agree, el('span', null, JOIN_PLEDGE)); box.append(pledge);
   parent.append(box);
   return {
     get() {
+      if (!agree.checked) throw new Error('يجب الموافقة على تعهد الأمانة والمسؤولية قبل تقديم الطلب.');
       const v = {};
       for (const [k, l] of MF) { v[k] = ins[k].value.trim(); if (!v[k] && k !== 'link') throw new Error('أكمل الحقل: ' + l.split('(')[0]); }
       if (!/^\S+@\S+\.\S+$/.test(v.email)) throw new Error('البريد الإلكتروني غير صحيح');
       const p = ins.pass.value;
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(p)) throw new Error('كلمة المرور ضعيفة: 8 أحرف على الأقل مع حرف كبير وصغير ورقم');
       if (p !== ins.pass2.value) throw new Error('تأكيد كلمة المرور غير مطابق');
-      v.pass = p; return v;
+      v.pass = p; v.pledgeAccepted = true; v.pledgeText = JOIN_PLEDGE; v.pledgeVersion = 1; v.pledgeAcceptedAt = Date.now(); return v;
     }
   };
 }
@@ -1853,7 +1862,7 @@ function appCards(body, list) {
     c.append(el('b', null, '👤 ' + a.name + (a.kind === 'team' ? ' — فريق «' + a.teamName + '»' + (a.newTeam ? ' (فريق جديد، الجامعة المقترحة: ' + (a.teamUniversity || '-') + ')' : '') : '')));
     const dl = el('div'); dl.style.cssText = 'font-size:1.1rem;line-height:1.9;margin:8px 0';
     MF.filter(f => !['pass', 'pass2', 'name'].includes(f[0])).forEach(([k, l]) => { if (a[k]) { const r = el('div'); r.append(el('strong', null, l.split('(')[0] + ': '), document.createTextNode(a[k])); dl.append(r); } });
-    c.append(dl);
+    if (a.pledgeAccepted) dl.append(el('p', null, '✓ التعهد: ' + (a.pledgeText || JOIN_PLEDGE))); c.append(dl);
     const us = el('select', 'fld'), cs = el('select', 'fld'); kids(null, 'uni').forEach(u => us.append(new Option(u.name, u.id)));
     const fillC = () => { cs.textContent = ''; kids(us.value, 'col').forEach(x => cs.append(new Option(x.name, x.id))); }; us.onchange = fillC; fillC();
     c.append(el('label', 'lbl', a.kind === 'team' ? 'الجامعة التي سيخدم فيها الفريق' : 'الجامعة والكلية التي سيخدم فيها'), us); if (a.kind !== 'team') c.append(cs);
@@ -1861,7 +1870,7 @@ function appCards(body, list) {
     ok.onclick = async () => {
       const sc = a.kind === 'team' ? { type: 'university', id: us.value } : { type: 'college', id: cs.value };
       if (!sc.id) { toast('اختر الجامعة' + (a.kind === 'team' ? '' : ' والكلية')); return; }
-      try { await setDoc(doc(db, 'users', a.uid), { role: 'contrib', name: a.name, email: a.email, scope: sc, teamId: a.teamId || '', teamName: a.teamName || '' }); await updateDoc(doc(db, 'applications', a.uid), { status: 'approved', scope: sc }); toast('تم القبول'); } catch (e) { console.error(e); toast('تعذّر القبول'); }
+      try { await setDoc(doc(db, 'users', a.uid), { role: 'contrib', name: a.name, email: a.email, scope: sc, teamId: a.teamId || '', teamName: a.teamName || '', profile: applicationProfile(a), approvedAt: Date.now() }); await updateDoc(doc(db, 'applications', a.uid), { status: 'approved', scope: sc }); toast('تم القبول'); } catch (e) { console.error(e); toast('تعذّر القبول'); }
     };
     no.onclick = async () => { if (confirm('رفض طلب ' + a.name + '؟ سيتمكن من التقديم من جديد بنفس البريد.')) { try { await deleteDoc(doc(db, 'applications', a.uid)); } catch (e) { toast('تعذّر الرفض'); } } };
     const act = el('div', 'mact'); act.append(ok, no); c.append(act); body.append(c);
@@ -1875,7 +1884,7 @@ function staffBlock(body, title, mode) {
   const memberRow = u => {
     const r = el('div', 'att'); r.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px';
     const tx = el('div'); tx.append(el('b', null, u.name || u.email), el('br'), el('small', null, u.email + ' — ' + (u.scope && u.scope.type === 'college' ? 'كلية: ' : 'جامعة: ') + sname(u)));
-    const b = el('button', 'abtn abtn-l', '🚫 إلغاء الصلاحية'); b.onclick = () => revoke([u], 'إلغاء صلاحية ' + (u.name || u.email) + '؟'); r.append(tx, b); return r;
+    const b = el('button', 'abtn abtn-l', '🚫 إلغاء الصلاحية'); b.onclick = () => revoke([u], 'إلغاء صلاحية ' + (u.name || u.email) + '؟'); r.classList.add('profile-member'); r.append(tx, b, acceptedMemberDetails(u)); return r;
   };
   if (mode === 'solo') { arr.forEach(u => body.append(memberRow(u))); return; }
   const teams = {}; arr.forEach(u => (teams[u.teamId] = teams[u.teamId] || []).push(u));
@@ -1905,7 +1914,7 @@ function afterApps() { updateDots(); if (route.v === 'join' && isAdmin()) { J.bu
 async function revoke(list, q, teamId) {
   if (!confirm(q + '\nسيتمكنون من التقديم من جديد بنفس البريد. المحتوى الذي أضافوه يبقى كما هو.')) return;
   try {
-    for (const u of list) { await deleteDoc(doc(db, 'users', u.id)); try { await deleteDoc(doc(db, 'applications', u.id)); } catch (e) {} }
+    const batch = writeBatch(db); for (const u of list) { batch.delete(doc(db, 'users', u.id)); batch.delete(doc(db, 'applications', u.id)); } await batch.commit();
     if (teamId) { for (const a of apps.filter(x => x.teamId === teamId)) await deleteDoc(doc(db, 'applications', a.uid)); try { await deleteDoc(doc(db, 'teams', teamId)); } catch (e) {} }
     toast('تم التنفيذ');
   } catch (e) { console.error(e); toast('تعذّر التنفيذ'); }
@@ -1963,7 +1972,7 @@ function watchSocial() {
   const rt = last && last.type === 'cou' ? last.id : last && last.type === 'exp' && !last.legacy ? last.parentId : null;
   watchK('rx', route.v === 'video' ? route.lec : null, id => query(collection(db, 'reactions'), where('lectureId', '==', id)), d => { RX = d; updateReact(); });
   watchK('rt', rt && JSON.stringify(aliasIds(rt)), () => aliasQueries('ratings', 'courseId', rt), d => { RT = d; if (route.v === 'browse') renderPage(); });
-  const chatId = route.v === 'browse' && last ? (last.type === 'umat' && route.mtab === 'chat' ? last.id : last.type === 'exp' && route.xtab === 'chat' ? (last.parentId || realId(last.id)) : null) : null;
+  const chatId = route.v === 'service' && route.service === 'forum' ? FORUM_ID : route.v === 'browse' && last ? (last.type === 'umat' && route.mtab === 'chat' ? last.id : last.type === 'exp' && route.xtab === 'chat' ? (last.parentId || realId(last.id)) : null) : null;
   watchK('cm', chatId && JSON.stringify(aliasIds(chatId)), () => aliasQueries('comments', 'lectureId', chatId), d => { CM = d; renderChatList(); });
 }
 
@@ -1986,9 +1995,9 @@ function rateLine(id) {
   s.textContent = '★'.repeat(k) + '☆'.repeat(5 - k) + ' ' + a.toFixed(1) + ' (' + r.length + ')'; return s;
 }
 function rateBox(exp) {
-  const box = el('div', 'rate'); box.append(el('b', null, '⭐ تقييم الشارح'), rateLine(exp.id));
+  const box = el('div', 'rate'); box.append(el('b', null, '⭐ تقييم الشرح'), rateLine(exp.id));
   const mail = getMail(), mine = mail && RT.find(x => x.expId === exp.id && x.email === mail), row = el('div'); row.style.marginTop = '8px';
-  row.append(el('span', null, 'قيّم هذا الشارح: '));
+  row.append(el('span', null, 'قيّم هذا الشرح: '));
   for (let i = 1; i <= 5; i++) {
     const b = el('button', 'st' + (mine && i <= mine.stars ? ' on' : ''), '★'); b.type = 'button';
     b.onclick = () => needMail(m => setDoc(doc(db, 'ratings', exp.id + '_' + m.replace(/[\/\s]/g, '')), { expId: exp.id, courseId: exp.parentId, email: m, stars: i, t: Date.now() }).then(() => toast('شكراً لتقييمك')).catch(e => { console.error(e); toast('تعذّر حفظ التقييم'); }));
@@ -2033,13 +2042,13 @@ function renderChatList() {
     bubble.append(head);
     if (c.replyToId) {
       const original = arr.find(x => x.id === c.replyToId), quote = el('button', 'chat-quote'); quote.type = 'button';
-      quote.append(el('b', null, original ? chatName(original) : c.replyToName || 'رسالة سابقة'), el('span', null, original ? original.text : c.replyToText || 'تم حذف الرسالة الأصلية'));
+      quote.append(el('b', null, original ? chatName(original) : c.replyToName || 'رسالة سابقة'), el('span', null, original ? (original.text || '📷 صورة') : c.replyToText || 'تم حذف الرسالة الأصلية'));
       quote.onclick = () => { const target = [...list.querySelectorAll('[data-message-id]')].find(x => x.dataset.messageId === c.replyToId); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'center' }); target.classList.add('flash'); setTimeout(() => target.classList.remove('flash'), 1400); } else toast('الرسالة الأصلية لم تعد متاحة'); };
       bubble.append(quote);
     }
-    bubble.append(el('div', 'chat-text', c.text || ''));
+    bubble.append(el('div', 'chat-text', c.text || '')); appendMessageImages(bubble, c.images);
     const foot = el('div', 'chat-foot'), reply = el('button', 'chat-reply', '↩ رد'); reply.type = 'button';
-    reply.onclick = () => { roomDraft(id).reply = { id: c.id, name: chatName(c), text: String(c.text || '').slice(0, 220) }; updateReplyPreview(); chatRoom.ta.focus(); };
+    reply.onclick = () => { roomDraft(id).reply = { id: c.id, name: chatName(c), text: String(c.text || (c.images?.length ? '📷 صورة' : '')).slice(0, 220) }; updateReplyPreview(); chatRoom.ta.focus(); };
     foot.append(el('time', null, date.toLocaleTimeString('ar-JO', { hour: '2-digit', minute: '2-digit' })), reply); bubble.append(foot); list.append(bubble);
   });
   if (wasBottom) { list.scrollTop = list.scrollHeight; chatRoom.newBtn.hidden = true; }
@@ -2047,29 +2056,34 @@ function renderChatList() {
 }
 function panelChat(pn, node) {
   const draft = roomDraft(node.id), shell = el('div', 'chat-shell'), head = el('div', 'chat-heading');
-  head.append(el('b', null, '💬 الدردشة'), el('small', null, 'شارك زملاءك النقاش واضغط «رد» لاقتباس أي رسالة.'));
+  head.append(el('b', null, node.id === FORUM_ID ? '💬 المنتدى العام' : '💬 الدردشة'), el('small', null, 'شارك زملاءك النقاش واضغط «رد» لاقتباس أي رسالة.'));
   const list = el('div', 'chat-stream'); list.setAttribute('role', 'log'); list.setAttribute('aria-label', 'رسائل المادة');
   const newBtn = el('button', 'abtn abtn-l chat-new', 'رسائل جديدة ↓'); newBtn.hidden = true; newBtn.type = 'button';
   newBtn.onclick = () => { list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' }); newBtn.hidden = true; };
   const composer = el('div', 'chat-composer'), reply = el('div', 'chat-reply-preview'); reply.hidden = true;
   const ta = el('textarea', 'fld'); ta.rows = 2; ta.maxLength = 3000; ta.value = draft.text; ta.placeholder = 'اكتب رسالة…'; ta.setAttribute('aria-label', 'رسالتك');
-  ta.oninput = () => { draft.text = ta.value; };
+  ta.oninput = () => { draft.text = ta.value; draft.messageId = ''; };
   const send = el('button', 'abtn abtn-b', 'إرسال ↑'); send.type = 'button'; send.disabled = draft.sending;
   const error = el('p', 'merr'); error.setAttribute('role', 'status');
+  const images = imagePicker(composer, draft);
   send.onclick = () => {
-    if (draft.sending || !ta.value.trim()) return;
+    if (draft.sending || (!ta.value.trim() && !draft.files.length)) return;
     const text = ta.value.trim(), quote = draft.reply && { ...draft.reply };
-    needMail(async email => {
+    (async () => {
       if (draft.sending) return; draft.sending = true; send.disabled = true; error.textContent = '';
       try {
-        const payload = { lectureId: node.id, email, displayName: (auth.currentUser && auth.currentUser.displayName) || (me && me.name) || email.split('@')[0], dev, uid: auth.currentUser ? auth.currentUser.uid : '', text, t: Date.now() };
-        if (quote) Object.assign(payload, { replyToId: quote.id, replyToText: quote.text, replyToName: quote.name });
-        await addDoc(collection(db, 'comments'), payload);
+        await communityUser(); const attached = [];
+        for (const entry of draft.files) attached.push(await uploadServiceFile(entry, 'chat'));
+        draft.messageId ||= crypto.randomUUID();
+        const payload = { id: draft.messageId, room: node.id, text, images: attached };
+        if (quote) payload.replyToId = quote.id;
+        await rafiqCall('community-chat', payload);
+        draft.messageId = ''; clearImageDraft(draft); images.redraw();
         if (draft.text.trim() === text) { draft.text = ''; if (chatRoom && chatRoom.id === node.id) chatRoom.ta.value = ''; }
         draft.reply = null; if (chatRoom && chatRoom.id === node.id) { updateReplyPreview(); chatRoom.list.scrollTop = chatRoom.list.scrollHeight; }
-      } catch (e) { console.error(e); error.textContent = 'لم تُرسل الرسالة. بقي النص محفوظاً؛ حاول مجدداً.'; }
+      } catch (e) { console.error(e); error.textContent = e.message || 'لم تُرسل الرسالة. بقي النص والصور محفوظين؛ حاول مجددًا.'; }
       finally { draft.sending = false; send.disabled = false; }
-    });
+    })();
   };
   ta.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send.click(); } };
   const controls = el('div', 'chat-controls'); controls.append(ta, send); composer.append(reply, controls, error);
@@ -2099,12 +2113,12 @@ function openRafiqCitation(citation) {
 }
 function renderRafiqCitations(box, citations) {
   if (!Array.isArray(citations) || !citations.length) return;
-  const wrapper = el('div', 'rafiq-sources'); wrapper.append(el('b', null, 'مصادر الإجابة'));
+  const details = el('details', 'sources-details'), toggle = el('summary', null, 'عرض المصادر'); details.append(toggle); const wrapper = el('div', 'rafiq-sources'); details.append(wrapper);
   citations.forEach(citation => {
     const row = el('div', 'rafiq-source'), button = el('button', 'abtn abtn-l', (citation.sourceType === 'pdf' ? '📄 ' : '🎬 ') + citation.title + (citation.sourceType === 'pdf' ? ' • ' + pageLabel(citation) : ' • ' + timeLabel(citation.start)));
     button.type = 'button'; button.onclick = () => openRafiqCitation(citation); row.append(button);
     if (citation.quote) row.append(el('small', null, citation.quote)); wrapper.append(row);
-  }); box.append(wrapper);
+  }); box.append(details);
 }
 function timeLabel(seconds) { const value = Math.max(0, Math.floor(Number(seconds || 0))); return Math.floor(value / 60) + ':' + String(value % 60).padStart(2, '0'); }
 function pageLabel(source) { return source.endPage > source.page ? 'الصفحات ' + source.page + '–' + source.endPage : 'صفحة ' + source.page; }
@@ -2114,7 +2128,7 @@ function panelAsk(pn, node, wholeCourse = false) {
   const historyBox = el('div', 'ask-history'); historyBox.setAttribute('aria-live', 'polite');
   state.messages.forEach(message => {
     const row = el('div', 'ask-message ' + (message.role === 'user' ? 'ask-user' : 'ask-model')); row.append(el('b', null, message.role === 'user' ? 'أنت' : 'رفيق'));
-    const text = el('div', 'sumbox'); renderSummary(text, String(message.text || '')); row.append(text); renderRafiqCitations(row, message.citations); historyBox.append(row);
+    const text = el('div', 'sumbox'); renderSummary(text, String(message.text || '')); row.append(text); appendMessageImages(row, message.images); renderRafiqCitations(row, message.citations); historyBox.append(row);
   });
   if (!state.messages.length) historyBox.append(msg(wholeCourse ? 'مثلاً: اشرح العلاقة بين موضوعين وردا في محاضرات مختلفة.' : 'اكتب سؤالك عن فكرة أو تفصيل في هذه المحاضرة.'));
   if (state.busy) historyBox.append(el('p', 'ask-hint', '⏳ يبحث رفيق في المصادر…'));
@@ -2126,18 +2140,19 @@ function panelAsk(pn, node, wholeCourse = false) {
   };
   clear.onclick = () => { state.messages = []; state.error = ''; try { localStorage.removeItem('uni_ask_' + key); } catch (_) {} redraw(); };
   send.onclick = async () => {
-    const question = input.value.trim(); if (!question || state.busy) return; state.busy = true; state.error = ''; state.draft = question; redraw();
+    const question = input.value.trim() || (state.files?.length ? 'اشرح الصورة المرفقة في سياق المادة.' : ''); if (!question || state.busy) return; state.busy = true; state.error = ''; state.draft = question; redraw();
     try {
       if (!auth.currentUser) { await googleLogin(); updateAuthUI(); }
-      const out = await rafiqCall(wholeCourse ? 'ask-course' : 'ask', { ...(wholeCourse ? { courseId: root.id } : { lectureId: node.id }), question, history: state.messages.slice(-6) });
-      state.messages.push({ role: 'user', text: question }, { role: 'model', text: String(out.answer), citations: out.citations || [] }); state.messages = state.messages.slice(-20); state.draft = '';
+      const images = []; for (const entry of state.files || []) images.push(await uploadServiceFile(entry, 'chat'));
+      const out = await rafiqCall(wholeCourse ? 'ask-course' : 'ask', { ...(wholeCourse ? { courseId: root.id } : { lectureId: node.id }), question, images, history: state.messages.slice(-6) });
+      state.messages.push({ role: 'user', text: question, images }, { role: 'model', text: String(out.answer), citations: out.citations || [] }); state.messages = state.messages.slice(-20); state.draft = ''; clearImageDraft(state);
       state.coverage = Number.isInteger(out.total) ? 'المحتوى المجهّز للبحث: ' + out.indexed + ' من ' + out.total : '';
       try { localStorage.setItem('uni_ask_' + key, JSON.stringify(state.messages)); } catch (_) {}
     } catch (err) { state.error = err.code?.startsWith('auth/') ? 'سجّل الدخول بحساب Google لاستخدام رفيق.' : err.message; }
     finally { state.busy = false; redraw(); }
   };
   input.onkeydown = event => { if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); send.click(); } };
-  actions.append(send, clear); shell.append(historyBox, input, error, actions); if (state.coverage) shell.append(el('small', 'ask-hint', state.coverage)); pn.append(shell); historyBox.scrollTop = historyBox.scrollHeight;
+  actions.append(send, clear); shell.append(historyBox, input); const picker = imagePicker(shell, state); shell.append(error, actions); if (state.coverage) shell.append(el('small', 'ask-hint', state.coverage)); pn.append(shell); historyBox.scrollTop = historyBox.scrollHeight;
 }
 
 let dashboardData = null, dashboardLoading = false, dashboardError = '', dashboardUser = '', dashboardRequestAt = 0;
@@ -2180,7 +2195,7 @@ function renderReview() {
     if (['committed', 'applying'].includes(merge.status)) { const undo = el('button', 'abtn abtn-l', 'التراجع عن هذا الدمج'); undo.type = 'button'; undo.onclick = async () => { if (!confirm('التراجع عن الدمج مع الحفاظ على أي تعديلات أحدث؟')) return; undo.disabled = true; try { await rafiqCall('merge-undo', { id: merge.id }); toast('بدأ التراجع على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { undo.disabled = false; } }; row.append(undo); } if (['committed', 'rolled-back'].includes(merge.status)) { const dismiss = el('button', 'abtn abtn-g', merge.status === 'committed' ? 'الدمج صحيح، إخفاء' : 'إخفاء السجل'); dismiss.type = 'button'; dismiss.onclick = async () => { dismiss.disabled = true; try { await rafiqCall('merge-dismiss', { id: merge.id }); dashboardData.merges = dashboardData.merges.filter(item => item.id !== merge.id); renderReview(); } catch (e) { toast(e.message); dismiss.disabled = false; } }; row.append(dismiss); } body.append(row);
   }
 }
-setInterval(() => { if (isStaff() && document.visibilityState === 'visible') void refreshRafiqDashboard(); }, 15000);
+setInterval(() => { if (isStaff() && (!realtimeOwner || realtimeFailed) && document.visibilityState === 'visible') void refreshRafiqDashboard(); }, 15000);
 
 
 /* ---------- ملاحظاتك الخاصة (على جهازك فقط) ---------- */
@@ -2368,6 +2383,102 @@ async function countBookPages(t) {
 }
 async function doAnalyzeBook(task) { return rafiqCall('job-start', { lectureId: task.id }); }
 async function startBookAnalysis(book) { return rafiqCall('job-start', { lectureId: book.id }); }
+
+/* خدمات الطلبة؛ جميع القيم المدخلة تُرسم كنص ولا تُنفّذ كـ HTML. */
+const RELEASE_ID = 'university-services-20261105-1';
+const FORUM_ID = 'public-forum';
+let serviceShell = null, contactUnsub = null, contactOwner = '', contactRows = [], contactLoadError = '';
+async function communityUser() {
+  if (!auth.currentUser) { await googleLogin(); updateAuthUI(); }
+  if (!auth.currentUser) throw new Error('سجّل الدخول لإرسال الرسائل والمرفقات.');
+  return auth.currentUser;
+}
+const fileImageUrl = file => API_URL + '?action=community-image&key=' + encodeURIComponent(file.key);
+async function uploadServiceFile(entry, purpose) {
+  if (entry.uploaded?.purpose === purpose) return entry.uploaded;
+  const user = await communityUser();
+  const response = await fetch(API_URL + '?action=community-upload&purpose=' + purpose, { method: 'POST', headers: { Authorization: 'Bearer ' + await user.getIdToken(), 'Content-Type': entry.file.type || 'application/octet-stream', 'File-Name': encodeURIComponent(entry.file.name) }, body: entry.file });
+  const out = await response.json(); if (!response.ok || !out.success) throw new Error(out.error || 'تعذّر رفع المرفق.'); entry.uploaded = out.file; return out.file;
+}
+function clearImageDraft(state) { for (const entry of state.files || []) URL.revokeObjectURL(entry.preview); state.files = []; }
+function imagePicker(host, state) {
+  state.files ||= []; const panel = el('div', 'image-picker'), preview = el('div', 'image-previews'), choose = el('label', 'abtn abtn-l image-select', '📷 إرفاق صور'), input = el('input'); input.type = 'file'; input.accept = 'image/jpeg,image/png,image/webp,image/gif'; input.multiple = true; input.hidden = true; input.setAttribute('aria-label','إرفاق صور'); choose.append(input);
+  const draw = () => { preview.textContent = ''; for (const entry of state.files) { const box = el('div', 'image-preview'), img = el('img'); img.src = entry.preview; img.alt = entry.file.name; const remove = el('button', 'ibtn', '×'); remove.type = 'button'; remove.setAttribute('aria-label','إزالة '+entry.file.name); remove.onclick = () => { if(state.sending||state.busy)return; URL.revokeObjectURL(entry.preview); state.files = state.files.filter(x => x !== entry); state.messageId = ''; draw(); }; box.append(img,remove); preview.append(box); } };
+  input.onchange = () => { if(state.sending||state.busy){input.value='';return;} for (const file of input.files) { if (state.files.length >= 3) { toast('يمكن إرفاق 3 صور في الرسالة.'); break; } if (!/^image\/(jpeg|png|webp|gif)$/.test(file.type) || file.size > 5*1024*1024) { toast('الصور: JPG أو PNG أو WebP أو GIF، حتى 5 ميغابايت للصورة.'); continue; } state.files.push({file,preview:URL.createObjectURL(file)}); } state.messageId = ''; input.value = ''; draw(); };
+  panel.append(choose,el('small',null,'حتى 3 صور، 5 ميغابايت للصورة'),preview); host.append(panel); draw(); return { redraw:draw };
+}
+function appendMessageImages(parent, images) {
+  for(const file of images || []) { if(file.purpose!=='chat'||!/^community\/chat\//.test(file.key||''))continue; const link=el('a','chat-image-link'),img=el('img','chat-image');link.href=fileImageUrl(file);link.target='_blank';link.rel='noopener';img.src=link.href;img.alt=file.name||'صورة مرفقة';img.loading='lazy';link.append(img);parent.append(link); }
+}
+window.navService = kind => go({v:'service',service:kind,path:[]});
+function renderServicePage() {
+  const pv=$('pageView'),kind=['forum','contact','gpa'].includes(route.service)?route.service:'forum';
+  if(serviceShell?.kind===kind && serviceShell.host.isConnected) { if(kind==='contact') {watchContacts();renderContactInbox();} return; }
+  pv.textContent='';vShell=null;const c=el('div','container service-page');pv.append(c);serviceShell={kind,host:c};
+  const back=el('button','crumb','← العودة للرئيسية');back.type='button';back.onclick=()=>go({v:'home',path:[]});c.append(back);
+  const titles={forum:['المنتدى العام','مساحة لطلاب المنصة لتبادل الأفكار والأسئلة والخبرات باحترام.'],contact:['تواصل معنا','نستقبل شكاواكم واقتراحاتكم واستفساراتكم، ومشاركاتكم من المواد التعليمية.'],gpa:['حساب المعدل التراكمي','احسب معدلك الفصلي والتراكمي بالنسبة المئوية، مع احتساب المواد المعادة.']};
+  c.append(el('h2','btitle',titles[kind][0]),el('p','service-intro',titles[kind][1]));
+  if(kind==='forum') {const panel=el('div','vpanel');c.append(panel);panelChat(panel,{id:FORUM_ID,name:'المنتدى العام'});}
+  if(kind==='contact') {renderContactForm(c);watchContacts();renderContactInbox();}
+  if(kind==='gpa')renderGpa(c);
+}
+const contactDraft={firstName:'',lastName:'',email:'',phone:'',subject:'',message:'',category:'suggestion',files:[],sending:false,id:''};
+function serviceField(parent,label,type,value,onChange) {
+  const wrap=el('label','service-field');wrap.append(el('span','lbl',label));const input=el(type==='textarea'?'textarea':'input','fld');if(type!=='textarea')input.type=type||'text';else input.rows=6;input.value=value||'';input.oninput=()=>onChange(input.value);wrap.append(input);parent.append(wrap);return input;
+}
+function renderContactForm(parent) {
+  const tips=el('div','service-grid');for(const [title,text]of [['لا تتردد في مراسلتنا','أرسل اقتراحًا أو بلّغ عن مشكلة أو خطأ في المحتوى؛ رسالتك خاصة بإدارة المنصة.'],['شارك موادك','أرفق أسئلة أو ملخصات أو مصادر مفيدة، واذكر الجامعة واسم المادة لتتم مراجعتها.']]){const box=el('article','service-box');box.append(el('h4','sh',title),el('p',null,text));tips.append(box);}parent.append(tips);
+  const form=el('form','service-box contact-form'),grid=el('div','service-grid');form.append(grid);
+  for(const [k,label,type]of [['firstName','الاسم الأول','text'],['lastName','اسم العائلة','text'],['email','البريد الإلكتروني','email'],['phone','رقم الهاتف (اختياري)','tel']]){const input=serviceField(grid,label,type,contactDraft[k],v=>{contactDraft[k]=v;contactDraft.id=''});input.required=k!=='phone';input.maxLength=k==='email'?200:k==='phone'?40:80;}
+  const cat=el('label','service-field');cat.append(el('span','lbl','نوع الرسالة'));const select=el('select','fld');for(const [value,label]of [['suggestion','اقتراح'],['complaint','شكوى'],['materials','مشاركة مواد'],['other','استفسار آخر']])select.append(new Option(label,value));select.value=contactDraft.category;select.onchange=()=>contactDraft.category=select.value;cat.append(select);form.append(cat);
+  serviceField(form,'الموضوع','text',contactDraft.subject,v=>{contactDraft.subject=v;contactDraft.id=''}).required=true;serviceField(form,'الرسالة','textarea',contactDraft.message,v=>{contactDraft.message=v;contactDraft.id=''}).required=true;
+  const chooser=el('label','abtn abtn-l','📎 إرفاق ملفات'),input=el('input');input.type='file';input.multiple=true;input.accept='.pdf,.doc,.docx,.ppt,.pptx,.zip,.txt,.jpg,.jpeg,.png,.webp,.gif';input.hidden=true;input.setAttribute('aria-label','إرفاق ملفات للتواصل');chooser.append(input);const list=el('div','contact-attachments');
+  const draw=()=>{list.textContent='';contactDraft.files.forEach((entry,index)=>{const row=el('div','attachment-row');row.append(el('span',null,entry.file.name+' • '+(entry.file.size/1024/1024).toFixed(2)+' MB'));const remove=el('button','ibtn','×');remove.type='button';remove.setAttribute('aria-label','إزالة المرفق');remove.onclick=()=>{if(contactDraft.sending)return;contactDraft.files.splice(index,1);draw()};row.append(remove);list.append(row)});};
+  input.onchange=()=>{if(contactDraft.sending)return;for(const file of input.files){if(contactDraft.files.length>=5){toast('الحد الأقصى 5 ملفات.');break;}if(file.size>25*1024*1024){toast('الحد الأقصى 25 ميغابايت لكل ملف.');continue;}contactDraft.files.push({file});}input.value='';draw()};draw();
+  const status=el('p','service-status'),send=el('button','abtn abtn-b',contactDraft.sending?'جاري الإرسال…':'إرسال الرسالة');send.type='submit';send.disabled=contactDraft.sending;status.setAttribute('role','status');
+  form.append(chooser,el('small','ask-hint','حتى 5 ملفات، 25 ميغابايت للملف. يتم تأكيد حسابك عند الإرسال. لا تشارك كلمات المرور أو المفاتيح السرية.'),list,status,send);
+  form.onsubmit=async event=>{event.preventDefault();if(contactDraft.sending)return;contactDraft.sending=true;form.querySelectorAll('input,select,textarea,button').forEach(control=>control.disabled=true);status.textContent='جاري إرسال رسالتك…';try{await communityUser();const attachments=[];for(const entry of contactDraft.files)attachments.push(await uploadServiceFile(entry,'contact'));contactDraft.id ||= crypto.randomUUID();const out=await rafiqCall('community-contact',{...Object.fromEntries(['firstName','lastName','email','phone','subject','message','category'].map(k=>[k,contactDraft[k]])),attachments,id:contactDraft.id});status.textContent='✓ وصلت رسالتك إلى إدارة المنصة. رقم المتابعة: '+out.id;contactDraft.message='';contactDraft.subject='';contactDraft.files=[];contactDraft.id='';form.querySelector('textarea').value='';draw();}catch(error){status.textContent=error.message||'تعذّر الإرسال؛ بقيت رسالتك محفوظة.';}finally{contactDraft.sending=false;form.querySelectorAll('input,select,textarea,button').forEach(control=>control.disabled=false);}};
+  parent.append(form);const inbox=el('div');inbox.id='contactInbox';parent.append(inbox);
+}
+function watchContacts() {
+  const uid=isAdmin()?authUser?.uid:'';if(contactOwner===uid)return;if(contactUnsub)contactUnsub();contactUnsub=null;contactOwner=uid;contactRows=[];contactLoadError='';if(!uid){renderContactInbox();return;}
+  contactUnsub=onSnapshot(query(collection(db,'contactMessages'),orderBy('createdAt','desc'),limit(200)),snap=>{contactRows=snap.docs.map(d=>({id:d.id,...d.data()}));renderContactInbox();updateContactCount();},error=>{console.error(error);contactLoadError='تعذّر تحميل رسائل التواصل. حدّث قواعد Firestore المرفقة ثم أعد المحاولة.';renderContactInbox()});
+}
+function updateContactCount(){const count=contactRows.filter(r=>r.status!=='closed').length;document.querySelectorAll('[data-contact-count]').forEach(n=>{n.textContent=count?'('+count+')':''});}
+function renderContactInbox(){const box=$('contactInbox');if(!box)return;box.textContent='';if(!isAdmin())return;box.append(el('h3','btitle','صندوق الإدارة الخاص ('+contactRows.length+')'));if(contactLoadError)box.append(msg(contactLoadError));if(!contactRows.length&&!contactLoadError)box.append(msg('لا توجد رسائل بعد.'));for(const row of contactRows){const card=el('details','service-box contact-ticket'),summary=el('summary');summary.textContent=({new:'جديد',reviewing:'قيد المراجعة',closed:'مغلق'}[row.status]||'جديد')+' • '+row.subject+' — '+row.firstName+' '+row.lastName;card.append(summary);for(const [title,value]of [['البريد',row.email],['الهاتف',row.phone],['التاريخ',new Date(row.createdAt).toLocaleString('ar-JO')],['الرسالة',row.message]]){const p=el('p');p.append(el('b',null,title+': '),document.createTextNode(value||'—'));card.append(p);}for(const file of row.attachments||[]){const b=el('button','abtn abtn-l','📎 '+file.name);b.type='button';b.onclick=async()=>{b.disabled=true;try{const res=await fetch(API_URL+'?action=community-contact-file',{method:'POST',headers:{Authorization:'Bearer '+await auth.currentUser.getIdToken(),'Content-Type':'application/json'},body:JSON.stringify({id:row.id,key:file.key})});if(!res.ok)throw new Error('تعذّر تنزيل المرفق.');const url=URL.createObjectURL(await res.blob()),a=el('a');a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);}catch(e){toast(e.message)}finally{b.disabled=false}};card.append(b);}const status=el('select','fld');for(const [v,t]of [['new','جديد'],['reviewing','قيد المراجعة'],['closed','مغلق']])status.append(new Option(t,v));status.value=row.status;status.setAttribute('aria-label','حالة الرسالة');status.onchange=async()=>{status.disabled=true;try{await rafiqCall('community-contact-status',{id:row.id,status:status.value})}catch(e){toast(e.message);status.value=row.status}finally{status.disabled=false}};card.append(status);box.append(card);}}
+function gpaRating(mark){return mark>=84?'ممتاز':mark>=76?'جيد جدًا':mark>=68?'جيد':mark>=60?'مقبول':'دون المقبول';}
+function calculateGpa(previousHours,previousAverage,rows){
+  const ph=Number(previousHours||0),pa=Number(previousAverage||0);if(!Number.isFinite(ph)||ph<0||!Number.isFinite(pa)||pa<0||pa>100)throw new Error('أدخل ساعات سابقة ومعدلًا بين 0 و100.');if(ph>0&&String(previousAverage).trim()==='')throw new Error('أدخل المعدل السابق مع ساعاته.');if(ph===0&&pa>0)throw new Error('أدخل الساعات المقطوعة للمعدل السابق.');
+  let points=0,hours=0,oldPoints=0,oldHours=0;
+  for(const row of rows){if(String(row.grade??'').trim()===''){if(row.oldGrade!==''&&row.oldGrade!=null)throw new Error('أدخل العلامة الجديدة للمادة المعادة.');continue;}const grade=Number(row.grade),h=Number(row.hours);if(!Number.isFinite(grade)||grade<0||grade>100||!Number.isFinite(h)||h<=0||h>12)throw new Error('العلامة من 0 إلى 100 وساعات المادة من 1 إلى 12.');points+=grade*h;hours+=h;if(String(row.oldGrade??'').trim()!==''){const old=Number(row.oldGrade);if(!Number.isFinite(old)||old<0||old>100)throw new Error('العلامة السابقة من 0 إلى 100.');oldPoints+=old*h;oldHours+=h;}}
+  if(oldHours>ph)throw new Error('ساعات المواد المعادة تتجاوز الساعات السابقة.');if(oldPoints>ph*pa+0.01)throw new Error('علامات المواد السابقة لا تتفق مع المعدل والساعات المدخلة.');const totalHours=ph+hours-oldHours,cp=ph*pa+points-oldPoints;if(cp<0||totalHours&&cp/totalHours>100.0001)throw new Error('راجع المعدل السابق وعلامات المواد المعادة.');return{semester:hours?points/hours:0,cumulative:totalHours?cp/totalHours:0,semesterHours:hours,totalHours};
+}
+let gpaDraft;try{gpaDraft=JSON.parse(localStorage.getItem('uni_gpa')||'null')}catch(_){}if(!gpaDraft||!Array.isArray(gpaDraft.rows))gpaDraft={previousHours:'',previousAverage:'',rows:Array.from({length:3},()=>({name:'',grade:'',hours:'3',oldGrade:''}))};
+function renderGpa(parent){
+  const note=el('div','service-note','للمادة المعادة: أدخل علامتها السابقة ليتم استبدالها في التراكمي. نفترض أن ساعاتها لم تتغير وأنها داخلة في ساعاتك ومعدلك السابقين. الحساب بالنسبة المئوية، ويُراجع وفق نظام جامعتك.');parent.append(note);
+  const previous=el('div','service-box service-grid'),courses=el('div','service-box'),rowsBox=el('div','gpa-rows'),error=el('p','merr'),results=el('div','gpa-results');error.setAttribute('role','status');
+  const save=()=>{try{localStorage.setItem('uni_gpa',JSON.stringify(gpaDraft))}catch(_){}},renderResult=()=>{save();results.textContent='';error.textContent='';try{const result=calculateGpa(gpaDraft.previousHours,gpaDraft.previousAverage,gpaDraft.rows);for(const [title,value,hours]of [['معدلك التراكمي',result.cumulative,result.totalHours],['معدلك الفصلي',result.semester,result.semesterHours]]){const card=el('div','service-box gpa-result');card.append(el('span',null,title),el('strong',null,value.toFixed(2)),el('span',null,hours+' ساعة • '+(hours?gpaRating(value):'بدون تقييم')));results.append(card);}}catch(e){error.textContent=e.message;}};
+  for(const [key,label]of [['previousHours','الساعات المقطوعة سابقًا'],['previousAverage','المعدل التراكمي السابق (من 100)']]){const input=serviceField(previous,label,'number',gpaDraft[key],value=>{gpaDraft[key]=value;renderResult()});input.min=0;input.step=key==='previousHours'?'1':'0.01';if(key==='previousAverage')input.max=100;}
+  courses.append(el('h4','sh','علامات مواد الفصل الحالي'),rowsBox);const drawRows=()=>{rowsBox.textContent='';gpaDraft.rows.forEach((row,index)=>{const box=el('div','gpa-row');for(const [key,label,type]of [['name','اسم المادة (اختياري)','text'],['grade','العلامة الجديدة','number'],['hours','ساعات المادة','number'],['oldGrade','العلامة السابقة عند الإعادة','number']]){const input=serviceField(box,label,type,row[key],v=>{row[key]=v;renderResult()});if(type==='number'){input.min=key==='hours'?1:0;input.max=key==='hours'?12:100;input.step=key==='hours'?1:'0.01';}}const remove=el('button','abtn abtn-l','حذف المادة');remove.type='button';remove.onclick=()=>{gpaDraft.rows.splice(index,1);drawRows();renderResult()};box.append(remove);rowsBox.append(box);});};drawRows();
+  const add=el('button','abtn abtn-l','+ إضافة مادة'),clear=el('button','abtn abtn-l','مسح الكل');add.type=clear.type='button';add.onclick=()=>{gpaDraft.rows.push({name:'',grade:'',hours:'3',oldGrade:''});drawRows();save()};clear.onclick=()=>{gpaDraft={previousHours:'',previousAverage:'',rows:[{name:'',grade:'',hours:'3',oldGrade:''}]};save();serviceShell=null;renderServicePage()};courses.append(add,clear);
+  const calculate=el('button','abtn abtn-b','حساب المعدل');calculate.type='button';calculate.onclick=renderResult;parent.append(previous,courses,error,results,calculate);const scale=el('div','service-box');scale.append(el('h4','sh','سلم التقديرات المعروض'));for(const text of ['84–100 : ممتاز','76–أقل من 84 : جيد جدًا','68–أقل من 76 : جيد','60–أقل من 68 : مقبول'])scale.append(el('p',null,text));parent.append(scale);renderResult();
+}
+
+const JOIN_PLEDGE = 'أتعهد بالأمانة والدقة وتحمل المسؤولية عند إدخال البيانات وإنشاء الجامعات والكليات والتخصصات والمواد وإضافة المحتوى، والتحقق من صحة المعلومات وعدم تكرار الأقسام أو نشر محتوى مضلل أو مخالف لحقوق الآخرين. وألتزم باحترام المستخدمين وتصحيح الأخطاء والتعاون مع إدارة المنصة، وأقر بأن البيانات التي قدمتها صحيحة.';
+function applicationProfile(a){const result={};for(const key of [...MF.map(f=>f[0]).filter(k=>!['pass','pass2'].includes(k)),'kind','teamName','teamUniversity','newTeam','pledgeAccepted','pledgeText','pledgeVersion','pledgeAcceptedAt','createdAt'])if(a[key]!==undefined)result[key]=a[key];return result;}
+function acceptedMemberDetails(user){const details=el('details','profile-details'),summary=el('summary',null,'عرض كافة البيانات');details.append(summary);let loaded=false;details.ontoggle=async()=>{if(!details.open||loaded)return;loaded=true;const box=el('div');box.append(msg('جاري تحميل بيانات الانضمام…'));details.append(box);try{const saved=await getDoc(doc(db,'applications',user.id)),data={...(user.profile||{}),...(saved.exists()?saved.data():{}),name:user.name,email:user.email};box.textContent='';for(const [key,label]of MF.filter(f=>!['pass','pass2'].includes(f[0]))){const p=el('p');p.append(el('b',null,label.split('(')[0]+': '),document.createTextNode(String(data[key]||'لم يُسجّل في الطلب القديم')));box.append(p);}for(const [label,value]of [['طريقة الانضمام',data.kind==='team'?'فريق':'فردي'],['الفريق',user.teamName||data.teamName||'—'],['الجامعة المقترحة للفريق',data.teamUniversity||'—'],['التعهد',data.pledgeAccepted?data.pledgeText||JOIN_PLEDGE:'الطلب سابق لإضافة التعهد'],['تاريخ الموافقة',user.approvedAt?new Date(user.approvedAt).toLocaleString('ar-JO'):'—']]){const p=el('p');p.append(el('b',null,label+': '),document.createTextNode(String(value)));box.append(p);}}catch(e){box.textContent='تعذّر تحميل البيانات؛ أغلق التفاصيل وأعد فتحها.';loaded=false;details.removeChild(box);toast(e.message)}};return details;}
+let profileUnsub=null,profileUid='',profileSignature='';
+function watchSelfProfile(user){const uid=user?.uid||'';if(uid===profileUid)return;if(profileUnsub)profileUnsub();profileUnsub=null;profileUid=uid;profileSignature=JSON.stringify(me||{});if(!uid)return;profileUnsub=onSnapshot(doc(db,'users',uid),snapshot=>{if(profileUid!==uid)return;const data=snapshot.exists()?snapshot.data():null;if(!data||!['admin','contrib'].includes(data.role)){profileUid='';if(profileUnsub)profileUnsub();profileUnsub=null;authUser=null;me=null;role=null;watchApps(false);closeAdmin();updateAuthUI();void signOut(auth);return;}const signature=JSON.stringify(data);if(signature===profileSignature)return;profileSignature=signature;me=data;role=data.role;watchApps(isAdmin());updateAuthUI();render();renderAdmin();},error=>console.error('profile-listener',error));}
+let realtimeOwner='',realtimeStops=[],realtimeFailed=false;
+function watchRafiqRealtime(){const key=isStaff()?authUser.uid+':'+role:'';if(key===realtimeOwner)return;realtimeStops.forEach(fn=>fn());realtimeStops=[];realtimeOwner=key;realtimeFailed=false;if(!key)return;dashboardData={jobs:[],alerts:[],merges:[]};dashboardUser=authUser.uid;
+ const sources=[['jobs',isAdmin()?query(collection(db,'rafiqJobs'),where('status','in',['queued','running','error']),limit(150)):query(collection(db,'rafiqJobs'),where('ownerUid','==',authUser.uid),limit(150))]];
+ if(isAdmin())sources.push(['alerts',query(collection(db,'rafiqAlerts'),where('status','==','open'),limit(200))],['merges',query(collection(db,'rafiqMerges'),orderBy('createdAt','desc'),limit(100))]);
+ for(const [name,q]of sources)realtimeStops.push(onSnapshot(q,snapshot=>{if(realtimeOwner!==key)return;dashboardData[name]=snapshot.docs.map(d=>({id:d.id,...d.data()}));rafiqServerJobs=dashboardData.jobs;updateBar();updateDots();if($('admin').classList.contains('open')&&aView==='review')renderReview();},error=>{console.warn('dashboard-live',error);realtimeFailed=true;void refreshRafiqDashboard(true)}));
+}
+/* الإصدار الجديد يُطبّق تلقائيًا عند العودة للرئيسية دون قطع رفع أو مسح نموذج. */
+let newerRelease=false,checkingRelease=false;
+async function checkSiteRelease(){if(checkingRelease||document.visibilityState!=='visible')return;checkingRelease=true;try{const response=await fetch(location.pathname+'?platform-version='+Date.now(),{cache:'no-store'});if(!response.ok)return;const text=await response.text(),match=text.match(/<meta name="platform-release" content="([^"]+)"/);if(match&&match[1]!==RELEASE_ID)newerRelease=true;if(newerRelease&&route.v==='home'&&!tasks.size&&!document.querySelector('.mov.open,.aov.open'))location.reload();}catch(_){}finally{checkingRelease=false}}
+setInterval(()=>void checkSiteRelease(),60000);window.addEventListener('focus',()=>void checkSiteRelease());
 
 updateAuthUI();
 

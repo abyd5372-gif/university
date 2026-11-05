@@ -467,6 +467,7 @@ a>.dot{top:-12px;left:-16px;min-width:20px;height:20px;font-size:.75rem;padding:
 
 .rafiq-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.rafiq-alert,.rafiq-job{border:1px solid #dbe5ed;border-radius:12px;padding:18px;margin:12px 0;background:#fff;overflow-wrap:anywhere}.rafiq-alert{border-right:4px solid #e8b440}.rafiq-alert h4{color:#174f77;font-size:1.25rem;margin-bottom:8px}.rafiq-alert blockquote{border-right:3px solid #94a3b8;padding:8px 12px;background:#f8fafc;margin:10px 0;white-space:pre-wrap}.rafiq-sources{margin-top:16px;padding-top:10px;border-top:1px solid #dae4ef}.rafiq-source{margin:10px 0;display:flex;flex-direction:column;gap:6px}.rafiq-source small{font-size:.95rem;line-height:1.8;color:#536678}.task-info{display:block;color:#526476;font-size:.85rem;line-height:1.7}.upload-entries{display:grid;gap:10px;margin:12px 0;max-height:43vh;overflow:auto}.upload-entry{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border:1px solid #dce5ec;padding:10px;border-radius:10px}.upload-entry small{width:calc(100% - 28px);overflow-wrap:anywhere;color:#64748b}.upload-entry .fld{flex:1;min-width:160px;margin:0}.upload-entry .abtn{padding:7px 10px}#upModal .mbox{width:min(680px,100%);max-height:92vh;overflow:auto}.taskbar{max-height:42vh}.rafiq-job small{color:#64748b}.ask-history .rafiq-source .abtn{text-align:right;white-space:normal;font-size:1rem}
 @media(max-width:600px){.rafiq-alert,.rafiq-job{padding:13px}.rafiq-actions .abtn{font-size:1rem}.upload-entry .fld{min-width:120px}.taskbar{max-height:35vh;right:8px;bottom:8px}}
+.upload-video-card{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;padding:16px;background:#f8fbff;border:2px solid #cfdeeb;border-radius:14px}.upload-card-head{border-bottom:1px solid #d8e3ee;padding-bottom:8px}.upload-card-head h4{margin:0;color:#1c557f;font-size:1.15rem}.upload-card-controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}.upload-entry .chosen-file{width:100%;line-height:1.7;overflow-wrap:anywhere}.upload-video-card .lbl{margin:5px 0 0}.upload-video-card .fld{width:100%;min-width:0;box-sizing:border-box}.upload-video-file{font-size:.95rem}#uploadAddVideo{width:100%;min-height:44px;margin:8px 0}.study-transcript{margin:20px 0;border:1px solid #d7e2ec;padding:16px;border-radius:12px}.study-transcript>summary{cursor:pointer;font-weight:700;color:#1b547c}.study-main-heading{border-right:4px solid #22618d;padding-right:10px;margin-top:22px}.study-sub-heading{font-size:1.1rem;color:#326784;margin:16px 0 8px}.sumbox .sp2{white-space:pre-wrap}
 
 </style>
 <script>
@@ -996,7 +997,7 @@ function updateVideoUI(force) {
   const tab = route.tab === 'chat' ? 'ask' : (route.tab || 'summary');
   vShell.tabs.querySelectorAll('.ctab').forEach(b => b.classList.toggle('active', b.dataset.k === tab));
   const files = pubW.data.filter(x => x.type === 'pdf' && x.lectureId === lec.id).map(f => f.id + f.title + f.url);
-  const sig = JSON.stringify([tab, role, getMail(), files, lec.aiStatus, lec.aiProgress, lec.rafiqStatus, lec.aiError, lec.aiData || null, tasks.size]);
+  const sig = JSON.stringify([tab, role, getMail(), files, lec.aiStatus, lec.aiQuizStatus, lec.aiProgress, lec.rafiqStatus, lec.aiError, lec.aiData || null, tasks.size]);
   if (!force && sig === vShell.sig) return;
   vShell.sig = sig;
   const pn = vShell.panel; pn.textContent = '';
@@ -1034,7 +1035,7 @@ function renderSummary(box, text) {
     if (!t) { ul = null; if (!blank && box.lastChild) box.append(el('div', 'sp')); blank = true; return; }
     blank = false;
     if ((m = t.match(/^#{1,6}\s*(.+)$/)) || (m = t.match(/^\*\*([^*]+)\*\*\s*:?$/)) || (/^[^.،؛!؟?]{2,70}:$/.test(t) && (m = [t, t.slice(0, -1)]))) {
-      ul = null; const h = el('h4', 'sh'); inline(h, m[1].trim()); box.append(h); return;
+      ul = null; const subheading = /^#{3,6}\s/.test(t); const h = el(subheading ? 'h5' : 'h4', subheading ? 'sh2 study-sub-heading' : 'sh study-main-heading'); inline(h, m[1].trim()); box.append(h); return;
     }
     if ((m = t.match(/^(\d{1,2})[.)]\s+(.+)$/))) {
       ul = null; const rest = m[2], ci = rest.indexOf(':');
@@ -1051,12 +1052,26 @@ function renderSummary(box, text) {
   });
 }
 function panelSummary(pn, lec) {
-  const st = aiState(lec);
-  if (lec.aiData) { const b = el('div', 'sumbox'); renderSummary(b, lec.aiData.summary); pn.append(b); if (lec.aiData.detailUrl) { b.textContent = 'جاري تحميل المذكرة الكاملة…'; fetch(lec.aiData.detailUrl).then(r => { if (!r.ok) throw new Error('تعذّر تحميل المذكرة'); return r.json(); }).then(data => { b.textContent = ''; renderSummary(b, data.summary); }).catch(e => { b.textContent = e.message; }); } }
-  else if (st === 'processing') { const m = msg('جاري تجهيز الملخص والامتحان القصير… سيظهر هنا تلقائياً عند الانتهاء.'); pn.append(m); }
-  else pn.append(msg(st === 'error' ? 'تعذّر تجهيز الملخص لهذه المحاضرة.' + (isAdmin() && lec.aiError ? ' (' + lec.aiError + ')' : '') : 'لم يُجهَّز الملخص لهذه المحاضرة بعد.'));
-
+  const state = aiState(lec), ai = lec.aiData;
+  if (ai?.summary) {
+    const box = el('div', 'sumbox'); renderSummary(box, ai.summary); pn.append(box);
+    if (ai.detailUrl) { box.textContent = 'جاري تحميل المذكرة الكاملة…'; fetch(ai.detailUrl).then(r => { if (!r.ok) throw new Error('تعذّر تحميل المذكرة'); return r.json(); }).then(data => { box.textContent = ''; renderSummary(box, data.summary); }).catch(error => { box.textContent = error.message; }); }
+    if (ai.studyUrl) {
+      const details = el('details', 'study-transcript'), title = el('summary', null, '📜 عرض التفريغ التفصيلي للمحاضرة بالتوقيتات'), transcript = el('div', 'sumbox');
+      let loaded = false; details.append(title, transcript); details.ontoggle = async () => {
+        if (!details.open || loaded) return; loaded = true; transcript.textContent = 'جاري تحميل التفريغ…';
+        try {
+          const response = await fetch(ai.studyUrl); if (!response.ok) throw new Error('تعذّر تحميل التفريغ'); const data = await response.json(); transcript.textContent = '';
+          for (const segment of data.transcript || []) { transcript.append(el('h5', 'sh2', timeLabel(segment.start) + '–' + timeLabel(segment.end)), el('p', 'sp2', segment.text)); }
+          for (const warning of data.warnings || []) transcript.append(el('p', 'merr', warning));
+        } catch (error) { loaded = false; transcript.textContent = error.message; }
+      }; pn.append(details);
+    }
+    if (['processing', 'retrying'].includes(lec.aiQuizStatus)) pn.append(msg(lec.aiQuizStatus === 'retrying' ? 'المذكرة محفوظة. الامتحان ينتظر خدمة الذكاء الاصطناعي وستُستأنف المحاولة تلقائيًا.' : 'المذكرة جاهزة، ويجري إعداد الامتحان بشكل مستقل.'));
+  } else if (state === 'processing') pn.append(msg(lec.aiProgress || 'جاري إعداد المذكرة التفصيلية. سيظهر المحتوى تلقائيًا عند حفظه.'));
+  else pn.append(msg(lec.aiError || (state === 'error' ? 'تعذّرت خطوة؛ ستُعاد المحاولة تلقائيًا مع حفظ العمل المكتمل.' : 'لم تُجهّز المذكرة بعد.')));
 }
+
 
 /* ---------- الامتحان القصير: محاولات غير محدودة + سجل محلي ---------- */
 const qs = {};
@@ -1079,7 +1094,7 @@ function drawQuiz(box, quiz, ans, locked) {
 }
 function panelQuiz(pn, lec, options = {}) {
   const quiz = normalizeQuiz(lec.aiData && lec.aiData.quiz);
-  if (!quiz.length) { pn.append(msg(aiState(lec) === 'processing' ? 'جاري تجهيز الامتحان القصير…' : 'لا يوجد امتحان قصير لهذه المحاضرة بعد.')); return; }
+  if (!quiz.length) { pn.append(msg(lec.aiQuizStatus === 'retrying' ? (lec.aiError || 'الامتحان ينتظر خدمة الذكاء الاصطناعي؛ ستُستأنف المحاولة تلقائيًا.') : aiState(lec) === 'processing' || lec.aiQuizStatus === 'processing' ? (lec.aiProgress || 'جاري إعداد الامتحان بشكل مستقل عن المذكرة…') : 'لا يوجد امتحان قصير لهذه المحاضرة بعد.')); return; }
   const S = qs[lec.id] || (qs[lec.id] = { ans: [], sub: false, rev: null }), atts = getAtt(lec.id);
   const redraw = options.redraw || (() => updateVideoUI(true));
   const signature = JSON.stringify(quiz);
@@ -1350,7 +1365,7 @@ async function saveName() {
   if (!nm || busy) return;
   const name = $('nInput').value.trim();
   if (!name) { $('nErr').textContent = 'الرجاء كتابة الاسم'; return; }
-  busy = true; $('nSave').disabled = true;
+  busy = true; $('nSave').disabled = true; $('nSave').textContent = 'جاري الحفظ…';
   try {
     if (nm.type === 'lec') await rafiqCall('lecture-rename', { id: nm.node.id, title: name });
     else {
@@ -1358,8 +1373,8 @@ async function saveName() {
       if (result.reused) toast(result.message); if (nm.pid) pathOf(nm.pid).forEach(p => aOpen.add(p.id));
     }
     closeName();
-  } catch (e) { console.error(e); $('nErr').textContent = 'تعذّر الحفظ، تحقق من الاتصال أو من صلاحيات قاعدة البيانات'; }
-  busy = false; $('nSave').disabled = false;
+  } catch (e) { console.error(e); $('nErr').textContent = e.message || 'تعذّر الحفظ، تحقق من الاتصال أو من صلاحيات قاعدة البيانات'; }
+  busy = false; $('nSave').disabled = false; $('nSave').textContent = 'حفظ';
 }
 $('nSave').onclick = saveName;
 $('nCancel').onclick = closeName;
@@ -1526,7 +1541,7 @@ async function pump() {
 }
 async function startAnalysis(lecture) { try { await rafiqCall('job-start', { lectureId: lecture.id }); toast('أُرسلت المهمة إلى رفيق'); } catch (e) { toast(e.message); } }
 function updateBar() {
-  const bar = $('taskBar'); bar.textContent = ''; const list = [...tasks.values()].filter(t => !t.ownerUid || t.ownerUid === authUser?.uid).sort((a, b) => a.createdAt - b.createdAt), jobs = dashboardUser === authUser?.uid ? rafiqServerJobs.filter(j => !['done', 'cancelled'].includes(j.status)) : [];
+  const bar = $('taskBar'); bar.textContent = ''; const list = [...tasks.values()].filter(t => !t.ownerUid || t.ownerUid === authUser?.uid).sort((a, b) => a.createdAt - b.createdAt), jobs = dashboardUser === authUser?.uid ? rafiqServerJobs.filter(j => !['done', 'cancelled', 'superseded'].includes(j.status)) : [];
   if (!isStaff() || !list.length && !jobs.length) { bar.style.display = 'none'; return; }
   bar.style.display = 'block'; bar.append(el('h5', null, 'الرفع والمهام (' + (list.length + jobs.length) + ')'));
   list.forEach(task => {
@@ -1554,39 +1569,66 @@ function openUpload(type, courseId, lectureId, list, opts) {
   $('upTitle').textContent = type === 'video' ? 'رفع محاضرات بالترتيب' : 'رفع ملفات المادة'; $('upName').value = ''; $('upName').style.display = type === 'video' ? 'none' : '';
   $('upName').placeholder = 'عنوان اختياري لملف واحد'; $('upFile').value = ''; $('upFile').multiple = true; $('upFile').accept = type === 'video' ? 'video/*' : 'application/pdf';
   $('upLinkWrap').style.display = 'none'; $('upErr').textContent = ''; $('upSave').disabled = false;
-  $('upNote').textContent = type === 'video' ? 'اختر عدة فيديوهات، وحدد عنوان كل محاضرة وترتيبها. يُرفع فيديوهان معًا والبقية في الانتظار. الحد لكل فيديو: 2 غيغابايت. يستأنف الرفع تلقائيًا عند عودتك، وتستمر المعالجة على الخادم بعد اكتماله.' : 'لكل كتاب PDF تلخيص مستقل باسمه دون امتحان. الحد لكل كتاب: 50 ميغابايت و1000 صفحة.';
+  $('upNote').textContent = type === 'video' ? 'لكل فيديو صندوق مستقل لعنوان المحاضرة وملفها. اضغط «إضافة فيديو» لإضافة الصندوق التالي. يُرفع فيديوهان معًا والبقية في الانتظار. الحد لكل فيديو: 2 غيغابايت. يستأنف الرفع تلقائيًا عند عودتك، وتستمر المعالجة على الخادم بعد اكتماله.' : 'لكل كتاب PDF تلخيص مستقل باسمه دون امتحان. الحد لكل كتاب: 50 ميغابايت و1000 صفحة.';
   let holder = $('uploadEntries'); if (!holder) { holder = el('div', 'upload-entries'); holder.id = 'uploadEntries'; $('upFile').after(holder); } holder.textContent = '';
+  let add = $('uploadAddVideo'); if (!add) { add = el('button', 'abtn abtn-g', '+ إضافة فيديو'); add.type = 'button'; add.id = 'uploadAddVideo'; holder.after(add); }
+  add.style.display = type === 'video' ? '' : 'none';
+  $('upFile').style.display = type === 'video' ? 'none' : '';
+  $('upModal').querySelector('label[for="upFile"]').style.display = type === 'video' ? 'none' : '';
+  if ($('upName').previousElementSibling?.tagName === 'LABEL') $('upName').previousElementSibling.style.display = type === 'video' ? 'none' : '';
+  if (type === 'video') { up.entries = [{ file: null, title: '' }]; renderUploadEntries(); }
+  add.onclick = () => { if (!up || up.entries.length >= 50) return; up.entries.push({ file: null, title: '' }); renderUploadEntries(); holder.lastElementChild?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); };
   $('upModal').classList.add('open'); syncScroll();
 }
+const videoOrderName = i => ['الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر'][i] || 'رقم ' + (i + 1);
 function renderUploadEntries() {
   const holder = $('uploadEntries'); holder.textContent = ''; if (!up) return;
   up.entries.forEach((entry, index) => {
-    const row = el('div', 'upload-entry'); row.append(el('b', null, String(index + 1)), el('small', null, entry.file.name));
-    const title = el('input', 'fld'); title.value = entry.title; title.maxLength = 160; title.placeholder = 'عنوان ' + (up.type === 'video' ? 'المحاضرة' : 'الملف'); title.setAttribute('aria-label', 'عنوان الملف ' + (index + 1)); title.oninput = () => { entry.title = title.value; }; row.append(title);
-    const move = (label, delta) => { const button = el('button', 'abtn abtn-l', label); button.type = 'button'; button.disabled = index + delta < 0 || index + delta >= up.entries.length; button.onclick = () => { const target = index + delta; [up.entries[index], up.entries[target]] = [up.entries[target], up.entries[index]]; renderUploadEntries(); }; row.append(button); };
-    move('↑', -1); move('↓', 1); holder.append(row);
+    const video = up.type === 'video', row = el('div', video ? 'upload-entry upload-video-card' : 'upload-entry');
+    entry.entryId ||= 'entry-' + crypto.randomUUID();
+    const header = el('div', 'upload-card-head'); header.append(el('h4', null, video ? '🎬 الفيديو ' + videoOrderName(index) : '📄 الملف ' + (index + 1))); row.append(header);
+    const title = el('input', 'fld'); title.id = entry.entryId + '-title'; title.value = entry.title; title.maxLength = 160; title.placeholder = 'اكتب عنوان المحاضرة'; title.classList.add('upload-title'); title.setAttribute('aria-label', 'عنوان الملف ' + (index + 1)); title.oninput = () => { entry.title = title.value; };
+    const label = el('label', 'lbl', video ? 'عنوان المحاضرة' : 'عنوان الملف'); label.htmlFor = title.id; row.append(label, title);
+    const chosen = el('small', 'chosen-file', entry.file ? 'الملف المختار: ' + entry.file.name : 'لم يُختر فيديو بعد');
+    if (video) {
+      const picker = el('input', 'upload-video-file'); picker.type = 'file'; picker.accept = 'video/*'; picker.id = entry.entryId + '-file'; picker.style.display = 'none'; picker.setAttribute('aria-label', 'ملف الفيديو ' + (index + 1));
+      const fileLabel = el('label', 'lbl', 'ملف المحاضرة'); fileLabel.htmlFor = picker.id;
+      const choose = el('button', 'abtn abtn-b', entry.file ? 'تغيير ملف الفيديو' : 'اختيار ملف الفيديو'); choose.type = 'button'; choose.onclick = () => picker.click();
+      picker.onchange = () => { const file = picker.files[0]; if (!file) return; entry.file = file; chosen.textContent = 'الملف المختار: ' + file.name; choose.textContent = 'تغيير ملف الفيديو'; if (!entry.title.trim()) { entry.title = file.name.replace(/\.[^.]+$/, ''); title.value = entry.title; } void videoDuration(file); };
+      row.append(fileLabel, picker, choose);
+    }
+    row.append(chosen);
+    const controls = el('div', 'upload-card-controls');
+    for (const [text, delta] of [['↑ تقديم', -1], ['↓ تأخير', 1]]) { const button = el('button', 'abtn abtn-l', text); button.type = 'button'; button.disabled = index + delta < 0 || index + delta >= up.entries.length; button.onclick = () => { const target = index + delta; [up.entries[index], up.entries[target]] = [up.entries[target], up.entries[index]]; renderUploadEntries(); }; controls.append(button); }
+    const remove = el('button', 'abtn abtn-l', 'حذف الصندوق'); remove.type = 'button'; remove.onclick = () => { up.entries.splice(index, 1); renderUploadEntries(); }; controls.append(remove); row.append(controls); holder.append(row);
   });
 }
 function closeUpload() { $('upModal').classList.remove('open'); up = null; syncScroll(); }
 $('upFile').onchange = () => { if (!up) return; up.entries = [...$('upFile').files].map(file => ({ file, title: file.name.replace(/\.[^.]+$/, '') })); renderUploadEntries(); };
-async function videoDuration(file) {
+const durationCache = new WeakMap();
+function videoDuration(file) {
+  if (!durationCache.has(file)) durationCache.set(file, readVideoDuration(file)); return durationCache.get(file);
+}
+async function readVideoDuration(file) {
   return new Promise(resolve => { const video = document.createElement('video'), url = URL.createObjectURL(file); let done = false;
     const finish = value => { if (done) return; done = true; clearTimeout(timer); video.removeAttribute('src'); video.load(); URL.revokeObjectURL(url); resolve(Number.isFinite(value) ? value : 0); };
     const timer = setTimeout(() => finish(0), 8000); video.preload = 'metadata'; video.onloadedmetadata = () => finish(video.duration); video.onerror = () => finish(0); video.src = url;
   });
 }
 $('upSave').onclick = async () => {
-  if (!up || $('upSave').disabled) return; const config = { ...up }, entries = config.entries;
-  if (!entries.length || entries.length > 50 || entries.some(entry => !entry.title.trim())) { $('upErr').textContent = 'اختر من 1 إلى 50 ملفًا، واكتب عنوانًا لكل ملف.'; return; }
+  if (!up || $('upSave').disabled) return; const uploadForm = up, config = { ...up }, entries = config.entries.map(entry => ({ ...entry }));
+  if (!entries.length || entries.length > 50 || entries.some(entry => !entry.file || !entry.title.trim())) { $('upErr').textContent = 'اختر من 1 إلى 50 ملفًا، واكتب عنوانًا لكل ملف.'; return; }
   if (config.type === 'pdf' && entries.some(entry => !/\.pdf$/i.test(entry.file.name) || entry.file.size > 50 * 1024 * 1024)) { $('upErr').textContent = 'اختر ملفات PDF لا تتجاوز 50 ميغابايت لكل ملف.'; return; }
   if (entries.some(entry => !entry.file.size || entry.file.size > 2 * 1024 ** 3)) { $('upErr').textContent = 'حجم الملف غير صالح أو يتجاوز 2 غيغابايت.'; return; }
   $('upSave').disabled = true;
   try {
     const setup = await rafiqCall('rafiq-config'); if (!setup.configured) throw new Error('أكمل إعداد رفيق والمهام الخلفية أولًا وفق دليل الإعداد.');
+    const durations = await Promise.all(entries.map(entry => config.type === 'video' ? videoDuration(entry.file) : Promise.resolve(0)));
+    if (up !== uploadForm) return;
     const batchId = crypto.randomUUID(), started = Date.now();
     for (const [index, entry] of entries.entries()) {
       const file = entry.file, id = doc(collection(db, 'lectures')).id;
-      const task = { id, protocol: 2, batchId, ownerUid: auth.currentUser.uid, kind: config.type, courseId: config.courseId, lectureRef: config.lecId, fkind: config.fkind, book: config.fkind === 'book', matType: config.matType, title: entries.length === 1 && config.type === 'pdf' && $('upName').value.trim() ? $('upName').value.trim() : entry.title.trim(), fileName: file.name, fileType: file.type, size: file.size, lastModified: file.lastModified, duration: config.type === 'video' ? await videoDuration(file) : 0, stage: 'reserve', createdAt: started + index, pct: 0, parts: [], err: '', paused: false, nextRetry: 0 };
+      const task = { id, protocol: 2, batchId, ownerUid: auth.currentUser.uid, kind: config.type, courseId: config.courseId, lectureRef: config.lecId, fkind: config.fkind, book: config.fkind === 'book', matType: config.matType, title: entries.length === 1 && config.type === 'pdf' && $('upName').value.trim() ? $('upName').value.trim() : entry.title.trim(), fileName: file.name, fileType: file.type, size: file.size, lastModified: file.lastModified, duration: durations[index], stage: 'reserve', createdAt: started + index, pct: 0, parts: [], err: '', paused: false, nextRetry: 0 };
       memBlobs.set(id, file); try { await idbDo('blobs', 'readwrite', store => store.put({ id, blob: file })); } catch (_) { task.storageWarning = true; }
       tasks.set(id, task); await persist(task);
     }

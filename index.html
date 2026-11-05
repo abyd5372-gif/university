@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="platform-release" content="university-services-20261105-2">
+<meta name="platform-release" content="university-services-20261105-3">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>المنصة الجامعية الشاملة</title>
 <meta name="description" content="المنصة الجامعية الشاملة: تصفح المواد والجامعات وانضم إلينا.">
@@ -2186,8 +2186,6 @@ async function refreshRafiqDashboard(force = false) {
 function renderReview() {
   const body = $('aReviewBox'); body.textContent = ''; body.className = 'aview jform';
 
-  const actions = el('div', 'rafiq-actions'), refresh = el('button', 'abtn abtn-b', 'تحديث'), scan = el('button', 'abtn abtn-g', 'فحص أسماء الأقسام والدمج'); refresh.type = scan.type = 'button';
-  refresh.onclick = () => refreshRafiqDashboard(true); scan.onclick = async () => { scan.disabled = true; try { await rafiqCall('rafiq-structure-scan'); toast('بدأ الفحص على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { scan.disabled = false; } }; actions.append(refresh, scan); body.append(actions);
   if (dashboardError) body.append(el('p', 'merr', dashboardError));
   if (!dashboardData || dashboardUser !== authUser?.uid) { body.append(msg('جاري تحميل مهام رفيق…')); void refreshRafiqDashboard(); return; }
   const alerts = (dashboardData.alerts || []).filter(a => a.status === 'open'); body.append(el('h4', 'sh', 'التنبيهات (' + alerts.length + ')'));
@@ -2403,7 +2401,7 @@ async function doAnalyzeBook(task) { return rafiqCall('job-start', { lectureId: 
 async function startBookAnalysis(book) { return rafiqCall('job-start', { lectureId: book.id }); }
 
 /* خدمات الطلبة؛ جميع القيم المدخلة تُرسم كنص ولا تُنفّذ كـ HTML. */
-const RELEASE_ID = 'university-services-20261105-2';
+const RELEASE_ID = 'university-services-20261105-3';
 const FORUM_ID = 'public-forum';
 let serviceShell = null, contactUnsub = null, contactOwner = '', contactRows = [], contactLoadError = '';
 async function communityUser() {

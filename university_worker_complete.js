@@ -228,7 +228,7 @@ async function uploadToGemini(env, obj, displayName, fallbackMime, onUploaded = 
     );
   }
 
-  const CHUNK_SIZE = 8 * 1024 * 1024;
+  const CHUNK_SIZE = 24 * 1024 * 1024; // multiple of 8 MiB; fewer outgoing requests per upload (free Workers allow ~50 per invocation)
   const reader = obj.body.getReader();
   let offset = 0;
   let pending = new Uint8Array(0);
@@ -745,9 +745,12 @@ async function analyzeBook(request, env, auth) {
   const key = String(body.key || '').trim(), lectureId = String(body.lectureId || '').trim(), phase = body.phase || 'prepare';
   if (!env.GEMINI_API_KEY) return json({ error: 'GEMINI_API_KEY غير مضبوط' }, 500);
   if (!key || !lectureId) return json({ error: 'حدّث ملف HTML أولاً؛ يلزم معرّف الكتاب ومفتاح الملف.' }, 400);
-  const stored = await fsGet('lectures/' + encodeURIComponent(lectureId), auth.token);
-  if (!stored || sv(stored.r2Key) !== key || sv(stored.type) !== 'pdf') return json({ error: 'ملف الكتاب غير موجود أو غير مسموح' }, 404);
-  if (!(await canAnalyze(auth, lectureId, key))) return json({ error: 'ليس لديك صلاحية تحليل هذا الملف' }, 403);
+  // Section calls made by the Workflow itself (auth.internal is set only in Worker code, never from a request) skip the repeated lecture/permission lookups:
+  // the job was already authorised when it started, and each lookup costs 2-4 outgoing requests per section.
+  const skipChecks = auth.internal === true && phase === 'section';
+  const stored = skipChecks ? null : await fsGet('lectures/' + encodeURIComponent(lectureId), auth.token);
+  if (!skipChecks && (!stored || sv(stored.r2Key) !== key || sv(stored.type) !== 'pdf')) return json({ error: 'ملف الكتاب غير موجود أو غير مسموح' }, 404);
+  if (!skipChecks && !(await canAnalyze(auth, lectureId, key))) return json({ error: 'ليس لديك صلاحية تحليل هذا الملف' }, 403);
   try {
     if (phase === 'prepare') {
       const pageCount = Number(body.pageCount);
@@ -1214,22 +1217,17 @@ function processingStep(job, phase, completed = 0, total = 1) {
   return { progressVersion: 1, progressPercent: Math.min(99, Math.floor(from + (to - from) * done / count)), progressPhase: phase, progressCompleted: done, progressTotal: count };
 }
 async function jobProgress(env, job, progress, extra = {}) {
+  // Lightweight heartbeat (2 outgoing requests, 4 before). It must still run: the scheduled repair restarts any 'running' job
+  // whose updatedAt is older than 15 minutes. Percent bars are no longer written; the lecture document is touched only on the first call.
   const current = await readDocument(env, 'rafiqJobs/' + job.id);
-  // A delayed attempt cannot revive a cancelled/completed job or update a newer source.
+  // A delayed attempt cannot revive a cancelled/completed job.
   if (!current || ['done', 'cancelled', 'superseded'].includes(current.status)) return;
-  const lecture = job.lectureId ? await readDocument(env, 'lectures/' + job.lectureId) : null;
-  if (job.lectureId && (!lecture || lecture.rafiqJobId && lecture.rafiqJobId !== job.id || job.sourceKey && lecture.r2Key !== job.sourceKey)) return;
-  const { lectureFields = {}, ...fields } = extra;
-  const supplied = typeof fields.progressPercent === 'number' && Number.isFinite(fields.progressPercent);
-  const prior = Number.isFinite(current.progressPercent) ? current.progressPercent : null;
-  const percentage = supplied ? Math.max(prior || 0, Math.max(0, Math.min(99, Math.floor(fields.progressPercent)))) : prior;
-  const update = { ...fields, progress, updatedAt: Date.now(), status: 'running', requiresAdmin: false, autoRecovering: true,
-    ...(percentage !== null ? { progressPercent: percentage, progressVersion: 1, progressUpdatedAt: Date.now() } : {}) };
-  await patchDocument(env, 'rafiqJobs/' + job.id, update);
-  if (lecture) await patchDocument(env, 'lectures/' + job.lectureId, {
-    ...lectureFields, rafiqStatus: 'running', aiRequiresAdmin: false, aiProgress: progress,
-    ...(percentage !== null ? { aiProgressPercent: percentage, aiProgressVersion: 1, aiProgressJobId: job.id, aiProgressSourceKey: lecture.r2Key || '', aiProgressPhase: fields.progressPhase || current.progressPhase || '', aiProgressUpdatedAt: Date.now() } : {})
-  });
+  const first = current.status !== 'running';
+  await patchDocument(env, 'rafiqJobs/' + job.id, { progress, updatedAt: Date.now(), status: 'running', requiresAdmin: false, autoRecovering: true });
+  if (first && job.lectureId) {
+    const lecture = await readDocument(env, 'lectures/' + job.lectureId);
+    if (lecture && !(lecture.rafiqJobId && lecture.rafiqJobId !== job.id) && !(job.sourceKey && lecture.r2Key !== job.sourceKey)) await patchDocument(env, 'lectures/' + job.lectureId, { rafiqStatus: 'running', aiRequiresAdmin: false, aiProgress: progress });
+  }
 }
 
 /* Automatic recovery stays quiet; explicit review and configuration decisions reach the manager. */
@@ -1732,13 +1730,13 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
             const media = await ensureMedia(env, job, lecture), startPage = index * SECTION_PAGES + 1, endPage = Math.min(mediaInfo.pageCount, startPage + SECTION_PAGES - 1);
             // (progress for this section is reported by the report step right after it; an extra update here cost 4 outgoing requests per section)
             const session = await workflowBookSession(env, job, lecture, media, mediaInfo.pageCount);
-            const actor = { ...job.actor, token: await serverToken(env) };
+            const actor = { ...job.actor, token: await serverToken(env), internal: true };
             const response = await analyzeBook(new Request('https://rafiq.internal/?action=book-analyze', { method: 'POST', body: JSON.stringify({ phase: 'section', key: lecture.r2Key, lectureId: lecture.id, session, sectionIndex: index, startPage, endPage }) }), env, actor);
             const result = await response.json(); if (!response.ok || !result.success) throw new Error(result.details || result.error || 'تعذّر تلخيص الجزء');
             await putPrivateJson(env, target, result.section); return target;
           });
           sectionKeys.push(key);
-          await step.do('report-book-section-v1-' + index, async () => { await jobProgress(env, job, 'تم تلخيص ' + Math.min(mediaInfo.pageCount, (index + 1) * SECTION_PAGES) + ' من ' + mediaInfo.pageCount + ' صفحة', processingStep(job, 'extract', index + 1, Math.ceil(mediaInfo.pageCount / SECTION_PAGES))); return true; });
+          if (index % 2 === 1 || index === Math.ceil(mediaInfo.pageCount / SECTION_PAGES) - 1) await step.do('report-book-section-v1-' + index, async () => { await jobProgress(env, job, 'تم تلخيص ' + Math.min(mediaInfo.pageCount, (index + 1) * SECTION_PAGES) + ' من ' + mediaInfo.pageCount + ' صفحة', processingStep(job, 'extract', index + 1, Math.ceil(mediaInfo.pageCount / SECTION_PAGES))); return true; });
         }
         if (!mediaInfo.reuseBook) await step.do('save-book-summary', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'حفظ التلخيص التفصيلي للكتاب', processingStep(job, 'summary', 0, 1));
@@ -1774,7 +1772,7 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
             // (progress is reported by the report step right after; an extra update here cost 4 outgoing requests per window)
             return extractWindow(env, job, lecture, i, start, end);
           }));
-          await step.do('report-video-part-v1-' + i, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (i + 1) + ' من ' + Math.ceil(mediaInfo.duration / windowSeconds), processingStep(job, 'extract', i + 1, Math.ceil(mediaInfo.duration / windowSeconds))); return true; });
+          if (i % 2 === 1 || i === Math.ceil(mediaInfo.duration / windowSeconds) - 1) await step.do('report-video-part-v1-' + i, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (i + 1) + ' من ' + Math.ceil(mediaInfo.duration / windowSeconds), processingStep(job, 'extract', i + 1, Math.ceil(mediaInfo.duration / windowSeconds))); return true; });
         }
         if (job.kind !== 'index' || !lecture.aiData) {
           await step.do('save-video-study', CONTENT_STEP, async () => { await jobProgress(env, job, 'ترتيب المذكرة التفصيلية وحفظها', processingStep(job, 'summary', 0, 1)); const result = await saveVideoStudy(env, job, lecture, windows); await jobProgress(env, job, 'حُفظ التلخيص التفصيلي', processingStep(job, 'summary', 1, 1)); return result; });

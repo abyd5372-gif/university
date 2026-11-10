@@ -1,0 +1,17 @@
+{
+  "name": "المنصة الجامعية الشاملة",
+  "short_name": "المنصة الجامعية",
+  "description": "تصفح المواد والجامعات، ملخصات الكتب والمحاضرات، واسأل رفيق.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#143e60",
+  "theme_color": "#143e60",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

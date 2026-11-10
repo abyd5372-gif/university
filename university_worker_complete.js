@@ -1218,12 +1218,17 @@ function processingStep(job, phase, completed = 0, total = 1) {
 }
 async function jobProgress(env, job, progress, extra = {}) {
   // Lightweight heartbeat (2 outgoing requests, 4 before). It must still run: the scheduled repair restarts any 'running' job
-  // whose updatedAt is older than 15 minutes. Percent bars are no longer written; the lecture document is touched only on the first call.
+  // whose updatedAt is older than 15 minutes. The job's percentage is written in the same update; the lecture document is touched only on the first call.
   const current = await readDocument(env, 'rafiqJobs/' + job.id);
   // A delayed attempt cannot revive a cancelled/completed job.
   if (!current || ['done', 'cancelled', 'superseded'].includes(current.status)) return;
   const first = current.status !== 'running';
-  await patchDocument(env, 'rafiqJobs/' + job.id, { progress, updatedAt: Date.now(), status: 'running', requiresAdmin: false, autoRecovering: true });
+  // The percentage is written in the same single job update (no extra request); it never goes backwards or above 99.
+  const { lectureFields = {}, ...fields } = extra, supplied = typeof fields.progressPercent === 'number' && Number.isFinite(fields.progressPercent);
+  const prior = Number.isFinite(current.progressPercent) ? current.progressPercent : null;
+  const percentage = supplied ? Math.max(prior || 0, Math.max(0, Math.min(99, Math.floor(fields.progressPercent)))) : prior;
+  await patchDocument(env, 'rafiqJobs/' + job.id, { ...fields, progress, updatedAt: Date.now(), status: 'running', requiresAdmin: false, autoRecovering: true,
+    ...(percentage !== null ? { progressPercent: percentage, progressVersion: 1, progressUpdatedAt: Date.now() } : {}) });
   if (first && job.lectureId) {
     const lecture = await readDocument(env, 'lectures/' + job.lectureId);
     if (lecture && !(lecture.rafiqJobId && lecture.rafiqJobId !== job.id) && !(job.sourceKey && lecture.r2Key !== job.sourceKey)) await patchDocument(env, 'lectures/' + job.lectureId, { rafiqStatus: 'running', aiRequiresAdmin: false, aiProgress: progress });

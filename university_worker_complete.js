@@ -1730,7 +1730,7 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
             const target = 'rafiq/private/jobs/' + job.id + '/book-section-' + index + '.json';
             try { await getPrivateJson(env, target); return target; } catch (_) {}
             const media = await ensureMedia(env, job, lecture), startPage = index * SECTION_PAGES + 1, endPage = Math.min(mediaInfo.pageCount, startPage + SECTION_PAGES - 1);
-            await jobProgress(env, job, 'تلخيص الصفحات ' + startPage + '–' + endPage, processingStep(job, 'extract', index, Math.ceil(mediaInfo.pageCount / SECTION_PAGES)));
+            // (progress for this section is reported by the report step right after it; an extra update here cost 4 outgoing requests per section)
             const session = await workflowBookSession(env, job, lecture, media, mediaInfo.pageCount);
             const actor = { ...job.actor, token: await serverToken(env) };
             const response = await analyzeBook(new Request('https://rafiq.internal/?action=book-analyze', { method: 'POST', body: JSON.stringify({ phase: 'section', key: lecture.r2Key, lectureId: lecture.id, session, sectionIndex: index, startPage, endPage }) }), env, actor);
@@ -1771,7 +1771,7 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
         for (let i = 0; i < Math.ceil(mediaInfo.duration / windowSeconds); i++) {
           const start = i * windowSeconds, end = Math.min(mediaInfo.duration, start + windowSeconds);
           windows.push(await step.do('extract-window-' + i, CONTENT_STEP, async () => {
-            await jobProgress(env, job, 'قراءة الشرح: الجزء ' + (i + 1) + ' من ' + Math.ceil(mediaInfo.duration / windowSeconds), processingStep(job, 'extract', i, Math.ceil(mediaInfo.duration / windowSeconds)));
+            // (progress is reported by the report step right after; an extra update here cost 4 outgoing requests per window)
             return extractWindow(env, job, lecture, i, start, end);
           }));
           await step.do('report-video-part-v1-' + i, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (i + 1) + ' من ' + Math.ceil(mediaInfo.duration / windowSeconds), processingStep(job, 'extract', i + 1, Math.ceil(mediaInfo.duration / windowSeconds))); return true; });

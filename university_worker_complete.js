@@ -1685,12 +1685,44 @@ async function runUndoWorkflow(env, job, step) {
 
 
 /* هذه الفئة تعمل على Cloudflare Workflows، مستقلة عن جلسة المتصفح. */
+
+/* ---------- Free-plan request budget ----------
+   Cloudflare lets one continuous Workflow run make only ~50 outgoing requests (Firestore, Gemini, Upstash...). It does not reset on sleep or
+   automatic retry, only when a new run starts. So the run counts its own outgoing requests and, before the budget is gone, starts a continuation
+   instance of the same job and ends. Finished steps are stored in R2 (durable), so the continuation skips them without sending any request. */
+let countingActive = false, externalRequestCount = 0;
+try {
+  const nativeFetch = globalThis.fetch.bind(globalThis);
+  globalThis.fetch = (...args) => { externalRequestCount++; return nativeFetch(...args); };
+  countingActive = true;
+} catch (_) { countingActive = false; }
+const BUDGET_LIMIT = 34, MAX_HANDOFFS = 60;
+class Handoff extends Error {}
+function makeBudget(env, step, job) {
+  const startCount = externalRequestCount, base = 'rafiq/private/jobs/' + job.id + '/done/';
+  const guard = () => { if (countingActive && externalRequestCount - startCount >= BUDGET_LIMIT) throw new Handoff('handoff'); };
+  async function durable(name, a, b) {
+    guard();
+    const options = typeof a === 'function' ? null : a, work = typeof a === 'function' ? a : b;
+    const body = async () => {
+      const key = base + name + '.json';
+      try { const object = await env.RAFIQ_BUCKET.get(key); if (object) return (await object.json()).v; } catch (_) {}
+      const value = await work();
+      try { await env.RAFIQ_BUCKET.put(key, JSON.stringify({ v: value === undefined ? null : value }), { httpMetadata: { contentType: 'application/json; charset=utf-8', cacheControl: 'no-store' } }); } catch (_) {}
+      return value;
+    };
+    return options ? step.do(name, options, body) : step.do(name, body);
+  }
+  return { guard, durable };
+}
+
 export class RafiqWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
     const env = this.env, jobId = String(event.payload.jobId || '');
     const job = await step.do('load-job', async () => {
       const record = await readDocument(env, 'rafiqJobs/' + jobId); if (!record) throw new Error('المهمة غير موجودة'); return record;
     });
+    const { durable, guard } = makeBudget(env, step, job);
     try {
       if (job.kind === 'structure') return await runStructureWorkflow(env, job, step);
       if (job.kind === 'undo') return await runUndoWorkflow(env, job, step);
@@ -1703,28 +1735,28 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
         await jobProgress(env, job, 'تجهيز ملف المصدر على الخادم', processingStep(job, 'source', 0, 1)); return { lecture, root };
       });
       const { lecture, root } = initial;
-      const mediaInfo = await step.do('prepare-media', WORKFLOW_STEP, async () => {
+      const mediaInfo = await durable('prepare-media', WORKFLOW_STEP, async () => {
         if (lecture.type === 'pdf' && job.kind === 'index' && (lecture.aiBook?.detailKey || lecture.aiBook?.chapters?.length)) return { duration: 0, pageCount: Number(lecture.aiBook.sourcePages || lecture.pageCount || Math.max(...(lecture.aiBook.chapters || []).map(c => c.endPage || 1), 1)), reuseBook: true };
         const media = await ensureMedia(env, job, lecture);
         const duration = secondsValue(media.file.videoMetadata && media.file.videoMetadata.videoDuration) || Number(lecture.duration || 0);
         if (lecture.type === 'video' && (!Number.isFinite(duration) || duration <= 0)) throw new Error('لم يُقرأ طول الفيديو. تأكد من سلامة الملف وإرسال مدته.');
         return { duration: Math.ceil(duration), pageCount: Number(lecture.pageCount || job.pageCount || 0) };
       });
-      await step.do('report-media-ready-v1', async () => { await jobProgress(env, job, 'تم تجهيز المصدر؛ تبدأ قراءة المحتوى', processingStep(job, 'source', 1, 1)); return true; });
+      await durable('report-media-ready-v1', async () => { await jobProgress(env, job, 'تم تجهيز المصدر؛ تبدأ قراءة المحتوى', processingStep(job, 'source', 1, 1)); return true; });
       if (lecture.type === 'pdf') {
         if (!Number.isInteger(mediaInfo.pageCount) || mediaInfo.pageCount < 1 || mediaInfo.pageCount > 1000) throw new Error('عدد صفحات الكتاب غير صالح');
         const sectionKeys = [];
         if (mediaInfo.reuseBook) {
-          const reused = await step.do('reuse-book-summary', async () => {
+          const reused = await durable('reuse-book-summary', async () => {
             const stored = lecture.aiBook.detailKey ? await env.VIDEO_BUCKET.get(lecture.aiBook.detailKey) : null;
             const saved = stored ? await stored.json() : lecture.aiBook, keys = [];
             if (!saved.chapters?.length) throw new Error('ملف التلخيص السابق غير متوفر؛ لم يُستبدل أو يُعاد توليده.');
             for (let i = 0; i < (saved.chapters || []).length; i++) { const key = 'rafiq/private/jobs/' + job.id + '/book-section-' + i + '.json'; await putPrivateJson(env, key, saved.chapters[i]); keys.push(key); } return keys;
           }); sectionKeys.push(...reused);
-          await step.do('report-reused-book-v1', async () => { await jobProgress(env, job, 'التلخيص المحفوظ جاهز؛ يجري تجهيز البحث', processingStep(job, 'summary', 1, 1)); return true; });
+          await durable('report-reused-book-v1', async () => { await jobProgress(env, job, 'التلخيص المحفوظ جاهز؛ يجري تجهيز البحث', processingStep(job, 'summary', 1, 1)); return true; });
         }
         for (let index = 0; !mediaInfo.reuseBook && index < Math.ceil(mediaInfo.pageCount / SECTION_PAGES); index++) {
-          const key = await step.do('book-section-' + index, WORKFLOW_STEP, async () => {
+          const key = await durable('book-section-' + index, WORKFLOW_STEP, async () => {
             const target = 'rafiq/private/jobs/' + job.id + '/book-section-' + index + '.json';
             try { await getPrivateJson(env, target); return target; } catch (_) {}
             const media = await ensureMedia(env, job, lecture), startPage = index * SECTION_PAGES + 1, endPage = Math.min(mediaInfo.pageCount, startPage + SECTION_PAGES - 1);
@@ -1736,11 +1768,9 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
             await putPrivateJson(env, target, result.section); return target;
           });
           sectionKeys.push(key);
-          if (index % 2 === 1 || index === Math.ceil(mediaInfo.pageCount / SECTION_PAGES) - 1) await step.do('report-book-section-v1-' + index, async () => { await jobProgress(env, job, 'تم تلخيص ' + Math.min(mediaInfo.pageCount, (index + 1) * SECTION_PAGES) + ' من ' + mediaInfo.pageCount + ' صفحة', processingStep(job, 'extract', index + 1, Math.ceil(mediaInfo.pageCount / SECTION_PAGES))); return true; });
-          if ((index + 1) % 3 === 0) await step.sleep('budget-reset-section-' + index + '', '20 seconds');
+          if (index % 2 === 1 || index === Math.ceil(mediaInfo.pageCount / SECTION_PAGES) - 1) await durable('report-book-section-v1-' + index, async () => { await jobProgress(env, job, 'تم تلخيص ' + Math.min(mediaInfo.pageCount, (index + 1) * SECTION_PAGES) + ' من ' + mediaInfo.pageCount + ' صفحة', processingStep(job, 'extract', index + 1, Math.ceil(mediaInfo.pageCount / SECTION_PAGES))); return true; });
         }
-        await step.sleep('budget-reset-before-book-save', '20 seconds');
-        if (!mediaInfo.reuseBook) await step.do('save-book-summary', WORKFLOW_STEP, async () => {
+        if (!mediaInfo.reuseBook) await durable('save-book-summary', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'حفظ التلخيص التفصيلي للكتاب', processingStep(job, 'summary', 0, 1));
           const chapters = []; for (const key of sectionKeys) chapters.push(await getPrivateJson(env, key));
           const media = await ensureMedia(env, job, lecture), session = await workflowBookSession(env, job, lecture, media, mediaInfo.pageCount);
@@ -1751,20 +1781,18 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
         });
         let bookIndexSteps = 0;
         for (let index = 0; index < sectionKeys.length; index++) {
-          const window = await step.do('prepare-book-index-' + index, async () => {
+          const window = await durable('prepare-book-index-' + index, async () => {
             const chapter = await getPrivateJson(env, sectionKeys[index]), words = String(chapter.summary || '').split(/\s+/), segments = [];
             for (let i = 0; i < words.length; i += 320) segments.push({ text: words.slice(i, i + 360).join(' '), page: chapter.startPage || 1, endPage: chapter.endPage || chapter.startPage || 1 });
             const key = 'rafiq/private/jobs/' + job.id + '/pdf-index-' + index + '.json'; await putPrivateJson(env, key, { segments }); return { key, count: segments.length };
           });
-          for (let offset = 0; offset < window.count; offset += 8) { if (bookIndexSteps++ % 3 === 0) await step.sleep('budget-reset-bookindex-' + bookIndexSteps + '', '20 seconds');
-          await step.do('index-book-' + index + '-' + offset, WORKFLOW_STEP, async () => {
-            await jobProgress(env, job, 'تجهيز البحث في الكتاب: القسم ' + (index + 1) + ' من ' + sectionKeys.length, processingStep(job, 'index', index + offset / window.count, sectionKeys.length));
+          for (let offset = 0; offset < window.count; offset += 8) {
+          await durable('index-book-' + index + '-' + offset, WORKFLOW_STEP, async () => {
             const count = await indexWindow(env, job, lecture, root, window, offset);
             await jobProgress(env, job, 'تجهيز البحث في الكتاب: القسم ' + (index + 1) + ' من ' + sectionKeys.length, processingStep(job, 'index', index + Math.min(window.count, offset + 8) / window.count, sectionKeys.length)); return count;
           }); }
         }
-        await step.sleep('budget-reset-before-book-review', '20 seconds');
-        await step.do('review-book-content', WORKFLOW_STEP, async () => {
+        await durable('review-book-content', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'المراجعة النهائية لمحتوى الكتاب', processingStep(job, 'review', 0, 1));
           const passages = []; for (const key of sectionKeys) { const chapter = await getPrivateJson(env, key); passages.push({ text: chapter.summary, page: chapter.startPage, endPage: chapter.endPage }); }
           await reviewContent(env, job, root, lecture, passages); await jobProgress(env, job, 'اكتملت المراجعة؛ يجري حفظ النتيجة', processingStep(job, 'review', 1, 1)); return true;
@@ -1773,35 +1801,32 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
         const windows = [], windowSeconds = 180;
         for (let i = 0; i < Math.ceil(mediaInfo.duration / windowSeconds); i++) {
           const start = i * windowSeconds, end = Math.min(mediaInfo.duration, start + windowSeconds);
-          windows.push(await step.do('extract-window-' + i, CONTENT_STEP, async () => {
+          windows.push(await durable('extract-window-' + i, CONTENT_STEP, async () => {
             // (progress is reported by the report step right after; an extra update here cost 4 outgoing requests per window)
             return extractWindow(env, job, lecture, i, start, end);
           }));
-          if (i % 2 === 1 || i === Math.ceil(mediaInfo.duration / windowSeconds) - 1) await step.do('report-video-part-v1-' + i, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (i + 1) + ' من ' + Math.ceil(mediaInfo.duration / windowSeconds), processingStep(job, 'extract', i + 1, Math.ceil(mediaInfo.duration / windowSeconds))); return true; });
-          if ((i + 1) % 3 === 0) await step.sleep('budget-reset-extract-' + i + '', '20 seconds');
+          if (i % 2 === 1 || i === Math.ceil(mediaInfo.duration / windowSeconds) - 1) await durable('report-video-part-v1-' + i, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (i + 1) + ' من ' + Math.ceil(mediaInfo.duration / windowSeconds), processingStep(job, 'extract', i + 1, Math.ceil(mediaInfo.duration / windowSeconds))); return true; });
         }
         // A short sleep lets the instance hibernate so the next stage starts with a fresh outgoing-request budget (free Workers allow ~50).
-        await step.sleep('budget-reset-before-save', '20 seconds');
         if (job.kind !== 'index' || !lecture.aiData) {
-          await step.do('save-video-study', CONTENT_STEP, async () => { await jobProgress(env, job, 'ترتيب المذكرة التفصيلية وحفظها', processingStep(job, 'summary', 0, 1)); const result = await saveVideoStudy(env, job, lecture, windows); await jobProgress(env, job, 'حُفظ التلخيص التفصيلي', processingStep(job, 'summary', 1, 1)); return result; });
-          await step.do('save-video-quiz', CONTENT_STEP, async () => { await jobProgress(env, job, 'المذكرة جاهزة؛ يجري إعداد الامتحان', processingStep(job, 'quiz', 0, 1)); const result = await saveVideoQuiz(env, job, lecture, windows); await jobProgress(env, job, 'حُفظ التلخيص والامتحان', processingStep(job, 'quiz', 1, 1)); return result; });
+          await durable('save-video-study', CONTENT_STEP, async () => { await jobProgress(env, job, 'ترتيب المذكرة التفصيلية وحفظها', processingStep(job, 'summary', 0, 1)); const result = await saveVideoStudy(env, job, lecture, windows); await jobProgress(env, job, 'حُفظ التلخيص التفصيلي', processingStep(job, 'summary', 1, 1)); return result; });
+          await durable('save-video-quiz', CONTENT_STEP, async () => { await jobProgress(env, job, 'المذكرة جاهزة؛ يجري إعداد الامتحان', processingStep(job, 'quiz', 0, 1)); const result = await saveVideoQuiz(env, job, lecture, windows); await jobProgress(env, job, 'حُفظ التلخيص والامتحان', processingStep(job, 'quiz', 1, 1)); return result; });
         }
         const indexBatches = windows.reduce((sum, item) => sum + Math.ceil(item.count / 8), 0); let indexedBatches = 0;
         for (let wi = 0; wi < windows.length; wi++) for (let offset = 0; offset < windows[wi].count; offset += 8) {
-          if (indexedBatches % 3 === 0) await step.sleep('budget-reset-index-' + indexedBatches + '', '20 seconds');
-          await step.do('index-' + wi + '-' + offset, WORKFLOW_STEP, async () => {
+          await durable('index-' + wi + '-' + offset, WORKFLOW_STEP, async () => {
             const count = await indexWindow(env, job, lecture, root, windows[wi], offset);
             await jobProgress(env, job, 'تجهيز البحث في المحاضرة: الجزء ' + (wi + 1) + ' من ' + windows.length, processingStep(job, 'index', indexedBatches + 1, indexBatches)); return count;
           }); indexedBatches++;
         }
-        await step.sleep('budget-reset-before-review', '20 seconds');
-        await step.do('review-video-content', WORKFLOW_STEP, async () => {
+        await durable('review-video-content', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'المراجعة النهائية للمحاضرة', processingStep(job, 'review', 0, 1));
           const passages = []; for (const window of windows) { const data = await getPrivateJson(env, window.key); const stride = Math.max(1, Math.floor(data.segments.length / 4)); passages.push(...data.segments.filter((_, i) => i % stride === 0)); }
           // عينات موزعة على كامل المحاضرة، بما فيها نهايتها.
           const stride = Math.max(1, Math.ceil(passages.length / 40)); await reviewContent(env, job, root, lecture, passages.filter((_, i) => i % stride === 0)); await jobProgress(env, job, 'اكتملت المراجعة؛ يجري حفظ النتيجة', processingStep(job, 'review', 1, 1)); return true;
         });
       }
+      guard();
       await step.do('finish-job', async () => {
         await patchDocument(env, 'lectures/' + lecture.id, { rafiqStatus: 'ready', rafiqVersion: RAFIQ_VERSION, aiStatus: 'done', aiProgress: '', aiError: '', ...(lecture.type === 'video' ? { aiQuizStatus: 'done' } : {}), rafiqFinishedAt: Date.now(), aiRequiresAdmin: false, aiProgressVersion: 1, aiProgressPercent: 100, aiProgressPhase: 'complete', aiProgressJobId: job.id, aiProgressSourceKey: lecture.r2Key || '', aiProgressUpdatedAt: Date.now() });
         await patchDocument(env, 'rafiqJobs/' + job.id, { status: 'done', progress: 'اكتملت المعالجة', requiresAdmin: false, autoRecovering: false, progressVersion: 1, progressPercent: 100, progressPhase: 'complete', progressUpdatedAt: Date.now(), updatedAt: Date.now() }); await settleJobNotice(env, job.id, 'completed');
@@ -1810,6 +1835,15 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
       });
       return { status: 'done', lectureId: lecture.id };
     } catch (error) {
+      if (error instanceof Handoff) {
+        // Request budget for this run is nearly used: continue the same job in a fresh run (new instance); finished steps are skipped via R2 markers.
+        const next = Number(event.payload.cont || 0) + 1;
+        if (next > MAX_HANDOFFS) throw new Error('تعذّر إكمال المعالجة ضمن عدد المراحل المسموح');
+        const id = job.id + '_c' + next, binding = workflowBinding(env, this.ctx);
+        try { await binding.create({ id, params: { jobId: job.id, cont: next } }); }
+        catch (createError) { const existing = await binding.get(id).then(i => i.status()).catch(() => null); if (!existing) throw createError; }
+        return { status: 'handoff', next };
+      }
       await step.do('record-job-error', async () => {
         await releaseStructureLock(env, job.id);
         const source = job.lectureId ? await readDocument(env, 'lectures/' + job.lectureId) : null;

@@ -1737,7 +1737,9 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
           });
           sectionKeys.push(key);
           if (index % 2 === 1 || index === Math.ceil(mediaInfo.pageCount / SECTION_PAGES) - 1) await step.do('report-book-section-v1-' + index, async () => { await jobProgress(env, job, 'تم تلخيص ' + Math.min(mediaInfo.pageCount, (index + 1) * SECTION_PAGES) + ' من ' + mediaInfo.pageCount + ' صفحة', processingStep(job, 'extract', index + 1, Math.ceil(mediaInfo.pageCount / SECTION_PAGES))); return true; });
+          if ((index + 1) % 3 === 0) await step.sleep('budget-reset-section-' + index + '', '20 seconds');
         }
+        await step.sleep('budget-reset-before-book-save', '20 seconds');
         if (!mediaInfo.reuseBook) await step.do('save-book-summary', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'حفظ التلخيص التفصيلي للكتاب', processingStep(job, 'summary', 0, 1));
           const chapters = []; for (const key of sectionKeys) chapters.push(await getPrivateJson(env, key));
@@ -1747,18 +1749,21 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
           const out = await response.json(); if (!response.ok || !out.success) throw new Error(out.details || out.error || 'تعذّر حفظ الكتاب');
           await jobProgress(env, job, 'حُفظ التلخيص؛ يجري تجهيز البحث', processingStep(job, 'summary', 1, 1)); return { saved: true };
         });
+        let bookIndexSteps = 0;
         for (let index = 0; index < sectionKeys.length; index++) {
           const window = await step.do('prepare-book-index-' + index, async () => {
             const chapter = await getPrivateJson(env, sectionKeys[index]), words = String(chapter.summary || '').split(/\s+/), segments = [];
             for (let i = 0; i < words.length; i += 320) segments.push({ text: words.slice(i, i + 360).join(' '), page: chapter.startPage || 1, endPage: chapter.endPage || chapter.startPage || 1 });
             const key = 'rafiq/private/jobs/' + job.id + '/pdf-index-' + index + '.json'; await putPrivateJson(env, key, { segments }); return { key, count: segments.length };
           });
-          for (let offset = 0; offset < window.count; offset += 8) await step.do('index-book-' + index + '-' + offset, WORKFLOW_STEP, async () => {
+          for (let offset = 0; offset < window.count; offset += 8) { if (bookIndexSteps++ % 3 === 0) await step.sleep('budget-reset-bookindex-' + bookIndexSteps + '', '20 seconds');
+          await step.do('index-book-' + index + '-' + offset, WORKFLOW_STEP, async () => {
             await jobProgress(env, job, 'تجهيز البحث في الكتاب: القسم ' + (index + 1) + ' من ' + sectionKeys.length, processingStep(job, 'index', index + offset / window.count, sectionKeys.length));
             const count = await indexWindow(env, job, lecture, root, window, offset);
             await jobProgress(env, job, 'تجهيز البحث في الكتاب: القسم ' + (index + 1) + ' من ' + sectionKeys.length, processingStep(job, 'index', index + Math.min(window.count, offset + 8) / window.count, sectionKeys.length)); return count;
-          });
+          }); }
         }
+        await step.sleep('budget-reset-before-book-review', '20 seconds');
         await step.do('review-book-content', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'المراجعة النهائية لمحتوى الكتاب', processingStep(job, 'review', 0, 1));
           const passages = []; for (const key of sectionKeys) { const chapter = await getPrivateJson(env, key); passages.push({ text: chapter.summary, page: chapter.startPage, endPage: chapter.endPage }); }
@@ -1773,19 +1778,23 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
             return extractWindow(env, job, lecture, i, start, end);
           }));
           if (i % 2 === 1 || i === Math.ceil(mediaInfo.duration / windowSeconds) - 1) await step.do('report-video-part-v1-' + i, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (i + 1) + ' من ' + Math.ceil(mediaInfo.duration / windowSeconds), processingStep(job, 'extract', i + 1, Math.ceil(mediaInfo.duration / windowSeconds))); return true; });
+          if ((i + 1) % 3 === 0) await step.sleep('budget-reset-extract-' + i + '', '20 seconds');
         }
+        // A short sleep lets the instance hibernate so the next stage starts with a fresh outgoing-request budget (free Workers allow ~50).
+        await step.sleep('budget-reset-before-save', '20 seconds');
         if (job.kind !== 'index' || !lecture.aiData) {
           await step.do('save-video-study', CONTENT_STEP, async () => { await jobProgress(env, job, 'ترتيب المذكرة التفصيلية وحفظها', processingStep(job, 'summary', 0, 1)); const result = await saveVideoStudy(env, job, lecture, windows); await jobProgress(env, job, 'حُفظ التلخيص التفصيلي', processingStep(job, 'summary', 1, 1)); return result; });
           await step.do('save-video-quiz', CONTENT_STEP, async () => { await jobProgress(env, job, 'المذكرة جاهزة؛ يجري إعداد الامتحان', processingStep(job, 'quiz', 0, 1)); const result = await saveVideoQuiz(env, job, lecture, windows); await jobProgress(env, job, 'حُفظ التلخيص والامتحان', processingStep(job, 'quiz', 1, 1)); return result; });
         }
         const indexBatches = windows.reduce((sum, item) => sum + Math.ceil(item.count / 8), 0); let indexedBatches = 0;
         for (let wi = 0; wi < windows.length; wi++) for (let offset = 0; offset < windows[wi].count; offset += 8) {
+          if (indexedBatches % 3 === 0) await step.sleep('budget-reset-index-' + indexedBatches + '', '20 seconds');
           await step.do('index-' + wi + '-' + offset, WORKFLOW_STEP, async () => {
-            await jobProgress(env, job, 'تجهيز البحث في المحاضرة: الجزء ' + (wi + 1) + ' من ' + windows.length, processingStep(job, 'index', indexedBatches, indexBatches));
             const count = await indexWindow(env, job, lecture, root, windows[wi], offset);
             await jobProgress(env, job, 'تجهيز البحث في المحاضرة: الجزء ' + (wi + 1) + ' من ' + windows.length, processingStep(job, 'index', indexedBatches + 1, indexBatches)); return count;
           }); indexedBatches++;
         }
+        await step.sleep('budget-reset-before-review', '20 seconds');
         await step.do('review-video-content', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'المراجعة النهائية للمحاضرة', processingStep(job, 'review', 0, 1));
           const passages = []; for (const window of windows) { const data = await getPrivateJson(env, window.key); const stride = Math.max(1, Math.floor(data.segments.length / 4)); passages.push(...data.segments.filter((_, i) => i % stride === 0)); }

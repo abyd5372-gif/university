@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="platform-release" content="university-platform-20261110-1">
+<meta name="platform-release" content="university-platform-20261112-1">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
 <title>المنصة الجامعية الشاملة</title>
 <meta name="description" content="المنصة الجامعية الشاملة: تصفح المواد والجامعات وانضم إلينا.">
@@ -963,7 +963,7 @@ document.querySelectorAll('.clickable-card').forEach(function(c){
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, getDoc, setDoc, deleteDoc, updateDoc, writeBatch, query, where, orderBy, onSnapshot , getDocs, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, addDoc, doc, getDoc, setDoc, deleteDoc, updateDoc, writeBatch, query, where, orderBy, onSnapshot , getDocs, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const LUX_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>';
 
@@ -984,7 +984,11 @@ const firebaseConfig = {
   measurementId: "G-2S2VREX6XP"
 };
 const fbApp = initializeApp(firebaseConfig);
-const db = getFirestore(fbApp);
+let db;
+try {
+  /* ذاكرة محلية دائمة: الزيارة الثانية تعرض المحاضرات فورًا من الجهاز، وكشف تلقائي لمشاكل الاتصال على الشبكات البطيئة */
+  db = initializeFirestore(fbApp, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }), experimentalAutoDetectLongPolling: true });
+} catch (e) { console.warn('Firestore cache fallback', e); db = getFirestore(fbApp); }
 const auth = getAuth(fbApp);
 
 
@@ -2903,7 +2907,7 @@ async function doAnalyzeBook(task) { return rafiqCall('job-start', { lectureId: 
 async function startBookAnalysis(book) { return rafiqCall('job-start', { lectureId: book.id }); }
 
 /* خدمات الطلبة؛ جميع القيم المدخلة تُرسم كنص ولا تُنفّذ كـ HTML. */
-const RELEASE_ID = 'university-platform-20261110-1';
+const RELEASE_ID = 'university-platform-20261112-1';
 const FORUM_ID = 'public-forum';
 let serviceShell = null, contactUnsub = null, contactOwner = '', contactRows = [], contactLoadError = '';
 async function communityUser() {

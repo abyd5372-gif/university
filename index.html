@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="platform-release" content="university-platform-20261113-1">
+<meta name="platform-release" content="university-platform-20261114-1">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
 <title>المنصة الجامعية الشاملة</title>
 <meta name="description" content="المنصة الجامعية الشاملة: تصفح المواد والجامعات وانضم إلينا.">
@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="المنصة الجامعية">
-<script>try{if(localStorage.getItem('uni_theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<script>try{localStorage.removeItem('uni_theme')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -666,8 +666,6 @@ document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['+',
 .bk-mark,.bk-done{background:#f0f1e9;border:1px solid #e0decf;border-radius:9px;padding:5px 11px;font-family:inherit;font-weight:700;color:#52676c;cursor:pointer;font-size:.8rem}.bk-mark{font-size:1.1rem;color:#b18e45}.bk-done.on{background:#dcebe1;border-color:#9cc4ab;color:#2b6a46}
 .fc-stage{display:grid;gap:12px;justify-items:center}.fc-card{width:100%;max-width:560px;min-height:200px;display:flex;flex-direction:column;justify-content:center;gap:10px;text-align:center;padding:26px;border-radius:18px;border:1px solid #d9c797;background:#fffdf5;font-family:inherit;color:#1e3b46;cursor:pointer;box-shadow:0 8px 24px #1b3e4b14}
 .fc-card p{font-size:1.2rem;line-height:2;margin:0}.fc-card.back{background:#173d4e;color:#f8f4e9;border-color:#355563}.fc-card small{opacity:.7}
-html[data-theme="dark"]{background:#141414;filter:invert(.92) hue-rotate(180deg)}
-html[data-theme="dark"] :is(img,video,canvas,iframe,picture,.hero,.admin-visual-header,.lux-hero-art,footer,.lux-footer,.fc-card.back){filter:invert(1) hue-rotate(180deg)}
 
 </style>
 </head>
@@ -684,10 +682,9 @@ html[data-theme="dark"] :is(img,video,canvas,iframe,picture,.hero,.admin-visual-
       <li><a onclick="openSection('universities')">تصفح الجامعات</a></li>
       <li><a onclick="luxuryServices()">خدماتنا</a></li>
       <li><a onclick="openSection('join')">انضم إلينا</a></li>
-      <li><a class="auth-link" onclick="openAuth()">التسجيل</a></li>
+      <li><a class="auth-link" onclick="openAuth()">الدخول</a></li>
     </ul>
     <button type="button" class="hdr-btn" id="noticeBtn" aria-label="الإشعارات" title="الإشعارات" style="display:none">🔔<b id="noticeCount"></b></button>
-    <button type="button" class="hdr-btn" id="themeBtn" aria-label="الوضع الداكن" title="الوضع الداكن">🌙</button>
     <button class="menu-btn" onclick="toggleMenu(true)" aria-label="القائمة">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
@@ -695,9 +692,7 @@ html[data-theme="dark"] :is(img,video,canvas,iframe,picture,.hero,.admin-visual-
 </header>
 <div id="noticePanel" class="notice-panel" hidden></div>
 <script>
-(function(){var b=document.getElementById('themeBtn');if(!b)return;function apply(d){document.documentElement.dataset.theme=d?'dark':'light';b.textContent=d?'☀️':'🌙';b.setAttribute('aria-pressed',String(d));b.title=d?'الوضع الفاتح':'الوضع الداكن';var m=document.querySelector('meta[name=theme-color]');if(m)m.content=d?'#0e1f2a':'#143e60'}
-var d=false;try{d=localStorage.getItem('uni_theme')==='dark'}catch(e){}apply(d);b.onclick=function(){d=!d;try{localStorage.setItem('uni_theme',d?'dark':'light')}catch(e){}apply(d)};
-if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});})();
+(function(){if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});})();
 </script>
 
 <div class="overlay" id="overlay" onclick="toggleMenu(false)"></div>
@@ -707,7 +702,7 @@ if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventLis
   <a onclick="openSection('universities')">تصفح الجامعات</a>
   <a onclick="openSection('join')">انضم إلينا</a>
   <a onclick="toggleMenu(false);navService('forum')">المنتدى العام</a><a onclick="toggleMenu(false);navService('gpa')">حساب المعدل التراكمي</a><a onclick="toggleMenu(false);navService('contact')">تواصل معنا</a>
-  <a class="auth-link" style="max-width:none" onclick="toggleMenu(false);openAuth()">التسجيل</a>
+  <a class="auth-link" style="max-width:none" onclick="toggleMenu(false);openAuth()">الدخول</a>
 </nav>
 
 <section class="hero" id="heroSec">
@@ -907,7 +902,7 @@ if('serviceWorker' in navigator&&location.protocol==='https:')window.addEventLis
 
 <div class="mov" id="authModal">
   <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-    <h3 id="authTitle">التسجيل</h3>
+    <h3 id="authTitle">الدخول</h3>
     <div id="authCodeWrap">
       <label class="lbl" for="authEmail">البريد الإلكتروني</label>
       <input class="fld" type="email" id="authEmail" autocomplete="username" dir="ltr">
@@ -952,7 +947,7 @@ function toggleMenu(open){
 function openSection(key){
   toggleMenu(false);
   if(key==='universities'||key==='subjects'){ if(window.navBrowse)window.navBrowse();else showToast('جاري التحميل…'); return; }
-  if(key==='join'){ if(window.navJoin)window.navJoin();else showToast('جاري التحميل…'); return; }
+  if(key==='join'){ if(window.isAdminNow&&window.isAdminNow()){ window.openAdmin(); return; } if(window.navJoin)window.navJoin();else showToast('جاري التحميل…'); return; }
   showToast(SECTIONS[key]+' — قريباً');
 }
 function goHome(){ toggleMenu(false); if(window.navHome)window.navHome();else window.scrollTo({top:0,behavior:'smooth'}); }
@@ -1434,8 +1429,14 @@ async function adminState(u) {
   } catch (e) { console.error(e); return e && e.code === 'permission-denied' ? 'denied' : 'error'; }
 }
 const checkAdmin = async u => (await adminState(u)) === 'ok';
+window.isAdminNow = () => isAdmin();
+function syncJoinNav() {
+  const label = isAdmin() ? 'التحكم والإعدادات' : 'انضم إلينا';
+  document.querySelectorAll('a[onclick="openSection(\'join\')"]').forEach(a => { const t = [...a.childNodes].find(n => n.nodeType === 3); if (t && t.nodeValue.trim() !== label) t.nodeValue = label; });
+}
 function updateAuthUI() {
-  const label = authUser ? ((me && me.name) || authUser.email) : gUser ? (gUser.displayName || gUser.email) : 'التسجيل';
+  syncJoinNav();
+  const label = authUser ? ((me && me.name) || authUser.email) : gUser ? (gUser.displayName || gUser.email) : 'الدخول';
   document.querySelectorAll('.auth-link').forEach(a => { a.textContent = label; });
   $('adminBtn').style.display = isStaff() ? 'inline-flex' : 'none';
   updateBar(); updateDots(); watchContacts(); watchRafiqRealtime(); collectMergeNotices();
@@ -1510,10 +1511,11 @@ function drawAdminHome() {
   const h = $('aHome'); h.textContent = ''; h.className = 'aview jform'; h.style.padding = '0';
   const w = el('div'); w.style.padding = '28px'; h.append(w);
   w.append(el('h3', 'btitle', 'اختر القسم الذي تريد العمل عليه'));
-  const g = el('div', 'bgrid'); g.style.gridTemplateColumns = 'repeat(2,1fr)';
-  [['📚', 'إدارة الأقسام', 'الجامعات والكليات والتخصصات والمواد والشروحات والمحاضرات', 'struct'], ['📝', 'رفيق والتنبيهات', 'تنبيهات المحتوى والتكرار والمهام الخلفية وسجل الدمج', 'review']].forEach(([e, t, d, v]) => {
+  const g = el('div', 'bgrid'); g.style.gridTemplateColumns = 'repeat(auto-fit,minmax(220px,1fr))';
+  [['📚', 'إدارة الأقسام', 'الجامعات والكليات والتخصصات والمواد والشروحات والمحاضرات', 'struct'], ['📝', 'رفيق والتنبيهات', 'تنبيهات المحتوى والتكرار والمهام الخلفية وسجل الدمج', 'review'], ['👥', 'إدارة المجموعات والأفراد', 'الطلبات المعلقة والفرق والأفراد المقبولون والمحظورون', 'members']].forEach(([e, t, d, v]) => {
     const b = el('button', 'bitem'); b.type = 'button'; b.append(el('span', 'emo', e), el('h4', null, t), el('span', null, d));
     if (v === 'review' && revCount()) b.append(el('span', 'dot', String(revCount())));
+    if (v === 'members' && apps.length) b.append(el('span', 'dot', String(apps.length)));
     b.onclick = () => { aView = v; renderAdmin(); }; g.append(b);
   });
   w.append(g);
@@ -1578,12 +1580,13 @@ function ensureAdminBanner() {
 function renderAdmin() {
   if (!$('admin').classList.contains('open')) return;
   ensureAdminBanner();
-  const AT = { home: '⚙ التحكم والإعدادات', struct: '📚 إدارة الأقسام', review: '🤖 رفيق والتنبيهات' };
+  const AT = { home: '⚙ التحكم والإعدادات', struct: '📚 إدارة الأقسام', review: '🤖 رفيق والتنبيهات', members: '👥 إدارة المجموعات والأفراد' };
   if (!isAdmin() && aView !== 'struct') aView = 'struct';
-  $('aHome').style.display = aView === 'home' ? '' : 'none'; $('aStruct').style.display = aView === 'struct' ? 'flex' : 'none'; $('aReviewBox').style.display = aView === 'review' ? '' : 'none';
+  $('aHome').style.display = aView === 'home' ? '' : 'none'; $('aStruct').style.display = aView === 'struct' ? 'flex' : 'none'; $('aReviewBox').style.display = aView === 'review' || aView === 'members' ? '' : 'none';
   $('aBack').textContent = aView !== 'home' && isAdmin() ? '→ رجوع' : 'الرجوع للرئيسية'; $('aHead').textContent = AT[aView];
   if (aView === 'home') { admW.set(null); drawAdminHome(); return; }
   if (aView === 'review') { admW.set(null); renderReview(); return; }
+  if (aView === 'members') { admW.set(null); renderMembers(); return; }
   if (aSel && !byId(aSel)) aSel = null;
   admW.set(admTarget());
 
@@ -1591,7 +1594,13 @@ function renderAdmin() {
   if (loadErr) t.append(msg('تعذّر تحميل البيانات'));
   else if (!ready) t.append(skeleton(4));
   else if (!nodes.some(n => n.type === 'uni')) t.append(msg('لا توجد جامعات بعد'));
-  (isAdmin() ? kids(null, 'uni') : [me && me.scope && byId(me.scope.id)].filter(Boolean)).forEach(u => treeNode(u).forEach(x => t.append(x)));
+  (isAdmin() ? kids(null, 'uni') : [me && me.scope && byId(me.scope.id)].filter(Boolean)).forEach(u => {
+    const parentUni = !isAdmin() && u.type === 'col' && u.parentId ? byId(u.parentId) : null;
+    if (parentUni && parentUni.type === 'uni') {
+      const row = el('div', 't-item'), lab = el('span', 't-lab'), ic = el('span', 't-ic'); ic.innerHTML = ICON.uni; lab.append(ic, el('span', 't-name', dn(parentUni))); row.append(lab); t.append(row);
+      const group = el('div', 't-group'); treeNode(u).forEach(x => group.append(x)); t.append(group);
+    } else treeNode(u).forEach(x => t.append(x));
+  });
   $('aAddUni').style.display = isAdmin() ? '' : 'none'; 
   const m = $('aMain'); m.textContent = '';
   const n = aSel ? byId(aSel) : null;
@@ -1662,6 +1671,7 @@ function collectMergeNotices() {
   const ledger = duplicateLedger();
   for (const source of nodes) {
     if (!source.mergedInto || !ledger[source.id]?.pending && source.createdByUid !== authUser.uid) continue;
+    if (!(Date.now() - Number(source.mergedAt || 0) < 10800000)) continue;
     const target = byId(source.id), key = source.id + ':' + target?.id;
     if (!target || ledger[key]?.seen || duplicateQueued.has(key)) continue;
     enqueueDuplicate({ key, sourceId: source.id, existingId: target.id, existingName: target.name, name: ledger[source.id]?.name || source.name, type: target.type, parentId: target.parentId, merged: true });
@@ -1775,7 +1785,12 @@ function etaText(view) {
   return 'الوقت المتبقي تقريباً: ' + (minutes >= 60 ? Math.floor(minutes / 60) + ' ساعة و' + (minutes % 60) + ' دقيقة' : minutes + ' دقيقة');
 }
 function updateProcessingIndicator(box, source, lecture = false) {
-  const view = processingView(source, lecture);
+  let view = null;
+  if (lecture) {
+    const job = rafiqServerJobs.find(j => j.id === source.rafiqJobId) || rafiqServerJobs.find(j => j.lectureId === source.id && ['running', 'queued'].includes(j.status));
+    if (job && ['running', 'queued'].includes(job.status)) { view = processingView(job, false); view.title = source.title || view.title; }
+  }
+  view = view || processingView(source, lecture);
   if (!box.firstChild) {
     const head = el('div', 'processing-heading'), title = el('b', 'processing-title'), state = el('span', 'processing-state'); head.append(title, state);
     const line = el('div', 'processing-line'), meter = document.createElement('progress'), percent = el('span', 'processing-percent'); meter.max = 100; meter.className = 'processing-meter'; percent.dir = 'ltr'; line.append(meter, percent);
@@ -1790,7 +1805,7 @@ function updateProcessingIndicator(box, source, lecture = false) {
 }
 function processingIndicator(source, { lecture = false, compact = false } = {}) {
   const box = el('div', 'processing-progress' + (compact ? ' processing-compact' : ''));
-  if (lecture) box.dataset.progressLecture = source.id;
+  if (lecture) { box.dataset.progressLecture = source.id; box._lecture = source; }
   updateProcessingIndicator(box, source, lecture); return box;
 }
 function refreshLectureProgress(parent, lecture) {
@@ -2005,10 +2020,18 @@ async function pump() {
   } finally { pumping = false; }
 }
 async function startAnalysis(lecture) { try { await rafiqCall('job-start', { lectureId: lecture.id }); toast('أُرسلت المهمة إلى رفيق'); } catch (e) { toast(e.message); } }
+let barDismissedKey = '';
 function updateBar() {
+  document.querySelectorAll('.processing-progress[data-progress-lecture]').forEach(box => { if (box._lecture) updateProcessingIndicator(box, box._lecture, true); });
   const bar = $('taskBar'); bar.textContent = ''; const list = [...tasks.values()].filter(t => !t.ownerUid || t.ownerUid === authUser?.uid).sort((a, b) => a.createdAt - b.createdAt), jobs = dashboardUser === authUser?.uid ? rafiqServerJobs.filter(visibleBackgroundJob) : [];
   if (!isStaff() || !list.length && !jobs.length) { bar.style.display = 'none'; return; }
-  bar.style.display = 'block'; bar.append(el('h5', null, 'الرفع والمعالجة (' + (list.length + jobs.length) + ')'));
+  const barKey = list.map(t => t.id).join(',') + '|' + jobs.map(j => j.id).join(',');
+  if (barDismissedKey === barKey) { bar.style.display = 'none'; return; }
+  bar.style.display = 'block';
+  const barHead = el('div'); barHead.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px';
+  const barClose = el('button', 'abtn abtn-l', '×'); barClose.type = 'button'; barClose.setAttribute('aria-label', 'إغلاق'); barClose.style.cssText = 'padding:0 10px;font-size:1.2rem;line-height:1.6';
+  barClose.onclick = () => { barDismissedKey = barKey; bar.style.display = 'none'; };
+  barHead.append(el('h5', null, 'الرفع والمعالجة (' + (list.length + jobs.length) + ')'), barClose); bar.append(barHead);
   list.forEach(task => {
     const row = el('div', 'trow'); row.append(el('b', null, (task.kind === 'video' ? '🎬 ' : '📄 ') + task.title));
     const info = task.stage === 'lost' ? task.err : task.paused ? 'ينتظر الاتصال أو إعادة المحاولة تلقائيًا: ' + task.err : task.stage === 'reserve' ? 'حفظ الترتيب وتجهيز الملفات…' : task.stage === 'upload' ? task.running ? 'جاري الرفع ' + Math.round(task.pct || 0) + '%' : 'بانتظار الدور' : 'حفظ الملف وتشغيل المعالجة على الخادم…';
@@ -2129,7 +2152,7 @@ function hashPass(s) {
   h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
-function memberForm(parent, title) {
+function memberForm(parent, title, opts = {}) {
   const box = el('div', 'jbox'), ins = {};
   if (title) box.append(el('h4', 'sh', title));
   MF.forEach(([k, l, t]) => {
@@ -2139,6 +2162,11 @@ function memberForm(parent, title) {
     else { i = el('input', 'fld'); i.type = t; if (t === 'email' || t === 'password') i.dir = 'ltr'; }
     ins[k] = i; box.append(i);
   });
+  if (opts.university) {
+    box.append(el('label', 'lbl', 'الجامعة (اختر من القائمة أو اكتب اسمها)'));
+    const list = document.createElement('datalist'); list.id = 'joinUniList'; nodes.filter(n => n.type === 'uni' && !n.mergedInto).forEach(n => list.append(new Option(n.name)));
+    const uni = el('input', 'fld'); uni.type = 'text'; uni.setAttribute('list', 'joinUniList'); ins.university = uni; box.append(uni, list);
+  }
   const pledge = el('label', 'join-pledge'), agree = el('input'); agree.type = 'checkbox'; agree.setAttribute('aria-label', 'أتعهد بالأمانة والمسؤولية'); pledge.append(agree, el('span', null, JOIN_PLEDGE)); box.append(pledge);
   parent.append(box);
   return {
@@ -2146,6 +2174,7 @@ function memberForm(parent, title) {
       if (!agree.checked) throw new Error('يجب الموافقة على تعهد الأمانة والمسؤولية قبل تقديم الطلب.');
       const v = {};
       for (const [k, l] of MF) { v[k] = ins[k].value.trim(); if (!v[k] && k !== 'link') throw new Error('أكمل الحقل: ' + l.split('(')[0]); }
+      if (ins.university) { v.university = ins.university.value.trim(); if (!v.university) throw new Error('أكمل الحقل: الجامعة'); }
       if (!/^\S+@\S+\.\S+$/.test(v.email)) throw new Error('البريد الإلكتروني غير صحيح');
       const p = ins.pass.value;
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(p)) throw new Error('كلمة المرور ضعيفة: 8 أحرف على الأقل مع حرف كبير وصغير ورقم');
@@ -2217,7 +2246,7 @@ function renderJoin(c) {
   if (st === 'team') { c.append(el('h3', 'btitle', 'الانضمام الجماعي')); choice([['🔑', 'الانضمام لفريق موجود', 'بالاسم وكلمة مرور الفريق', () => go_('tjoin'), cJ], ['🆕', 'إنشاء فريق جديد', 'أنشئ فريقك وأضف أعضاءه', () => go_('tnew'), cT - cJ]]); return; }
   const submit = el('button', 'abtn abtn-b', 'إرسال الطلب'); submit.style.cssText = 'font-size:1.2rem;padding:12px 28px;margin-top:14px';
   if (st === 'single') {
-    c.append(el('h3', 'btitle', 'انضمام فردي')); const f = memberForm(c);
+    c.append(el('h3', 'btitle', 'انضمام فردي')); const f = memberForm(c, null, { university: true });
     c.append(err, submit); submit.onclick = () => send(submit, async () => { await submitJoin('person', [f.get()], null); go_('done'); }); return;
   }
   if (st === 'tjoin') {
@@ -2260,7 +2289,13 @@ async function submitJoin(kind, members, team) {
       try { cred = await createUserWithEmailAndPassword(auth, data.email, pass); }
       catch (e) {
         if (e.code === 'auth/email-already-in-use') {
-          try { cred = await signInWithEmailAndPassword(auth, data.email, pass); } catch (e3) { try { await sendPasswordResetEmail(auth, data.email); } catch (e4) {} throw new Error('هذا البريد له حساب سابق بكلمة مرور مختلفة. أرسلنا رابط إعادة تعيين كلمة المرور إلى بريدك، استخدم كلمة المرور القديمة ثم أعد التقديم.'); }
+          try { cred = await signInWithEmailAndPassword(auth, data.email, pass); }
+          catch (e3) {
+            /* حساب سابق بلا صلاحية ولا طلب (مثل من أُلغيت صلاحيته): نعتمد كلمة المرور الجديدة دون اشتراط القديمة */
+            let reset = null; try { reset = await (await fetch(API_URL + '?action=applicant-reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: data.email, password: pass }) })).json(); } catch (_) {}
+            if (!reset || !reset.success) throw new Error(reset && reset.error || 'تعذّر إكمال التقديم بهذا البريد حاليًا. حاول لاحقًا.');
+            try { cred = await signInWithEmailAndPassword(auth, data.email, pass); } catch (e5) { throw new Error('تعذّر إكمال التقديم بهذا البريد. حاول مرة أخرى.'); }
+          }
           const ex = await getDoc(doc(db, 'applications', cred.user.uid)); if (ex.exists()) throw new Error('لهذا البريد طلب سابق');
         } else throw new Error(e.code === 'auth/weak-password' ? 'كلمة المرور ضعيفة' : 'تعذّر إنشاء الحساب (' + (e.code || e.message) + ')'); }
       if (kind === 'team' && team.isNew && i === 0) { teamId = doc(collection(db, 'teams')).id; await setDoc(doc(db, 'teams', teamId), { name: team.name, passHash: hashPass(team.pass), university: team.university, createdAt: Date.now() }); }
@@ -2296,7 +2331,7 @@ function appCards(body, list) {
   if (!list.length) { body.append(msg('لا توجد طلبات بانتظار المراجعة.')); return; }
   list.forEach(a => {
     const c = el('div', 'att'); c.style.cssText = 'display:block;padding:18px';
-    c.append(el('b', null, '👤 ' + a.name + (a.kind === 'team' ? ' — فريق «' + a.teamName + '»' + (a.newTeam ? ' (فريق جديد، الجامعة المقترحة: ' + (a.teamUniversity || '-') + ')' : '') : '')));
+    c.append(el('b', null, '👤 ' + a.name + (a.kind === 'person' && a.university ? ' — الجامعة: ' + a.university : '') + (a.kind === 'team' ? ' — فريق «' + a.teamName + '»' + (a.newTeam ? ' (فريق جديد، الجامعة المقترحة: ' + (a.teamUniversity || '-') + ')' : '') : '')));
     if (a.aiDecision === 'admin') { const note = el('p', 'merr', '🤖 حوّله الذكاء الاصطناعي للإدارة: ' + (a.aiReason || 'يحتاج مراجعة')); note.style.margin = '6px 0'; c.append(note); }
     const dl = el('div'); dl.style.cssText = 'font-size:1.1rem;line-height:1.9;margin:8px 0';
     MF.filter(f => !['pass', 'pass2', 'name'].includes(f[0])).forEach(([k, l]) => { if (a[k]) { const r = el('div'); r.append(el('strong', null, l.split('(')[0] + ': '), document.createTextNode(a[k])); dl.append(r); } });
@@ -2348,12 +2383,23 @@ async function restoreMembers(list) {
 }
 function blockedBlock(body, mode) {
   const arr = blockedStaff.filter(u => mode === 'solo' ? !u.teamId : !!u.teamId); if (!arr.length) return;
-  body.append(el('h4', 'sh', '⛔ المحظورون (' + arr.length + ')'));
+  body.append(el('h4', 'sh', (mode === 'solo' ? '⛔ الأفراد المحظورون (' : '⛔ الفرق المحظورة (') + arr.length + ')'));
   arr.forEach(u => {
     const r = el('div', 'att'); r.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px';
     const tx = el('div'); tx.append(el('b', null, u.name || u.email), el('br'), el('small', null, u.email + (u.teamName ? ' — فريق «' + u.teamName + '»' : '')));
     const back = el('button', 'abtn abtn-g', '♻️ إعادة الصلاحيات'); back.onclick = () => restoreMembers([u]); r.classList.add('profile-member'); r.append(tx, back, acceptedMemberDetails(u)); body.append(r);
   });
+}
+function renderMembers() {
+  const body = $('aReviewBox'); body.textContent = ''; body.className = 'aview jform';
+  const waiting = apps.slice().sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)), escalated = waiting.filter(a => a.aiDecision === 'admin'), inAi = waiting.filter(a => a.aiDecision !== 'admin');
+  body.append(el('h4', 'sh', '⏳ طلبات بانتظار قرارك (' + escalated.length + ')'));
+  body.append(el('small', null, 'طلبات لم يحسمها الذكاء الاصطناعي وحوّلها إليك مع السبب.'));
+  appCards(body, escalated);
+  if (inAi.length) { body.append(el('h4', 'sh', '🤖 قيد المراجعة الآلية (' + inAi.length + ')')); body.append(el('small', null, 'لم يصدر فيها قرار بعد. إن تأخرت يمكنك قبولها أو رفضها بنفسك.')); appCards(body, inAi); }
+  staffBlock(body, '👥 الفرق المقبولة', 'teams');
+  staffBlock(body, '👤 الأفراد المقبولون', 'solo');
+  blockedBlock(body, 'teams'); blockedBlock(body, 'solo');
 }
 function adminJoin(c, st) {
   c.append(el('h3', 'btitle', { single: '👤 طلبات الانضمام الفردي', tjoin: '🔑 طلبات الانضمام لفريق موجود', tnew: '🆕 طلبات إنشاء فرق جديدة' }[st]));
@@ -2933,7 +2979,7 @@ async function doAnalyzeBook(task) { return rafiqCall('job-start', { lectureId: 
 async function startBookAnalysis(book) { return rafiqCall('job-start', { lectureId: book.id }); }
 
 /* خدمات الطلبة؛ جميع القيم المدخلة تُرسم كنص ولا تُنفّذ كـ HTML. */
-const RELEASE_ID = 'university-platform-20261113-1';
+const RELEASE_ID = 'university-platform-20261114-1';
 const FORUM_ID = 'public-forum';
 let serviceShell = null, contactUnsub = null, contactOwner = '', contactRows = [], contactLoadError = '';
 async function communityUser() {
@@ -3013,7 +3059,7 @@ function renderGpa(parent){
 }
 
 const JOIN_PLEDGE = 'أتعهد بالأمانة والدقة وتحمل المسؤولية عند إدخال البيانات وإنشاء الجامعات والكليات والتخصصات والمواد وإضافة المحتوى، والتحقق من صحة المعلومات وعدم تكرار الأقسام أو نشر محتوى مضلل أو مخالف لحقوق الآخرين. وألتزم باحترام المستخدمين وتصحيح الأخطاء والتعاون مع إدارة المنصة، وأقر بأن البيانات التي قدمتها صحيحة.';
-function applicationProfile(a){const result={};for(const key of [...MF.map(f=>f[0]).filter(k=>!['pass','pass2'].includes(k)),'kind','teamName','teamUniversity','newTeam','pledgeAccepted','pledgeText','pledgeVersion','pledgeAcceptedAt','createdAt'])if(a[key]!==undefined)result[key]=a[key];return result;}
+function applicationProfile(a){const result={};for(const key of [...MF.map(f=>f[0]).filter(k=>!['pass','pass2'].includes(k)),'kind','university','teamName','teamUniversity','newTeam','pledgeAccepted','pledgeText','pledgeVersion','pledgeAcceptedAt','createdAt'])if(a[key]!==undefined)result[key]=a[key];return result;}
 function acceptedMemberDetails(user){const details=el('details','profile-details'),summary=el('summary',null,'عرض كافة البيانات');details.append(summary);let loaded=false;details.ontoggle=async()=>{if(!details.open||loaded)return;loaded=true;const box=el('div');box.append(msg('جاري تحميل بيانات الانضمام…'));details.append(box);try{const saved=await getDoc(doc(db,'applications',user.id)),data={...(user.profile||{}),...(saved.exists()?saved.data():{}),name:user.name,email:user.email};box.textContent='';for(const [key,label]of MF.filter(f=>!['pass','pass2'].includes(f[0]))){const p=el('p');p.append(el('b',null,label.split('(')[0]+': '),document.createTextNode(String(data[key]||'لم يُسجّل في الطلب القديم')));box.append(p);}for(const [label,value]of [['طريقة الانضمام',data.kind==='team'?'فريق':'فردي'],['الفريق',user.teamName||data.teamName||'—'],['الجامعة المقترحة للفريق',data.teamUniversity||'—'],['التعهد',data.pledgeAccepted?data.pledgeText||JOIN_PLEDGE:'الطلب سابق لإضافة التعهد'],['تاريخ الموافقة',user.approvedAt?new Date(user.approvedAt).toLocaleString('ar-JO'):'—']]){const p=el('p');p.append(el('b',null,label+': '),document.createTextNode(String(value)));box.append(p);}}catch(e){box.textContent='تعذّر تحميل البيانات؛ أغلق التفاصيل وأعد فتحها.';loaded=false;details.removeChild(box);toast(e.message)}};return details;}
 let profileUnsub=null,profileUid='',profileSignature='';
 function watchSelfProfile(user){const uid=user?.uid||'';if(uid===profileUid)return;if(profileUnsub)profileUnsub();profileUnsub=null;profileUid=uid;profileSignature=JSON.stringify(me||{});if(!uid)return;profileUnsub=onSnapshot(doc(db,'users',uid),snapshot=>{if(profileUid!==uid)return;const data=snapshot.exists()?snapshot.data():null;if(!data||!['admin','contrib'].includes(data.role)){profileUid='';if(profileUnsub)profileUnsub();profileUnsub=null;authUser=null;me=null;role=null;watchApps(false);closeAdmin();updateAuthUI();void signOut(auth);return;}const signature=JSON.stringify(data);if(signature===profileSignature)return;profileSignature=signature;me=data;role=data.role;watchApps(isAdmin());updateAuthUI();render();renderAdmin();},error=>console.error('profile-listener',error));}

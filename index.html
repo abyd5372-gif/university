@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="platform-release" content="university-platform-20261112-1">
+<meta name="platform-release" content="university-platform-20261113-1">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
 <title>المنصة الجامعية الشاملة</title>
 <meta name="description" content="المنصة الجامعية الشاملة: تصفح المواد والجامعات وانضم إلينا.">
@@ -1425,6 +1425,7 @@ async function adminState(u) {
     if (d.exists()) {
       const r = String(d.data().role || '').trim().toLowerCase();
       if (r === 'admin' || (r === 'contrib' && d.data().scope && d.data().scope.id)) { lastMe = d.data(); return 'ok'; }
+      if (r === 'blocked') return 'blocked';
       return 'badrole';
     }
     const ap = await getDoc(doc(db, 'applications', u.uid));
@@ -1478,8 +1479,9 @@ async function submitAuth() {
     if (st !== 'ok') {
       try { await signOut(auth); } catch (e2) {}
       $('authErr').textContent =
-        st === 'pending' ? 'طلب انضمامك ما زال قيد مراجعة الإدارة' : st === 'rejected' ? 'تم رفض طلب انضمامك' :
+        st === 'pending' ? 'طلب انضمامك قيد المراجعة' : st === 'rejected' ? 'تم رفض طلب انضمامك' :
         st === 'nodoc' ? 'لا يوجد لهذا الحساب صلاحية. قدّم طلباً من «انضم إلينا»' :
+        st === 'blocked' ? 'أوقفت الإدارة صلاحيات هذا الحساب. تواصل معها لاستعادتها' :
         st === 'badrole' ? 'هذا الحساب لا يملك صلاحية' :
         st === 'denied' ? 'قواعد Firestore تمنع قراءة بيانات الحساب، عدّل القواعد' : 'تعذّر التحقق من الصلاحية، تحقق من الاتصال';
     } else {
@@ -2265,18 +2267,20 @@ async function submitJoin(kind, members, team) {
       await setDoc(doc(db, 'applications', cred.user.uid), { ...data, uid: cred.user.uid, kind, teamId, teamName: team ? team.name : '', teamUniversity: team ? team.university || '' : '', newTeam: !!(team && team.isNew), status: 'pending', createdAt: Date.now() });
       await signOut(auth);
     }
-  } finally { joining = false; try { await signOut(auth); } catch (e) {} }
+  } finally { joining = false; try { await signOut(auth); } catch (e) {} try { fetch(API_URL + '?action=review-applications', { method: 'POST', keepalive: true }).catch(() => {}); } catch (e) {} }
 }
 
 /* ---------- مراجعة الإدارة ---------- */
-let apps = [], unsubApps = null, staff = [], unsubStaff = null;
+let apps = [], unsubApps = null, staff = [], unsubStaff = null, blockedStaff = [], unsubBlocked = null;
 const revCount = () => isAdmin() && dashboardData ? actionableDashboardAlerts().length : 0;
 function watchApps(on) {
   if (unsubApps) { unsubApps(); unsubApps = null; } apps = [];
   if (unsubStaff) { unsubStaff(); unsubStaff = null; } staff = [];
+  if (unsubBlocked) { unsubBlocked(); unsubBlocked = null; } blockedStaff = [];
   if (!on) return;
   unsubApps = onSnapshot(query(collection(db, 'applications'), where('status', '==', 'pending')), snap => { apps = snap.docs.map(d => ({ id: d.id, ...d.data() })); afterApps(); renderAdmin(); }, e => console.error(e));
   unsubStaff = onSnapshot(query(collection(db, 'users'), where('role', '==', 'contrib')), snap => { staff = snap.docs.map(d => ({ id: d.id, ...d.data() })); afterApps(); renderAdmin(); }, e => console.error(e));
+  unsubBlocked = onSnapshot(query(collection(db, 'users'), where('role', '==', 'blocked')), snap => { blockedStaff = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderAdmin(); }, e => console.error(e));
 }
 async function purgeLectures(ids) {
   for (const id of [...new Set(ids.flatMap(aliasIds))]) {
@@ -2293,6 +2297,7 @@ function appCards(body, list) {
   list.forEach(a => {
     const c = el('div', 'att'); c.style.cssText = 'display:block;padding:18px';
     c.append(el('b', null, '👤 ' + a.name + (a.kind === 'team' ? ' — فريق «' + a.teamName + '»' + (a.newTeam ? ' (فريق جديد، الجامعة المقترحة: ' + (a.teamUniversity || '-') + ')' : '') : '')));
+    if (a.aiDecision === 'admin') { const note = el('p', 'merr', '🤖 حوّله الذكاء الاصطناعي للإدارة: ' + (a.aiReason || 'يحتاج مراجعة')); note.style.margin = '6px 0'; c.append(note); }
     const dl = el('div'); dl.style.cssText = 'font-size:1.1rem;line-height:1.9;margin:8px 0';
     MF.filter(f => !['pass', 'pass2', 'name'].includes(f[0])).forEach(([k, l]) => { if (a[k]) { const r = el('div'); r.append(el('strong', null, l.split('(')[0] + ': '), document.createTextNode(a[k])); dl.append(r); } });
     if (a.pledgeAccepted) dl.append(el('p', null, '✓ التعهد: ' + (a.pledgeText || JOIN_PLEDGE))); c.append(dl);
@@ -2317,22 +2322,44 @@ function staffBlock(body, title, mode) {
   const memberRow = u => {
     const r = el('div', 'att'); r.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px';
     const tx = el('div'); tx.append(el('b', null, u.name || u.email), el('br'), el('small', null, u.email + ' — ' + (u.scope && u.scope.type === 'college' ? 'كلية: ' : 'جامعة: ') + sname(u)));
-    const b = el('button', 'abtn abtn-l', '🚫 إلغاء الصلاحية'); b.onclick = () => revoke([u], 'إلغاء صلاحية ' + (u.name || u.email) + '؟'); r.classList.add('profile-member'); r.append(tx, b, acceptedMemberDetails(u)); return r;
+    if (u.approvedBy === 'ai') tx.append(el('br'), el('small', null, '🤖 قُبل آليًا' + (u.aiReason ? ': ' + u.aiReason : '')));
+    const b = el('button', 'abtn abtn-l', '🚫 إلغاء الصلاحية'); b.onclick = () => revoke([u], 'إلغاء صلاحية ' + (u.name || u.email) + '؟');
+    const bl = el('button', 'abtn abtn-l', '⛔ حظر'); bl.onclick = () => blockMembers([u], 'حظر ' + (u.name || u.email) + ' ومنعه من أي صلاحية؟');
+    r.classList.add('profile-member'); r.append(tx, b, bl, acceptedMemberDetails(u)); return r;
   };
   if (mode === 'solo') { arr.forEach(u => body.append(memberRow(u))); return; }
   const teams = {}; arr.forEach(u => (teams[u.teamId] = teams[u.teamId] || []).push(u));
   Object.keys(teams).forEach(tid => {
     const ms = teams[tid], box = el('div', 'jbox'), h = el('div'); h.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:10px';
     h.append(el('b', null, '👥 فريق «' + (ms[0].teamName || tid) + '» (' + ms.length + ')'));
-    const d = el('button', 'abtn abtn-l', '🗑 حذف الفريق'); d.onclick = () => revoke(ms, 'حذف فريق «' + (ms[0].teamName || tid) + '» وإلغاء صلاحيات كل أعضائه؟', tid); h.append(d); box.append(h);
+    const d = el('button', 'abtn abtn-l', '🗑 حذف الفريق'); d.onclick = () => revoke(ms, 'حذف فريق «' + (ms[0].teamName || tid) + '» وإلغاء صلاحيات كل أعضائه؟', tid);
+    const bt = el('button', 'abtn abtn-l', '⛔ حظر الفريق'); bt.style.marginRight = '8px'; bt.onclick = () => blockMembers(ms, 'حظر فريق «' + (ms[0].teamName || tid) + '» ومنع كل أعضائه من أي صلاحية؟'); h.append(d, bt); box.append(h);
     ms.forEach(u => box.append(memberRow(u))); body.append(box);
+  });
+}
+async function blockMembers(list, q) {
+  if (!confirm(q + '\nيمكنك إعادة الصلاحيات لاحقًا من قائمة المحظورين.')) return;
+  try { const batch = writeBatch(db); for (const u of list) batch.update(doc(db, 'users', u.id), { role: 'blocked', blockedAt: Date.now(), blockedBy: authUser ? authUser.uid : '' }); await batch.commit(); toast('تم الحظر'); }
+  catch (e) { console.error(e); toast('تعذّر الحظر'); }
+}
+async function restoreMembers(list) {
+  try { const batch = writeBatch(db); for (const u of list) batch.update(doc(db, 'users', u.id), { role: 'contrib', blockedAt: null, blockedBy: null }); await batch.commit(); toast('أُعيدت الصلاحيات'); }
+  catch (e) { console.error(e); toast('تعذّرت الاستعادة'); }
+}
+function blockedBlock(body, mode) {
+  const arr = blockedStaff.filter(u => mode === 'solo' ? !u.teamId : !!u.teamId); if (!arr.length) return;
+  body.append(el('h4', 'sh', '⛔ المحظورون (' + arr.length + ')'));
+  arr.forEach(u => {
+    const r = el('div', 'att'); r.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px';
+    const tx = el('div'); tx.append(el('b', null, u.name || u.email), el('br'), el('small', null, u.email + (u.teamName ? ' — فريق «' + u.teamName + '»' : '')));
+    const back = el('button', 'abtn abtn-g', '♻️ إعادة الصلاحيات'); back.onclick = () => restoreMembers([u]); r.classList.add('profile-member'); r.append(tx, back, acceptedMemberDetails(u)); body.append(r);
   });
 }
 function adminJoin(c, st) {
   c.append(el('h3', 'btitle', { single: '👤 طلبات الانضمام الفردي', tjoin: '🔑 طلبات الانضمام لفريق موجود', tnew: '🆕 طلبات إنشاء فرق جديدة' }[st]));
   appCards(c, apps.filter(a => st === 'single' ? a.kind === 'person' : a.kind === 'team' && (st === 'tnew') === !!a.newTeam));
-  if (st === 'single') staffBlock(c, '👤 الأفراد الحاليون', 'solo');
-  if (st === 'tjoin') staffBlock(c, '👥 الفرق الحالية', 'teams');
+  if (st === 'single') { staffBlock(c, '👤 الأفراد الحاليون', 'solo'); blockedBlock(c, 'solo'); }
+  if (st === 'tjoin') { staffBlock(c, '👥 الفرق الحالية', 'teams'); blockedBlock(c, 'teams'); }
 }
 function updateDots() {
   const n = isAdmin() ? apps.length : 0;
@@ -2638,7 +2665,7 @@ function renderReview() {
     if (alert.courseName) card.append(el('p', null, 'المادة: ' + alert.courseName + ' • ' + (alert.lectureName || '')));
     for (const evidence of alert.evidence || []) card.append(el('blockquote', null, evidence.text + (evidence.page ? ' • ' + pageLabel(evidence) : Number.isFinite(evidence.start) ? ' • ' + timeLabel(evidence.start) : '')));
     const buttons = el('div', 'rafiq-actions');
-    if (alert.type === 'structure-review' && alert.nodeId) {
+    if (['structure-review', 'structure-mismatch'].includes(alert.type) && alert.nodeId) {
       const open = el('button', 'abtn abtn-b', 'فتح القسم للمراجعة'); open.type = 'button';
       open.onclick = () => { aView = 'struct'; selectNode(canonicalId(alert.nodeId)); }; buttons.append(open);
     }
@@ -2655,9 +2682,8 @@ function renderReview() {
     const card = el('div', 'rafiq-job'); card.append(processingIndicator(job), el('small', null, new Date(job.createdAt).toLocaleString('ar-JO')));
     if (job.requiresAdmin === true && job.error && job.status === 'error') card.append(el('p', 'merr', job.error)); body.append(card);
   });
-  if (isAdmin()) drawJobLog(body);
   body.append(el('h4', 'sh', 'سجل الدمج والتراجع'));
-  for (const merge of (dashboardData.merges || []).filter(item => !item.dismissedAt)) {
+  for (const merge of (dashboardData.merges || []).filter(item => !item.dismissedAt && item.source === 'admin')) {
     const row = el('div', 'rafiq-job'); row.append(el('b', null, (merge.secondaryName || 'عنصر') + ' ← ' + (merge.primaryName || 'العنصر الأقدم')), el('p', null, 'العناصر المتأثرة: ' + merge.changeCount + ' • ' + ({ committed: 'اكتمل الدمج', applying: 'جارٍ', 'rolled-back': 'تم التراجع' }[merge.status] || merge.status)));
     if (['committed', 'applying'].includes(merge.status)) { const undo = el('button', 'abtn abtn-l', 'التراجع عن هذا الدمج'); undo.type = 'button'; undo.onclick = async () => { if (!confirm('التراجع عن الدمج مع الحفاظ على أي تعديلات أحدث؟')) return; undo.disabled = true; try { await rafiqCall('merge-undo', { id: merge.id }); toast('بدأ التراجع على الخادم'); await refreshRafiqDashboard(true); } catch (e) { toast(e.message); } finally { undo.disabled = false; } }; row.append(undo); } if (['committed', 'rolled-back'].includes(merge.status)) { const dismiss = el('button', 'abtn abtn-g', merge.status === 'committed' ? 'الدمج صحيح، إخفاء' : 'إخفاء السجل'); dismiss.type = 'button'; dismiss.onclick = async () => { dismiss.disabled = true; try { await rafiqCall('merge-dismiss', { id: merge.id }); dashboardData.merges = dashboardData.merges.filter(item => item.id !== merge.id); renderReview(); } catch (e) { toast(e.message); dismiss.disabled = false; } }; row.append(dismiss); } body.append(row);
   }
@@ -2907,7 +2933,7 @@ async function doAnalyzeBook(task) { return rafiqCall('job-start', { lectureId: 
 async function startBookAnalysis(book) { return rafiqCall('job-start', { lectureId: book.id }); }
 
 /* خدمات الطلبة؛ جميع القيم المدخلة تُرسم كنص ولا تُنفّذ كـ HTML. */
-const RELEASE_ID = 'university-platform-20261112-1';
+const RELEASE_ID = 'university-platform-20261113-1';
 const FORUM_ID = 'public-forum';
 let serviceShell = null, contactUnsub = null, contactOwner = '', contactRows = [], contactLoadError = '';
 async function communityUser() {

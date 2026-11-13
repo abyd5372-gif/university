@@ -1669,7 +1669,7 @@ async function performMergeWorkflow(env, job, step, a, b, semantic, label) {
     await acquireStructureLock(env, job.id); const all = await listDocuments(env, 'structure'), plan = planStructureMerge(all, a, b, semantic);
     const mergeId = job.id + '-' + label, key = 'rafiq/private/merges/' + mergeId + '.json';
     await putPrivateJson(env, key, plan);
-    await patchDocument(env, 'rafiqMerges/' + mergeId, { jobId: job.id, createdAt: Date.now(), status: 'applying', primaryId: plan.primaryId || '', secondaryId: plan.secondaryId || '', primaryName: plan.primaryName || '', secondaryName: plan.secondaryName || '', changeCount: plan.changes.length, snapshotKey: key }, { create: true });
+    await patchDocument(env, 'rafiqMerges/' + mergeId, { jobId: job.id, createdAt: Date.now(), status: 'applying', primaryId: plan.primaryId || '', secondaryId: plan.secondaryId || '', primaryName: plan.primaryName || '', secondaryName: plan.secondaryName || '', changeCount: plan.changes.length, snapshotKey: key, source: label === 'manual' ? 'admin' : 'auto' }, { create: true });
     return { mergeId, key, count: plan.changes.length };
   });
   for (let offset = 0; offset < log.count; offset += 80) await step.do('merge-write-' + label + '-' + offset, WORKFLOW_STEP, async () => {
@@ -1714,7 +1714,7 @@ try {
   globalThis.fetch = (...args) => { externalRequestCount++; return nativeFetch(...args); };
   countingActive = true;
 } catch (_) { countingActive = false; }
-const BUDGET_LIMIT = 28, MAX_HANDOFFS = 60, CONCURRENCY = 2;
+const BUDGET_LIMIT = 25, MAX_HANDOFFS = 120, CONCURRENCY = 3;
 class Handoff extends Error {}
 // تشغيل خطوتين معًا: ننتظر انتهاء الاثنتين دائمًا قبل أي تسليم أو خطأ، حتى لا تُقطع خطوة في منتصفها.
 async function settleAll(promises) {
@@ -1794,7 +1794,7 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
           })));
           sectionKeys.push(...keys);
           const last = group[group.length - 1];
-          if (last % 2 === 1 || last === sectionTotal - 1) await durable('report-book-section-v1-' + last, async () => { await jobProgress(env, job, 'تم تلخيص ' + Math.min(mediaInfo.pageCount, (last + 1) * SECTION_PAGES) + ' من ' + mediaInfo.pageCount + ' صفحة', processingStep(job, 'extract', last + 1, sectionTotal)); return true; });
+          await durable('report-book-section-v2-' + last, async () => { await jobProgress(env, job, 'تم تلخيص ' + Math.min(mediaInfo.pageCount, (last + 1) * SECTION_PAGES) + ' من ' + mediaInfo.pageCount + ' صفحة', processingStep(job, 'extract', last + 1, sectionTotal)); return true; });
         }
         if (!mediaInfo.reuseBook) await durable('save-book-summary', WORKFLOW_STEP, async () => {
           await jobProgress(env, job, 'حفظ التلخيص التفصيلي للكتاب', processingStep(job, 'summary', 0, 1));
@@ -1834,7 +1834,7 @@ export class RafiqWorkflow extends WorkflowEntrypoint {
           })));
           windows.push(...parts);
           const last = group[group.length - 1];
-          if (last % 2 === 1 || last === windowTotal - 1) await durable('report-video-part-v1-' + last, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (last + 1) + ' من ' + windowTotal, processingStep(job, 'extract', last + 1, windowTotal)); return true; });
+          await durable('report-video-part-v2-' + last, async () => { await jobProgress(env, job, 'اكتملت قراءة أجزاء المحاضرة: ' + (last + 1) + ' من ' + windowTotal, processingStep(job, 'extract', last + 1, windowTotal)); return true; });
         }
         // A short sleep lets the instance hibernate so the next stage starts with a fresh outgoing-request budget (free Workers allow ~50).
         if (job.kind !== 'index' || !lecture.aiData) {
@@ -1992,30 +1992,139 @@ async function cancelUpload(request, env, actor) {
   return json({ success: true });
 }
 async function saveStructure(request, env, ctx, actor) {
-  const body = await parseBody(request), name = String(body.name || '').trim();
+  const body = await parseBody(request); let name = String(body.name || '').trim();
   if (!name || name.length > 120) throw fail('اكتب اسمًا لا يتجاوز 120 حرفًا');
+  let vetNote = null;
   const [all, lock] = await Promise.all([listDocuments(env, 'structure'), readDocument(env, 'rafiqLocks/structure')]);
   if (lock && lock.expiresAt > Date.now()) throw fail('يجري دمج الأقسام الآن. حاول بعد قليل.', 409);
   let node, id;
   if (body.id) {
     id = resolveNodeId(all, body.id); node = all.find(n => n.id === id);
     if (!node || !(actor.role === 'admin' || node.ownerKey === actor.myKey && !(node.aliasNames || []).length)) throw fail('لا تملك صلاحية تعديل هذا القسم.', 403);
+    if (name !== node.name && !(node.aliasNames || []).includes(name)) {
+      const vet = await vetStructureName(env, node.type, name, nodeChain(all, node.parentId || null).map(n => n.name));
+      if (vet.gibberish) throw fail('الاسم غير مفهوم. اكتب اسمًا حقيقيًا وواضحًا.', 422);
+      name = vet.name; if (vet.mismatch && actor.role !== 'admin') vetNote = vet;
+    }
     await patchDocument(env, 'structure/' + id, { name, updatedAt: Date.now() }, { updateTime: node._updateTime }); node = { ...node, name };
   } else {
     const user = actor.role === 'admin' ? null : await readDocument(env, 'users/' + actor.uid);
     const { type, parentId } = assertStructurePlacement(all, body, actor, user);
     const existing = type !== 'exp' && all.find(n => !n.mergedInto && n.type === type && resolveNodeId(all, n.parentId) === parentId && sameStructuralEntity(n, { type, name }) && noCourseConflict(n, body));
     if (existing) return json({ success: true, id: existing.id, reused: true, existingName: existing.name, existing: { id: existing.id, name: existing.name, type: existing.type, parentId: existing.parentId || null }, message: 'هذا القسم موجود مسبقًا باسم «' + existing.name + '».' });
+    const vet = await vetStructureName(env, type, name, nodeChain(all, parentId).map(n => n.name));
+    if (vet.gibberish) throw fail('الاسم غير مفهوم. اكتب اسمًا حقيقيًا وواضحًا.', 422);
+    name = vet.name; if (vet.mismatch && actor.role !== 'admin') vetNote = vet;
+    if (name !== String(body.name || '').trim()) {
+      const again = type !== 'exp' && all.find(n => !n.mergedInto && n.type === type && resolveNodeId(all, n.parentId) === parentId && sameStructuralEntity(n, { type, name }) && noCourseConflict(n, body));
+      if (again) return json({ success: true, id: again.id, reused: true, existingName: again.name, existing: { id: again.id, name: again.name, type: again.type, parentId: again.parentId || null }, message: 'هذا القسم موجود مسبقًا باسم «' + again.name + '».' });
+    }
     id = crypto.randomUUID(); node = { id, name, type, parentId, createdByUid: actor.uid, createdAt: Date.now(), updatedAt: Date.now(), status: 'approved', ...(actor.role === 'contrib' ? { ownerKey: actor.myKey, ownerName: actor.name || '' } : {}) };
     await patchDocument(env, 'structure/' + id, documentData(node), { create: true, absent: true });
   }
+  if (vetNote) { try { await notifyAdmin(env, 'structure-mismatch', id + '|' + name, { title: 'قسم قد لا يتناسب مع مكانه', reason: vetNote.reason || 'الاسم لا يتناسب مع الكلية أو التخصص الذي أُضيف تحته', nodeId: id, nodeName: name, parentId: node.parentId || '', manualReview: true, requiresAdmin: true }); } catch (error) { console.warn('mismatch-alert', error.message); } }
   const root = nodeChain([...all.filter(n => n.id !== id), node], id)[0];
   const queued = createJob(env, ctx, { kind: 'structure', actor, courseId: node.type === 'uni' ? '' : root && root.id || '', runKey: id + '-' + Date.now() });
   if (typeof ctx.waitUntil === 'function') ctx.waitUntil(queued.catch(error => console.warn('structure-enqueue', error.message)));
   else await queued;
   return json({ success: true, id });
 }
+
+/* ===== فحص أسماء الهيكل وقبول طلبات الانضمام بالذكاء الاصطناعي ===== */
+const NODE_LABEL = { uni: 'جامعة', col: 'كلية', maj: 'تخصص', cou: 'مادة دراسية', umat: 'مادة جامعية' };
+const APP_PROFILE_KEYS = ['name', 'phone', 'phone2', 'email', 'city', 'degree', 'college', 'majors', 'certs', 'job', 'years', 'subjects', 'link', 'bio', 'kind', 'teamName', 'teamUniversity', 'newTeam', 'pledgeAccepted', 'pledgeText', 'pledgeVersion', 'pledgeAcceptedAt', 'createdAt'];
+function nameLengthClose(a, b) { const x = String(a).length, y = String(b).length; return Math.abs(x - y) <= Math.max(3, Math.ceil(Math.max(x, y) * 0.35)); }
+// يفحص اسم جامعة/كلية/تخصص/مادة: كلام عشوائي، أخطاء إملائية، وعدم تناسب مع مكانه. عند أي عطل يُمرَّر الاسم كما هو.
+async function vetStructureName(env, type, name, parentNames = []) {
+  if (!NODE_LABEL[type] || !env.GEMINI_API_KEY) return { gibberish: false, name, mismatch: false, reason: '' };
+  try {
+    const out = await geminiGenerate(env, [{ text: 'أنت مدقق أسماء في منصة جامعية. النوع: ' + NODE_LABEL[type] + '. الاسم المُدخل: «' + name + '». المسار الحالي من الأعلى: ' + (parentNames.length ? parentNames.join(' ← ') : 'لا يوجد (مستوى أعلى)') + '.\n'
+      + 'أعد JSON فقط: {"gibberish":bool,"correctedName":string,"mismatch":bool,"reason":string}.\n'
+      + '- gibberish=true فقط إذا كان الاسم حروفًا عشوائية بلا معنى (مثل «غبنقبنلهله»)، لا للأسماء القصيرة أو الأجنبية أو المختصرة الحقيقية.\n'
+      + '- correctedName: صحّح الأخطاء الإملائية الواضحة فقط وبنفس لغة الاسم، دون ترجمة أو إعادة صياغة أو إضافة كلمات. إن لم يكن فيه خطأ أعد الاسم كما هو.\n'
+      + '- mismatch=true فقط إذا كان الاسم لا يتناسب بوضوح مع المسار (مثل «فقه الأسرة» تحت علم حاسوب، أو «هندسة كهربائية» تحت كلية الشريعة). مواد متطلبات الجامعة العامة (مثل الثقافة الإسلامية واللغة الإنجليزية واللغة العربية ومهارات الحاسوب والتربية الوطنية) مكانها قسم «مواد الجامعة» لا التخصصات، فإن أُضيفت مادة منها تحت تخصص بعيد عن مجالها فاعتبرها mismatch=true واذكر في reason أن مكانها مواد الجامعة الإجبارية أو الاختيارية. أما إن كان التخصص نفسه في مجال المادة فهي مقبولة وmismatch=false (مثل الثقافة الإسلامية تحت الشريعة أو الدراسات الإسلامية، واللغة الإنجليزية تحت تخصص اللغة الإنجليزية أو آدابها أو الترجمة، واللغة العربية تحت تخصص اللغة العربية، ومهارات الحاسوب تحت علم الحاسوب أو تقنية المعلومات). وإن كان النوع «مادة جامعية» فلا تفحص تناسبها مع أي تخصص واجعل mismatch=false.\n'
+      + '- reason: جملة عربية قصيرة.' }], { tokens: 700, timeoutMs: 30000 });
+    const corrected = String(out.correctedName || '').trim();
+    const safe = corrected && corrected !== name && corrected.length <= 120 && nameLengthClose(corrected, name) ? corrected : name;
+    return { gibberish: out.gibberish === true, name: safe, mismatch: out.mismatch === true && out.gibberish !== true, reason: String(out.reason || '').slice(0, 600) };
+  } catch (error) { console.warn('vet-structure-name', error.message); return { gibberish: false, name, mismatch: false, reason: '' }; }
+}
+async function createStructureByAi(env, all, { type, name, parentId }) {
+  const existing = all.find(n => !n.mergedInto && n.type === type && resolveNodeId(all, n.parentId || null) === (parentId || null) && sameStructuralEntity(n, { type, name }));
+  if (existing) return existing;
+  const id = crypto.randomUUID(), node = { id, name, type, parentId: parentId || null, createdByUid: 'ai', createdByAi: true, createdAt: Date.now(), updatedAt: Date.now(), status: 'approved' };
+  await patchDocument(env, 'structure/' + id, documentData(node), { create: true, absent: true }); all.push(node); return node;
+}
+async function reviewOneApplication(env, all, app) {
+  const live = all.filter(n => !n.mergedInto && (!n.status || n.status === 'approved')), unis = live.filter(n => n.type === 'uni'), cols = live.filter(n => n.type === 'col');
+  const isTeam = app.kind === 'team', reasonParts = [];
+  let scope = null, reason = '';
+  if (isTeam && app.teamId) {
+    const team = await readDocument(env, 'teams/' + app.teamId);
+    if (team && team.aiScope && team.aiScope.id && all.some(n => n.id === resolveNodeId(all, team.aiScope.id))) { scope = team.aiScope; reason = 'نطاق الفريق محدد مسبقًا'; }
+    else if (!app.newTeam) { const members = await queryDocuments(env, 'users', 'teamId', app.teamId, 6), member = members.find(u => u.role === 'contrib' && u.scope && u.scope.id); if (member) { scope = member.scope; reason = 'نطاق الفريق كما لبقية أعضائه'; } }
+  }
+  if (!scope) {
+    const profile = { النوع: isTeam ? 'عضو في فريق «' + (app.teamName || '') + '»' : 'فرد', الاسم: app.name, المدينة: app.city, التحصيل: app.degree, الكلية: app.college, التخصصات: app.majors, المواد: app.subjects, العمل: app.job, الخبرة: app.years, النبذة: String(app.bio || '').slice(0, 400), جامعة_الفريق_المقترحة: isTeam ? app.teamUniversity : undefined };
+    const out = await geminiGenerate(env, [{ text: 'أنت تراجع طلب انضمام شارح إلى منصة جامعية أردنية وتحدد نطاق صلاحياته.\nبيانات المتقدم: ' + JSON.stringify(profile) + '\nالجامعات الموجودة (id|الاسم): ' + unis.map(u => u.id + '|' + u.name).join('؛ ').slice(0, 5000) + '\nالكليات الموجودة (id|الاسم|id الجامعة): ' + cols.map(c => c.id + '|' + c.name + '|' + resolveNodeId(all, c.parentId)).join('؛ ').slice(0, 9000) + '\n'
+      + 'القواعد: ' + (isTeam ? 'هذا طلب فريق: الجامعة من «جامعة_الفريق_المقترحة». إن ذكر الأعضاء كلية أو تخصصًا محددًا اجعل scopeLevel="college" واختر الكلية المناسبة، وإلا scopeLevel="university". ' : 'هذا طلب فرد: اختر الجامعة والكلية الأنسب (scopeLevel="college") من بيانات الكلية والتخصصات والمواد. ')
+      + 'فضّل دائمًا العناصر الموجودة. لا تنشئ جامعة أو كلية جديدة إلا إذا كانت جامعة حقيقية داخل الأردن (universityInJordan=true) وكلية حقيقية ومعروفة، وبأسماء عربية سليمة إملائيًا. إن كان الطلب مبهمًا أو الاسم عشوائيًا أو لا يمكن تحديد الجامعة أو الكلية بثقة، أو الجامعة خارج الأردن، فاجعل decision="admin".\n'
+      + 'أعد JSON فقط: {"decision":"approve"|"admin","confidence":0..1,"applicantLooksGenuine":bool,"scopeLevel":"college"|"university","universityId":string,"newUniversityName":string,"universityInJordan":bool,"collegeId":string,"newCollegeName":string,"reason":string}' }], { tokens: 1200, timeoutMs: 45000 });
+    reason = String(out.reason || '').slice(0, 500);
+    const escalate = why => ({ escalate: why || reason || 'يحتاج مراجعة الإدارة' });
+    const decide = async () => {
+      if (out.decision !== 'approve' || Number(out.confidence) < 0.75 || out.applicantLooksGenuine !== true) return escalate();
+      let uni = unis.find(u => u.id === out.universityId);
+      if (!uni) {
+        const newName = String(out.newUniversityName || '').trim(); if (!newName || out.universityInJordan !== true) return escalate('الجامعة غير موجودة وليست مؤكدة داخل الأردن');
+        const vet = await vetStructureName(env, 'uni', newName); if (vet.gibberish) return escalate('اسم الجامعة غير مفهوم');
+        uni = await createStructureByAi(env, all, { type: 'uni', name: vet.name, parentId: null }); reasonParts.push('أُنشئت الجامعة «' + uni.name + '»');
+      }
+      if (out.scopeLevel !== 'college') return { scope: { type: 'university', id: uni.id } };
+      let col = cols.find(c => c.id === out.collegeId && resolveNodeId(all, c.parentId) === resolveNodeId(all, uni.id));
+      if (!col) {
+        const newName = String(out.newCollegeName || '').trim(); if (!newName) return escalate('تعذّر تحديد الكلية');
+        const vet = await vetStructureName(env, 'col', newName, [uni.name]); if (vet.gibberish) return escalate('اسم الكلية غير مفهوم');
+        col = await createStructureByAi(env, all, { type: 'col', name: vet.name, parentId: uni.id }); reasonParts.push('أُنشئت الكلية «' + col.name + '»');
+      }
+      return { scope: { type: 'college', id: col.id } };
+    };
+    const decision = await decide();
+    if (decision.escalate) { await patchDocument(env, 'applications/' + app.uid, { aiReviewedAt: Date.now(), aiDecision: 'admin', aiReason: String(decision.escalate).slice(0, 500) }); return 'admin'; }
+    scope = decision.scope;
+  }
+  const profile = {}; for (const key of APP_PROFILE_KEYS) if (app[key] !== undefined) profile[key] = app[key];
+  const note = [reason, ...reasonParts].filter(Boolean).join(' • ').slice(0, 600);
+  await patchDocument(env, 'users/' + app.uid, { role: 'contrib', name: app.name, email: app.email, scope, teamId: app.teamId || '', teamName: app.teamName || '', profile, approvedAt: Date.now(), approvedBy: 'ai', aiReason: note }, { create: true });
+  await patchDocument(env, 'applications/' + app.uid, { status: 'approved', scope, approvedBy: 'ai', aiReviewedAt: Date.now(), aiDecision: 'approve', aiReason: note });
+  if (isTeam && app.teamId) { try { await patchDocument(env, 'teams/' + app.teamId, { aiScope: scope }); } catch (_) {} }
+  return 'approved';
+}
+async function reviewApplications(env, limit = 3) {
+  await serverToken(env);
+  const pending = (await queryDocuments(env, 'applications', 'status', 'pending', 60)).filter(a => a.uid && !a.aiReviewedAt && Number(a.aiAttempts || 0) < 3).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)).slice(0, limit);
+  if (!pending.length) return { reviewed: 0 };
+  const all = await listDocuments(env, 'structure'); let reviewed = 0;
+  for (const app of pending) {
+    try { await reviewOneApplication(env, all, app); reviewed++; }
+    catch (error) {
+      console.warn('review-application', app.uid, error.message);
+      const attempts = Number(app.aiAttempts || 0) + 1;
+      try { await patchDocument(env, 'applications/' + app.uid, attempts >= 3 ? { aiAttempts: attempts, aiReviewedAt: Date.now(), aiDecision: 'admin', aiReason: 'تعذّرت المراجعة الآلية؛ يحتاج مراجعة الإدارة' } : { aiAttempts: attempts }); } catch (_) {}
+    }
+  }
+  return { reviewed };
+}
+let lastApplicationReview = 0;
 async function routeRafiq(request, env, ctx, action) {
+  if (action === 'review-applications') {
+    if (request.method !== 'POST') throw fail('طريقة الطلب غير مدعومة', 405);
+    if (Date.now() - lastApplicationReview < 4000) return json({ success: true, throttled: true });
+    lastApplicationReview = Date.now();
+    const work = reviewApplications(env, 2).catch(error => console.warn('review-applications', error.message));
+    if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(work); else await work;
+    return json({ success: true });
+  }
   if (action === 'rafiq-asset' && request.method === 'GET') return serveAsset(request, env);
   if (action === 'ask' || action === 'ask-course') { if (request.method !== 'POST') throw fail('طريقة الطلب غير مدعومة', 405); return ragAsk(request, env); }
   if (!action || !(/^(?:rafiq-|upload-|structure-(?:save|review)|lecture-rename|index-course|job-start|merge-|alert-)/.test(action))) return null;
@@ -2103,6 +2212,7 @@ async function repairBackground(env, ctx) {
     await patchDocument(env, 'rafiqState/structure', { signature, checkedAt: Date.now() }, { create: true });
   }
   await reconcileManagedAlerts(env, jobs, all);
+  try { await reviewApplications(env, 3); } catch (error) { console.warn('cron-review-applications', error.message); }
   await autoPrepareContent(env, ctx);
   // تحسين المذكرات القديمة القصيرة تدريجيًا، مع إبقاء الامتحانات الموجودة.
   const videos = await queryDocuments(env, 'lectures', 'type', 'video', 200);

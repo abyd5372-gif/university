@@ -947,7 +947,7 @@ function toggleMenu(open){
 function openSection(key){
   toggleMenu(false);
   if(key==='universities'||key==='subjects'){ if(window.navBrowse)window.navBrowse();else showToast('جاري التحميل…'); return; }
-  if(key==='join'){ if(window.isAdminNow&&window.isAdminNow()){ window.openAdmin(); return; } if(window.navJoin)window.navJoin();else showToast('جاري التحميل…'); return; }
+  if(key==='join'){ if(window.navJoin)window.navJoin();else showToast('جاري التحميل…'); return; }
   showToast(SECTIONS[key]+' — قريباً');
 }
 function goHome(){ toggleMenu(false); if(window.navHome)window.navHome();else window.scrollTo({top:0,behavior:'smooth'}); }
@@ -1430,10 +1430,7 @@ async function adminState(u) {
 }
 const checkAdmin = async u => (await adminState(u)) === 'ok';
 window.isAdminNow = () => isAdmin();
-function syncJoinNav() {
-  const label = isAdmin() ? 'التحكم والإعدادات' : 'انضم إلينا';
-  document.querySelectorAll('a[onclick="openSection(\'join\')"]').forEach(a => { const t = [...a.childNodes].find(n => n.nodeType === 3); if (t && t.nodeValue.trim() !== label) t.nodeValue = label; });
-}
+function syncJoinNav() {}
 function updateAuthUI() {
   syncJoinNav();
   const label = authUser ? ((me && me.name) || authUser.email) : gUser ? (gUser.displayName || gUser.email) : 'الدخول';
@@ -2409,7 +2406,7 @@ function adminJoin(c, st) {
 }
 function updateDots() {
   const n = isAdmin() ? apps.length : 0;
-  document.querySelectorAll('[onclick="openSection(\'join\')"]').forEach(e => {
+  document.querySelectorAll('#adminBtn').forEach(e => {
     let d = e.querySelector(':scope > .dot');
     if (!n) { if (d) d.remove(); return; }
     if (!d) { d = el('span', 'dot'); e.style.position = 'relative'; e.append(d); }

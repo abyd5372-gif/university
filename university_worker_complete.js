@@ -2103,10 +2103,19 @@ async function reviewOneApplication(env, all, app) {
   await patchDocument(env, 'users/' + app.uid, { role: 'contrib', name: app.name, email: app.email, scope, teamId: app.teamId || '', teamName: app.teamName || '', profile, approvedAt: Date.now(), approvedBy: 'ai', aiReason: note }, { create: true });
   await patchDocument(env, 'applications/' + app.uid, { status: 'approved', scope, approvedBy: 'ai', aiReviewedAt: Date.now(), aiDecision: 'approve', aiReason: note });
   if (isTeam && app.teamId) { try { await patchDocument(env, 'teams/' + app.teamId, { aiScope: scope }); } catch (_) {} }
+  await sendApprovalEmail(env, app.uid);
   return 'approved';
+}
+// مسح تلقائي: أي طلب مقبول (بالذكاء أو يدويًا) لم يصله بريد يُرسل له الآن، دون أي تدخل.
+async function sendPendingApprovalEmails(env, limit = 3) {
+  if (!env.MAIL_SCRIPT_URL || !env.MAIL_SECRET) return 0;
+  const approved = (await queryDocuments(env, 'applications', 'status', 'approved', 60)).filter(a => a.uid && !a.emailSentAt && !a.emailError).sort((x, y) => (x.createdAt || 0) - (y.createdAt || 0)).slice(0, limit);
+  let sent = 0; for (const app of approved) { const result = await sendApprovalEmail(env, app.uid); if (result.sent) sent++; }
+  return sent;
 }
 async function reviewApplications(env, limit = 3) {
   await serverToken(env);
+  try { await sendPendingApprovalEmails(env, 3); } catch (error) { console.warn('mail-sweep', error.message); }
   const pending = (await queryDocuments(env, 'applications', 'status', 'pending', 60)).filter(a => a.uid && !a.aiReviewedAt && Number(a.aiAttempts || 0) < 3).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)).slice(0, limit);
   if (!pending.length) return { reviewed: 0 };
   const all = await listDocuments(env, 'structure'); let reviewed = 0;
@@ -2149,6 +2158,36 @@ async function applicantResetPassword(request, env) {
   if (!update.ok) throw fail('تعذّر تحديث كلمة المرور حاليًا.', 502);
   return json({ success: true });
 }
+
+/* ===== إرسال بريد القبول تلقائيًا عبر Google Apps Script (مجاني) ===== */
+const SITE_URL = 'https://abyd5372-gif.github.io/university/';
+const htmlEscape = text => String(text || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+async function sendApprovalEmail(env, uid) {
+  if (!uid || !env.MAIL_SCRIPT_URL || !env.MAIL_SECRET) return { skipped: 'not-configured' };
+  try {
+    const [application, record] = await Promise.all([readDocument(env, 'applications/' + uid), readDocument(env, 'users/' + uid)]);
+    if (!application || !record || record.role !== 'contrib' || !record.email || application.emailSentAt) return { skipped: 'nothing-to-send' };
+    let place = '';
+    const scopeId = record.scope && record.scope.id;
+    if (scopeId) {
+      let node = await readDocument(env, 'structure/' + scopeId); if (node && node.mergedInto) node = await readDocument(env, 'structure/' + node.mergedInto) || node;
+      const parent = node && node.parentId ? await readDocument(env, 'structure/' + node.parentId) : null;
+      place = !node ? '' : node.type === 'col' ? 'كلية «' + node.name + '»' + (parent ? ' في «' + parent.name + '»' : '') : 'جامعة «' + node.name + '»';
+    }
+    const team = record.teamName ? ' ضمن فريق «' + record.teamName + '»' : '', name = record.name || 'عزيزنا المتقدم';
+    const lines = ['السلام عليكم ورحمة الله وبركاته،', '', 'أخي الكريم ' + name + '،', 'يسعدنا إبلاغك بقبول طلب انضمامك إلى المنصة الجامعية الشاملة' + team + '.', place ? 'نطاق صلاحياتك: ' + place + '.' : '', '', 'يمكنك تسجيل الدخول الآن ببريدك الإلكتروني وكلمة المرور التي اخترتها عند التقديم:', SITE_URL, '', 'نشكر لك مشاركتك، ونتمنى لك التوفيق.', 'إدارة المنصة الجامعية الشاملة'].filter((line, i, all) => line !== '' || all[i - 1] !== '');
+    const html = '<div dir="rtl" style="font-family:Tahoma,Arial,sans-serif;line-height:1.9;color:#1b2a38"><p>السلام عليكم ورحمة الله وبركاته،</p><p>أخي الكريم <b>' + htmlEscape(name) + '</b>،</p><p>يسعدنا إبلاغك بقبول طلب انضمامك إلى <b>المنصة الجامعية الشاملة</b>' + htmlEscape(team) + '.</p>' + (place ? '<p>نطاق صلاحياتك: <b>' + htmlEscape(place) + '</b>.</p>' : '') + '<p>يمكنك تسجيل الدخول الآن ببريدك الإلكتروني وكلمة المرور التي اخترتها عند التقديم:</p><p><a href="' + SITE_URL + '" style="display:inline-block;background:#143e60;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none">الدخول إلى المنصة</a></p><p>نشكر لك مشاركتك، ونتمنى لك التوفيق.<br>إدارة المنصة الجامعية الشاملة</p></div>';
+    const response = await fetch(env.MAIL_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow', body: JSON.stringify({ secret: env.MAIL_SECRET, to: record.email, subject: 'تم قبول طلبك في المنصة الجامعية الشاملة', text: lines.join('\n'), html }) });
+    const out = await response.json().catch(() => ({}));
+    if (!response.ok || out.ok !== true) throw new Error(String(out.error || 'HTTP ' + response.status));
+    await patchDocument(env, 'applications/' + uid, { emailSentAt: Date.now(), emailError: '' });
+    return { sent: true };
+  } catch (error) {
+    console.warn('approval-email', uid, error.message);
+    try { await patchDocument(env, 'applications/' + uid, { emailError: String(error.message).slice(0, 200) }); } catch (_) {}
+    return { failed: String(error.message).slice(0, 200) };
+  }
+}
 async function routeRafiq(request, env, ctx, action) {
   if (action === 'applicant-reset-password') { if (request.method !== 'POST') throw fail('طريقة الطلب غير مدعومة', 405); return applicantResetPassword(request, env); }
   if (action === 'review-applications') {
@@ -2167,6 +2206,7 @@ async function routeRafiq(request, env, ctx, action) {
   if (action === 'rafiq-config') return json({ success: true, configured: !!(env.VIDEO_BUCKET && env.RAFIQ_BUCKET && env.GEMINI_API_KEY && env.FIREBASE_SERVICE_ACCOUNT && env.UPSTASH_URL && env.UPSTASH_TOKEN && (env.RAFIQ_WORKFLOW || ctx.exports && ctx.exports.RafiqWorkflow)), checks: { storage: !!env.VIDEO_BUCKET, privateStorage: !!env.RAFIQ_BUCKET, gemini: !!env.GEMINI_API_KEY, firebase: !!env.FIREBASE_SERVICE_ACCOUNT, workflow: !!(env.RAFIQ_WORKFLOW || ctx.exports && ctx.exports.RafiqWorkflow), vectors: !!(env.UPSTASH_URL && env.UPSTASH_TOKEN) }, maxConcurrentUploads: 2 });
   await serverToken(env);
   if (action === 'structure-review') return requestStructureReview(request, env, actor);
+  if (action === 'rafiq-notify-approved') { requireAdmin(actor); const body = await parseBody(request); return json({ success: true, ...await sendApprovalEmail(env, String(body.uid || '')) }); }
   if (action === 'upload-plan') return uploadPlan(request, env, actor);
   if (action === 'upload-init') return initializeUpload(request, env, actor);
   if (action === 'upload-part') return uploadPart(request, env, actor);
